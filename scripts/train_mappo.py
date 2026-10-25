@@ -16,10 +16,17 @@ ap.add_argument("--iterations", type=int, default=None)
 ap.add_argument("--time-limit-min", type=float, default=None)
 ap.add_argument("--envs-per-density", type=int, default=None)
 ap.add_argument("--resume", action="store_true")
+ap.add_argument("--set", action="append", default=[], metavar="KEY=VALUE",
+                help="override any [mappo] value, e.g. --set epochs=10 (recorded per training phase)")
 a = ap.parse_args()
 cfg = StudyConfig.load(a.config) if a.config else StudyConfig.load()
 ov = {k: v for k, v in (("max_iterations", a.iterations), ("time_limit_min", a.time_limit_min),
                         ("envs_per_density", a.envs_per_density)) if v is not None}
+for kv in a.set:
+    k, v = kv.split("=", 1)
+    if k not in cfg.mappo:
+        sys.exit(f"unknown [mappo] key {k}")
+    ov[k] = type(cfg.mappo[k])(v)
 out = Path(a.out or f"results/train/seed_{a.seed}")
 out.mkdir(parents=True, exist_ok=True)
 logf = open(out / "train.log", "a")
