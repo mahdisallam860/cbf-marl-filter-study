@@ -88,3 +88,13 @@ def test_curriculum_is_fixed_in_the_config():
     assert cur["stages"][0] == (0,) and tuple(cur["stages"][-1]) == CFG.densities
     assert (2,) in cur["stages"] and len(cur["budget"]) == len(cur["stages"])
     assert cur["k2_stop_goal_rate"] == 0.5
+
+
+def test_v2_changes_only_the_observation_so_held_out_layouts_are_identical():
+    from cbf_study.evaluate import same_layouts
+    v1 = StudyConfig.load(V1)
+    diff = [k for k in CFG.env_values() if CFG.env_values()[k] != v1.env_values()[k]]
+    assert diff == ["observation"]
+    for K in CFG.densities:
+        for split in ("validation", "pilot"):
+            assert same_layouts(eval_layout(v1, K, split, 20), eval_layout(CFG, K, split, 20))
