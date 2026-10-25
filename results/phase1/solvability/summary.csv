@@ -1,0 +1,4 @@
+split,density,layout_seed,n,role,a_found,a_blocked,a_undetermined,a_found_lo,a_found_hi,a_steps_median,a_steps_max,b_found,b_blocked,b_undetermined,b_found_lo,b_found_hi,b_steps_median,b_steps_max,c_found,c_blocked,c_undetermined,c_found_lo,c_found_hi,c_steps_median,c_steps_max
+validation,1,2000001,200,candidate study density,200,0,0,0.981155,1,65,77,200,0,0,0.981155,1,143,170,200,0,0,0.981155,1,143,170
+validation,3,2000003,200,candidate study density,200,0,0,0.981155,1,71,92,200,0,0,0.981155,1,162,201,200,0,0,0.981155,1,162,201
+validation,4,2000004,200,intermediate diagnostic,200,0,0,0.981155,1,75,114,200,0,0,0.981155,1,176,204,200,0,0,0.981155,1,176,204

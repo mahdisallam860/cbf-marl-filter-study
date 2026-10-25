@@ -1,0 +1,21 @@
+{
+ "audit_config": {
+  "robot_r": 0.1,
+  "obst_r": 0.2,
+  "v_max": 0.5,
+  "w_max": 1.0,
+  "dt": 0.1,
+  "max_steps": 400,
+  "formation_tol": 0.1,
+  "h": 0.02,
+  "margin": 0.002,
+  "box": [
+   -2.6,
+   2.6,
+   -2.0,
+   2.0
+  ]
+ },
+ "env_fingerprint": "c60352aee3f11ed8",
+ "wall_s": 12.0
+}

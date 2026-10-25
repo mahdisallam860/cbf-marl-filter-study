@@ -1,0 +1,85 @@
+s0_early K1: GOAL 164/200 COLL 10/200 periods 400 4.86 s
+s0_early K2: GOAL 103/200 COLL 52/200 periods 400 6.27 s
+s0_early K3: GOAL 31/200 COLL 126/200 periods 400 8.03 s
+s0_early K4: GOAL 12/200 COLL 167/200 periods 400 9.61 s
+s0_early K5: GOAL 0/200 COLL 197/200 periods 400 8.67 s
+s0_early K8: GOAL 0/200 COLL 200/200 periods 31 1.06 s
+s0_middle K1: GOAL 128/200 COLL 6/200 periods 400 4.69 s
+s0_middle K2: GOAL 97/200 COLL 47/200 periods 400 5.39 s
+s0_middle K3: GOAL 28/200 COLL 116/200 periods 400 6.71 s
+s0_middle K4: GOAL 14/200 COLL 161/200 periods 400 8.08 s
+s0_middle K5: GOAL 0/200 COLL 195/200 periods 400 9.21 s
+s0_middle K8: GOAL 0/200 COLL 200/200 periods 32 1.09 s
+s0_late K1: GOAL 113/200 COLL 9/200 periods 400 4.12 s
+s0_late K2: GOAL 100/200 COLL 47/200 periods 400 5.83 s
+s0_late K3: GOAL 31/200 COLL 115/200 periods 400 7.23 s
+s0_late K4: GOAL 10/200 COLL 160/200 periods 400 8.2 s
+s0_late K5: GOAL 0/200 COLL 195/200 periods 400 8.86 s
+s0_late K8: GOAL 0/200 COLL 200/200 periods 34 1.14 s
+s1_early K1: GOAL 34/200 COLL 23/200 periods 400 4.4 s
+s1_early K2: GOAL 112/200 COLL 42/200 periods 400 5.73 s
+s1_early K3: GOAL 50/200 COLL 111/200 periods 400 6.68 s
+s1_early K4: GOAL 24/200 COLL 167/200 periods 400 8.18 s
+s1_early K5: GOAL 1/200 COLL 194/200 periods 400 9.04 s
+s1_early K8: GOAL 0/200 COLL 200/200 periods 32 0.97 s
+s1_middle K1: GOAL 85/200 COLL 20/200 periods 400 4.24 s
+s1_middle K2: GOAL 150/200 COLL 26/200 periods 400 5.43 s
+s1_middle K3: GOAL 70/200 COLL 96/200 periods 400 6.92 s
+s1_middle K4: GOAL 35/200 COLL 152/200 periods 400 8.18 s
+s1_middle K5: GOAL 2/200 COLL 186/200 periods 400 9.14 s
+s1_middle K8: GOAL 0/200 COLL 200/200 periods 34 1.1 s
+s1_late K1: GOAL 89/200 COLL 10/200 periods 400 4.59 s
+s1_late K2: GOAL 156/200 COLL 21/200 periods 400 5.44 s
+s1_late K3: GOAL 50/200 COLL 97/200 periods 400 7.07 s
+s1_late K4: GOAL 39/200 COLL 148/200 periods 400 8.0 s
+s1_late K5: GOAL 8/200 COLL 180/200 periods 400 9.35 s
+s1_late K8: GOAL 0/200 COLL 200/200 periods 33 1.02 s
+s2_early K1: GOAL 48/200 COLL 7/200 periods 400 4.48 s
+s2_early K2: GOAL 145/200 COLL 22/200 periods 400 5.71 s
+s2_early K3: GOAL 116/200 COLL 55/200 periods 400 6.96 s
+s2_early K4: GOAL 38/200 COLL 140/200 periods 400 8.19 s
+s2_early K5: GOAL 4/200 COLL 191/200 periods 400 9.18 s
+s2_early K8: GOAL 0/200 COLL 200/200 periods 32 1.1 s
+s2_middle K1: GOAL 106/200 COLL 10/200 periods 400 4.59 s
+s2_middle K2: GOAL 150/200 COLL 28/200 periods 400 5.75 s
+s2_middle K3: GOAL 100/200 COLL 62/200 periods 400 6.44 s
+s2_middle K4: GOAL 10/200 COLL 165/200 periods 400 7.75 s
+s2_middle K5: GOAL 1/200 COLL 193/200 periods 400 9.02 s
+s2_middle K8: GOAL 0/200 COLL 200/200 periods 30 0.97 s
+s2_late K1: GOAL 153/200 COLL 10/200 periods 400 4.33 s
+s2_late K2: GOAL 159/200 COLL 31/200 periods 400 5.8 s
+s2_late K3: GOAL 98/200 COLL 67/200 periods 400 6.96 s
+s2_late K4: GOAL 35/200 COLL 156/200 periods 400 7.65 s
+s2_late K5: GOAL 1/200 COLL 195/200 periods 400 8.62 s
+s2_late K8: GOAL 0/200 COLL 200/200 periods 31 1.04 s
+{
+ "script": "scripts/phase1_eval.py",
+ "filter": "OFF",
+ "split": "validation",
+ "trials_per_density": 200,
+ "densities": {
+  "1": "primary",
+  "2": "primary",
+  "3": "primary",
+  "4": "diagnostic_K4",
+  "5": "stress",
+  "8": "stress"
+ },
+ "alt_goal_tol": [
+  0.1,
+  0.125,
+  0.15,
+  0.2,
+  0.25
+ ],
+ "alt_form_tol": [
+  0.1,
+  0.15,
+  0.2
+ ],
+ "near_goal_m": 0.3,
+ "window": 50,
+ "workers": 4,
+ "wall_s": 88.0,
+ "env_fingerprint": "c60352aee3f11ed8"
+}

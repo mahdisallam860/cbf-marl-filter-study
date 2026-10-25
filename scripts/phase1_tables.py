@@ -1,0 +1,305 @@
+#!/usr/bin/env python3
+"""Phase 1 tables from results/phase1/eval/trials.csv (filter OFF, validation layouts):
+
+  TABLES.md / filter_off_by_policy_density.csv
+      per policy and density: n, GOAL, robot-obstacle and robot-robot collisions, TIMEOUT (stalled),
+      INFEASIBLE, formation error; Wilson 95% CIs for counts, bootstrap 95% CI for the mean formation
+      error. Descriptive only (no test). Three separate sections: K = 1, 2, 3 (candidate densities),
+      K = 5, 8 (baseline stress results), K = 4 (intermediate diagnostic). Plus a check against the
+      gate_v2 counts for the same checkpoints at K = 2, 5, 8.
+  TIMEOUT_DIAGNOSIS.md / timeout_diagnosis.csv
+      where and how TIMEOUT trials end (final centroid distance, which goal criterion fails, motion in
+      the last 50 periods, layout and reward-shaping context), study tolerances unchanged.
+  TOLERANCE_SENSITIVITY.md / tolerance_sensitivity.csv
+      EXPLORATORY: GOAL counts if the goal / formation tolerances were looser (exact from the recorded
+      trajectories; the study tolerances stay 0.10 m / 0.10 m)."""
+import csv, json, sys
+from collections import defaultdict
+from pathlib import Path
+
+import numpy as np
+
+ROOT = Path(__file__).resolve().parents[1]
+sys.path.insert(0, str(ROOT))
+from cbf_study.evaluate import write_rows       # noqa: E402
+from cbf_study.stats import bootstrap_mean_ci, wilson_ci   # noqa: E402
+
+P1 = ROOT / "results" / "phase1"
+SECTIONS = (("Candidate study densities K = 1, 2, 3", (1, 2, 3)),
+            ("Baseline stress results K = 5, 8 (not candidate densities)", (5, 8)),
+            ("Intermediate diagnostic K = 4 (not a study density; validation seed 2000004 first used here)", (4,)))
+
+
+def load():
+    rows = list(csv.DictReader(open(P1 / "eval" / "trials.csv")))
+    for r in rows:
+        for k in ("density", "trial", "end_step", "stalled", "seed", "iteration", "win_v_sign_flips", "stop_onset", "stationary_periods"):
+            if r.get(k, "") != "":
+                r[k] = int(float(r[k]))
+        for k, v in list(r.items()):
+            if isinstance(v, str) and k not in ("policy_id", "phase", "role", "outcome", "collision_kind", "final_fail"):
+                try:
+                    r[k] = float(v)
+                except ValueError:
+                    pass
+    return rows
+
+
+def pct_ci(k, n):
+    lo, hi = wilson_ci(k, n)
+    return f"{k} ({100 * k / n:.1f}% [{100 * lo:.1f}, {100 * hi:.1f}])"
+
+
+def main_table(rows, order):
+    out = []
+    for pid in order:
+        for K in (1, 2, 3, 4, 5, 8):
+            rs = [r for r in rows if r["policy_id"] == pid and r["density"] == K]
+            if not rs:
+                continue
+            n = len(rs)
+            cnt = lambda f: sum(1 for r in rs if f(r))
+            fe = np.array([r["form_err_mean"] for r in rs])
+            m, lo, hi = bootstrap_mean_ci(fe, reps=4000, seed=0)
+            fg = [r["form_err_final"] for r in rs if r["outcome"] == "GOAL"]
+            d = dict(policy_id=pid, seed=rs[0]["seed"], phase=rs[0]["phase"], iteration=rs[0]["iteration"], density=K,
+                     role=rs[0]["role"], layout_seed=int(rs[0]["layout_seed"]), n=n,
+                     GOAL=cnt(lambda r: r["outcome"] == "GOAL"),
+                     COLL_OBST=cnt(lambda r: r["outcome"] == "COLLISION" and r["collision_kind"] == "obstacle"),
+                     COLL_ROBOT=cnt(lambda r: r["outcome"] == "COLLISION" and r["collision_kind"] == "robot"),
+                     TIMEOUT=cnt(lambda r: r["outcome"] == "TIMEOUT"), stalled=cnt(lambda r: r["stalled"] == 1),
+                     INFEASIBLE=cnt(lambda r: r["outcome"] == "INFEASIBLE"),
+                     form_err_mean=m, form_err_lo=lo, form_err_hi=hi,
+                     form_err_final_goal_mean=float(np.mean(fg)) if fg else float("nan"))
+            for k in ("GOAL", "COLL_OBST", "COLL_ROBOT", "TIMEOUT", "INFEASIBLE"):
+                d[f"{k}_rate"] = d[k] / n
+                d[f"{k}_lo"], d[f"{k}_hi"] = wilson_ci(d[k], n)
+            out.append(d)
+    return out
+
+
+def gate_check(table):
+    gate = {(r["ckpt"], int(r["density"])): r for r in csv.DictReader(open(ROOT / "results/gate_v2/gate_by_checkpoint.csv"))
+            if r["density"] != "pooled"}
+    sel = {p["policy_id"]: p["ckpt"] for p in json.loads((P1 / "checkpoint_selection.json").read_text())["policies"]}
+    chk = []
+    for d in table:
+        g = gate.get((sel[d["policy_id"]], d["density"]))
+        if g is None:
+            continue
+        same = (int(g["GOAL"]) == d["GOAL"] and int(g["COLLISION"]) == d["COLL_OBST"] + d["COLL_ROBOT"]
+                and int(g["TIMEOUT"]) == d["TIMEOUT"] and int(g["stalled"]) == d["stalled"]
+                and abs(float(g["form_err_mean"]) - d["form_err_mean"]) < 1e-5)
+        chk.append(dict(policy_id=d["policy_id"], density=d["density"], identical=int(same)))
+    return chk
+
+
+def write_tables_md(table, chk, runs):
+    L = ["# Phase 1: filter-OFF validation tables (script-generated)", "",
+         "Generated by `scripts/phase1_tables.py` from `results/phase1/eval/trials.csv` (`scripts/phase1_eval.py`). "
+         "Nine policies fixed by the iteration rule in `checkpoint_selection.md`; existing validation layouts "
+         "(seed = validation_base + K, 200 trials per density); protocol unchanged (VmasEnv, deterministic frozen "
+         "policy, swept-path collision scoring, stop at first collision); goal and formation tolerances 0.10 m. "
+         "**Filter OFF only.**", "",
+         "Counts with Wilson 95% CIs in brackets (%); formation error = per-trial mean slot error over the periods "
+         "the trial ran [m], mean over trials with a percentile-bootstrap 95% CI (4,000 resamples, seed 0); "
+         "'GOAL form. err.' = final formation error of GOAL trials. The CIs are descriptive. The nine policies "
+         "share the same 200 layouts per density, so rows are not independent and are not pooled.", ""]
+    for title, Ks in SECTIONS:
+        L += [f"## {title}", "",
+              "| policy | iter | K | n | GOAL | obstacle coll. | robot coll. | TIMEOUT (stalled) | INFEASIBLE | formation error [m] | GOAL form. err. |",
+              "|---|---|---|---|---|---|---|---|---|---|---|"]
+        for d in [d for d in table if d["density"] in Ks]:
+            L.append(f"| {d['policy_id']} | {d['iteration']} | {d['density']} | {d['n']} | {pct_ci(d['GOAL'], d['n'])} | "
+                     f"{pct_ci(d['COLL_OBST'], d['n'])} | {pct_ci(d['COLL_ROBOT'], d['n'])} | "
+                     f"{pct_ci(d['TIMEOUT'], d['n'])} ({d['stalled']}) | {d['INFEASIBLE']} | "
+                     f"{d['form_err_mean']:.4f} [{d['form_err_lo']:.4f}, {d['form_err_hi']:.4f}] | {d['form_err_final_goal_mean']:.4f} |")
+        L.append("")
+    n_ok = sum(c["identical"] for c in chk)
+    L += ["## Consistency with gate_v2", "",
+          f"The same checkpoints at K = 2, 5, 8 were in the gate_v2 run (`results/gate_v2/`): {n_ok} of {len(chk)} "
+          "(policy, density) cells have identical GOAL, COLLISION, TIMEOUT and stalled counts and formation error.", "",
+          "## Runs", "",
+          f"{len(runs)} filter-off runs (9 policies x 6 densities x 200 trials = {sum(int(r['n']) for r in runs)} trials); "
+          f"wall time per run {min(float(r['wall_s']) for r in runs):.1f}-{max(float(r['wall_s']) for r in runs):.1f} s "
+          "(one process, 4 in parallel); see `eval/runs.csv`."]
+    (P1 / "TABLES.md").write_text("\n".join(L) + "\n")
+
+
+def timeout_diagnosis(rows):
+    diag = []
+    for K in (1, 2, 3, 4, 5, 8):
+        rs = [r for r in rows if r["density"] == K]
+        to = [r for r in rs if r["outcome"] == "TIMEOUT"]
+        goal = [r for r in rs if r["outcome"] == "GOAL"]
+        near = [r for r in to if r["goal_dist_final"] <= 0.30]
+        med = lambda xs: float(np.median(xs)) if len(xs) else float("nan")
+        q = lambda xs, p: float(np.quantile(xs, p)) if len(xs) else float("nan")
+        bins = (0.10, 0.15, 0.20, 0.30, 0.50, 1.0, np.inf)
+        fd = np.array([r["goal_dist_final"] for r in to])
+        d = dict(density=K, role=rs[0]["role"], trials=len(rs), GOAL=len(goal), TIMEOUT=len(to),
+                 near_goal_timeouts=len(near), stalled_timeouts=sum(r["stalled"] for r in to))
+        lo = 0.0
+        for hi in bins:
+            d[f"final_dist_{lo:g}-{hi:g}"] = int(((fd > lo) & (fd <= hi)).sum()) if len(fd) else 0
+            lo = hi
+        for lab in ("met", "centroid", "formation", "both"):
+            d[f"near_fail_{lab}"] = sum(r["final_fail"] == lab for r in near)
+        d.update(
+            near_goal_dist_final_median=med([r["goal_dist_final"] for r in near]),
+            near_goal_dist_final_q10=q([r["goal_dist_final"] for r in near], 0.1),
+            near_goal_dist_final_q90=q([r["goal_dist_final"] for r in near], 0.9),
+            near_goal_dist_min_median=med([r["goal_dist_min"] for r in near]),
+            near_form_err_final_median=med([r["form_err_final"] for r in near]),
+            near_goal_score_min_median=med([r["goal_score_min"] for r in near]),
+            near_win_progress_median=med([r["win_progress"] for r in near]),
+            near_win_centroid_path_median=med([r["win_centroid_path"] for r in near]),
+            near_win_abs_v_median=med([r["win_abs_v"] for r in near]),
+            near_win_abs_w_median=med([r["win_abs_w"] for r in near]),
+            near_win_frac_v_small_median=med([r["win_frac_v_small"] for r in near]),
+            near_win_v_sign_flips_median=med([r["win_v_sign_flips"] for r in near]),
+            near_final_lateral_median=med([r["final_lateral_mean"] for r in near]),
+            near_final_longitudinal_median=med([r["final_longitudinal_mean"] for r in near]),
+            near_final_target_err_max_median=med([r["final_target_err_max"] for r in near]),
+            near_final_proximity_penalty_pos=sum(r["final_proximity_penalty"] > 0 for r in near),
+            near_stopped=sum(r["stop_onset"] >= 0 for r in near),
+            near_stop_onset_median=med([r["stop_onset"] for r in near if r["stop_onset"] >= 0]),
+            near_stationary_periods_median=med([r["stationary_periods"] for r in near if r["stop_onset"] >= 0]),
+            near_raw_abs_v_max_q90=q([r["win_raw_abs_v_max"] for r in near], 0.9),
+            near_raw_abs_w_max_q90=q([r["win_raw_abs_w_max"] for r in near], 0.9),
+            near_past_goal=sum(r["final_goal_dx"] < 0 for r in near),
+            near_heading_q10=q([r["final_heading_mean_deg"] for r in near], 0.1),
+            near_heading_q90=q([r["final_heading_mean_deg"] for r in near], 0.9),
+            near_nearest_obstacle_to_goal_median=med([r["nearest_obstacle_to_goal"] for r in near]),
+            goal_nearest_obstacle_to_goal_median=med([r["nearest_obstacle_to_goal"] for r in goal]),
+            goal_final_lateral_median=med([r["final_lateral_mean"] for r in goal]),
+            goal_final_longitudinal_median=med([r["final_longitudinal_mean"] for r in goal]),
+            goal_end_step_median=med([r["end_step"] for r in goal]),
+        )
+        diag.append(d)
+    per_policy = []
+    for pid in sorted({r["policy_id"] for r in rows}, key=lambda s: (s[:2], ("early", "middle", "late").index(s.split("_")[1]))):
+        for K in (1, 2, 3):
+            rs = [r for r in rows if r["policy_id"] == pid and r["density"] == K]
+            to = [r for r in rs if r["outcome"] == "TIMEOUT"]
+            near = [r for r in to if r["goal_dist_final"] <= 0.30]
+            per_policy.append(dict(policy_id=pid, density=K, TIMEOUT=len(to), near_goal=len(near),
+                                   near_stalled=sum(r["stalled"] for r in near),
+                                   near_fail_centroid=sum(r["final_fail"] == "centroid" for r in near),
+                                   near_fail_formation=sum(r["final_fail"] == "formation" for r in near),
+                                   near_fail_both=sum(r["final_fail"] == "both" for r in near),
+                                   near_dist_final_median=float(np.median([r["goal_dist_final"] for r in near])) if near else float("nan")))
+    return diag, per_policy
+
+
+def write_timeout_md(diag, per_policy):
+    f = lambda x, p=3: "-" if x != x else f"{x:.{p}f}"
+    L = ["# Phase 1: near-goal timeout diagnosis (filter OFF, validation layouts, tolerances unchanged)", "",
+         "Generated by `scripts/phase1_tables.py`. All nine policies pooled per density (counts of trials on the "
+         "same 200 layouts per policy; descriptive). A *near-goal timeout* is a TIMEOUT whose final centroid-to-goal "
+         "distance is <= 0.30 m (the slot radius; obstacle centres are >= 0.75 m from the goal by construction). "
+         "'Fails' = which goal criterion is unmet at the final state (centroid within 0.10 m, mean slot error "
+         "within 0.10 m). Window = last 50 control periods (the protocol's stall window). Lateral / longitudinal = "
+         "mean over robots of the body-frame components of the error to the absolute target goal + slot_i.", "",
+         "## Where TIMEOUT trials end", "",
+         "| K | trials | GOAL | TIMEOUT | stalled | final centroid distance: (0,0.1] / (0.1,0.15] / (0.15,0.2] / (0.2,0.3] / (0.3,0.5] / (0.5,1] / >1 m |",
+         "|---|---|---|---|---|---|"]
+    for d in diag:
+        b = " / ".join(str(d[k]) for k in d if k.startswith("final_dist_"))
+        L.append(f"| {d['density']} | {d['trials']} | {d['GOAL']} | {d['TIMEOUT']} | {d['stalled_timeouts']} | {b} |")
+    L += ["", "## Near-goal timeouts", "",
+          "| K | near-goal | fails: centroid / formation / both | final dist. median [q10, q90] | min dist. reached, median | final slot err. median | window: progress / centroid path [m] | window: abs v / abs w median | window: share of v < 0.02 | v sign flips | final lateral / longitudinal err. [m] | proximity penalty > 0 at end |",
+          "|---|---|---|---|---|---|---|---|---|---|---|---|"]
+    for d in diag:
+        if not d["near_goal_timeouts"]:
+            L.append(f"| {d['density']} | 0 | - | - | - | - | - | - | - | - | - | - |")
+            continue
+        L.append(f"| {d['density']} | {d['near_goal_timeouts']} | {d['near_fail_centroid']} / {d['near_fail_formation']} / {d['near_fail_both']} | "
+                 f"{f(d['near_goal_dist_final_median'])} [{f(d['near_goal_dist_final_q10'])}, {f(d['near_goal_dist_final_q90'])}] | "
+                 f"{f(d['near_goal_dist_min_median'])} | {f(d['near_form_err_final_median'])} | "
+                 f"{f(d['near_win_progress_median'])} / {f(d['near_win_centroid_path_median'])} | "
+                 f"{f(d['near_win_abs_v_median'])} / {f(d['near_win_abs_w_median'])} | {f(d['near_win_frac_v_small_median'], 2)} | "
+                 f"{f(d['near_win_v_sign_flips_median'], 0)} | {f(d['near_final_lateral_median'])} / {f(d['near_final_longitudinal_median'])} | "
+                 f"{d['near_final_proximity_penalty_pos']} |")
+    L += ["", "## Do the near-goal timeouts stop?", "",
+          "'Stopped' = from some period on, every robot's applied command stays below 0.01 (m/s, rad/s) until the end; "
+          "raw = the policy's deterministic action before clipping, largest magnitude over robots in the last 50 periods.", "",
+          "| K | near-goal | stopped | stop onset, median period | stationary periods, median | raw abs v / abs w max in window, q90 | centroid past the goal (x) | mean heading at end q10 / q90 [deg] |",
+          "|---|---|---|---|---|---|---|---|"]
+    for d in diag:
+        if d["near_goal_timeouts"]:
+            L.append(f"| {d['density']} | {d['near_goal_timeouts']} | {d['near_stopped']} | {f(d['near_stop_onset_median'], 0)} | "
+                     f"{f(d['near_stationary_periods_median'], 0)} | {f(d['near_raw_abs_v_max_q90'], 4)} / {f(d['near_raw_abs_w_max_q90'], 4)} | "
+                     f"{d['near_past_goal']} | {f(d['near_heading_q10'], 0)} / {f(d['near_heading_q90'], 0)} |")
+    L += ["", "GOAL trials for comparison: final lateral / longitudinal error median, nearest obstacle to the goal:", "",
+          "| K | GOAL | lateral / longitudinal [m] | nearest obstacle centre to goal, GOAL vs near-goal TIMEOUT (median) [m] | GOAL end step median |",
+          "|---|---|---|---|---|"]
+    for d in diag:
+        L.append(f"| {d['density']} | {d['GOAL']} | {f(d['goal_final_lateral_median'])} / {f(d['goal_final_longitudinal_median'])} | "
+                 f"{f(d['goal_nearest_obstacle_to_goal_median'])} vs {f(d['near_nearest_obstacle_to_goal_median'])} | {f(d['goal_end_step_median'], 0)} |")
+    L += ["", "## Per policy, K = 1, 2, 3", "",
+          "| policy | K | TIMEOUT | near-goal | of which stalled | fails: centroid / formation / both | final dist. median |",
+          "|---|---|---|---|---|---|---|"]
+    for p in per_policy:
+        L.append(f"| {p['policy_id']} | {p['density']} | {p['TIMEOUT']} | {p['near_goal']} | {p['near_stalled']} | "
+                 f"{p['near_fail_centroid']} / {p['near_fail_formation']} / {p['near_fail_both']} | {f(p['near_dist_final_median'])} |")
+    (P1 / "TIMEOUT_DIAGNOSIS.md").write_text("\n".join(L) + "\n")
+
+
+def sensitivity(rows, order):
+    alt = [k for k in rows[0] if k.startswith("alt_g")]
+    out = []
+    for pid in order + ["all"]:
+        for K in (1, 2, 3, 4, 5, 8):
+            rs = [r for r in rows if r["density"] == K and (pid == "all" or r["policy_id"] == pid)]
+            d = dict(policy_id=pid, density=K, n=len(rs))
+            for k in alt:
+                d[k] = sum(1 for r in rs if r[k] >= 0)
+            out.append(d)
+    return out, alt
+
+
+def write_sens_md(sens, alt):
+    show = ["alt_g0.1_f0.1", "alt_g0.125_f0.1", "alt_g0.15_f0.1", "alt_g0.2_f0.1", "alt_g0.25_f0.1",
+            "alt_g0.1_f0.15", "alt_g0.15_f0.15", "alt_g0.2_f0.2"]
+    lab = lambda k: "goal {} / form. {}".format(*k[5:].split("_f")) if k.startswith("alt_g") else k
+    L = ["# Phase 1: EXPLORATORY tolerance sensitivity (filter OFF, validation layouts)", "",
+         "**Exploratory only. The study tolerances stay 0.10 m (centroid to goal) and 0.10 m (mean slot error); "
+         "nothing here changes them.** Generated by `scripts/phase1_tables.py`. A trial counts as GOAL under a "
+         "looser pair (goal tol, formation tol) if, at some period before its recorded end, both criteria held "
+         "(collision still beats goal in the same period). This is exact for tolerances >= 0.10 m, because the "
+         "trajectory up to that period is the one recorded. Tighter tolerances cannot be evaluated from these runs.", "",
+         "## All nine policies pooled (GOAL count out of 9 x 200 trials on the same 200 layouts per density)", "",
+         "| K | n | " + " | ".join(lab(k) for k in show) + " |", "|---|---|" + "---|" * len(show)]
+    for d in [d for d in sens if d["policy_id"] == "all"]:
+        L.append(f"| {d['density']} | {d['n']} | " + " | ".join(f"{d[k]} ({100 * d[k] / d['n']:.1f}%)" for k in show) + " |")
+    L += ["", "## Per policy, K = 1, 2, 3 (GOAL count of 200)", "",
+          "| policy | K | " + " | ".join(lab(k) for k in show) + " |", "|---|---|" + "---|" * len(show)]
+    for d in [d for d in sens if d["policy_id"] != "all" and d["density"] in (1, 2, 3)]:
+        L.append(f"| {d['policy_id']} | {d['density']} | " + " | ".join(str(d[k]) for k in show) + " |")
+    L += ["", f"Full grid ({len(alt)} pairs, every policy and density): `tables/tolerance_sensitivity.csv`."]
+    (P1 / "TOLERANCE_SENSITIVITY.md").write_text("\n".join(L) + "\n")
+
+
+def main():
+    rows = load()
+    runs = list(csv.DictReader(open(P1 / "eval" / "runs.csv")))
+    order = [p["policy_id"] for p in json.loads((P1 / "checkpoint_selection.json").read_text())["policies"]]
+    (P1 / "tables").mkdir(exist_ok=True)
+    table = main_table(rows, order)
+    chk = gate_check(table)
+    write_rows(P1 / "tables" / "filter_off_by_policy_density.csv", table)
+    write_rows(P1 / "tables" / "gate_v2_consistency.csv", chk)
+    write_tables_md(table, chk, runs)
+    diag, per_policy = timeout_diagnosis(rows)
+    write_rows(P1 / "tables" / "timeout_diagnosis.csv", diag)
+    write_rows(P1 / "tables" / "timeout_diagnosis_per_policy.csv", per_policy)
+    write_timeout_md(diag, per_policy)
+    sens, alt = sensitivity(rows, order)
+    write_rows(P1 / "tables" / "tolerance_sensitivity.csv", sens)
+    write_sens_md(sens, alt)
+    print(f"tables written; gate_v2 consistency {sum(c['identical'] for c in chk)}/{len(chk)}")
+
+
+if __name__ == "__main__":
+    main()

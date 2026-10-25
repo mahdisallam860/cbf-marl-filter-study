@@ -1,0 +1,31 @@
+{
+ "script": "scripts/phase1_eval.py",
+ "filter": "OFF",
+ "split": "validation",
+ "trials_per_density": 200,
+ "densities": {
+  "1": "primary",
+  "2": "primary",
+  "3": "primary",
+  "4": "diagnostic_K4",
+  "5": "stress",
+  "8": "stress"
+ },
+ "alt_goal_tol": [
+  0.1,
+  0.125,
+  0.15,
+  0.2,
+  0.25
+ ],
+ "alt_form_tol": [
+  0.1,
+  0.15,
+  0.2
+ ],
+ "near_goal_m": 0.3,
+ "window": 50,
+ "workers": 4,
+ "wall_s": 88.0,
+ "env_fingerprint": "c60352aee3f11ed8"
+}
