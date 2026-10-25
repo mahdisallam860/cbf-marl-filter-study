@@ -35,7 +35,9 @@ def test_tiny_training_run_writes_curves_and_checkpoints(tmp_path):
     # the mean action lies in the velocity box for any input
     m = actor.mean(torch.randn(1000, meta["obs_dim"]) * 100).detach().numpy()
     assert (m >= np.array(meta["lo"]) - 1e-6).all() and (m <= np.array(meta["hi"]) + 1e-6).all()
-    # resume continues from the saved iteration
+    # resume continues from the saved iteration; rows logged after the last checkpoint are dropped
+    with open(tmp_path / "curve.csv", "a") as f:
+        f.write("3,999,0,0\n")
     train(cfg, 0, tmp_path, overrides=dict(TINY, max_iterations=3, epochs=3), resume=True, log=lambda m: None)
     assert len(list(csv.DictReader(open(tmp_path / "curve.csv")))) == 3
     # each training phase keeps its own recipe record

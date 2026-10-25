@@ -186,6 +186,12 @@ def train(cfg: StudyConfig, run_seed: int, out_dir, overrides=None, resume=False
     if not curve_path.exists() or not resume:
         with open(curve_path, "w", newline="") as f:
             csv.writer(f).writerow(cols)
+    else:   # drop rows logged after the restored checkpoint (a run stopped between checkpoints)
+        with open(curve_path, newline="") as f:
+            kept = [r for r in csv.reader(f)]
+        kept = kept[:1] + [r for r in kept[1:] if int(r[0]) <= it0]
+        with open(curve_path, "w", newline="") as f:
+            csv.writer(f).writerows(kept)
 
     def joint(o):
         return o.reshape(o.shape[0], -1)
