@@ -91,6 +91,26 @@ def main():
                any_checkpoint_passes=any(passes(r) for r in pooled), wall_s=round(time.time() - t0, 1))
     (out / "selection.json").write_text(json.dumps(sel, indent=1))
     print(json.dumps(sel, indent=1))
+    write_markdown(out / "GATE.md", table, sel, cfg)
+
+
+def write_markdown(path, table, sel, cfg):
+    pct = lambda r, k: f"{100 * r[k + '_rate']:.1f} [{100 * r[k + '_lo']:.1f}, {100 * r[k + '_hi']:.1f}]"
+    L = ["# Gate: filter-OFF baseline per checkpoint", "",
+         f"Validation layouts, {sel['validation_trials_per_density']} trials per density, VmasEnv, deterministic policy "
+         f"(mean action). Rates in % with Wilson 95% CIs. Thresholds (pre-registered, pending approval): pooled GOAL "
+         f">= {100 * sel['goal_rate_min']:.0f}%, pooled COLLISION >= {100 * sel['collision_rate_min']:.0f}%. "
+         f"Env fingerprint `{sel['env_fingerprint']}`, {sel['pending_placeholders']} config values pending approval.", "",
+         f"**Any checkpoint passes: {'YES' if sel['any_checkpoint_passes'] else 'NO'}.** "
+         f"Best by the selection rule: `{sel['best']['ckpt']}` "
+         f"(GOAL {100 * sel['best']['goal_rate']:.1f}%, COLLISION {100 * sel['best']['coll_rate']:.1f}%, "
+         f"gate {'PASS' if sel['best']['gate_pass'] else 'FAIL'}).", "",
+         "| seed | iter | env steps | density | GOAL % | COLLISION % | TIMEOUT % | stalled | goal ok | coll ok |",
+         "|---|---|---|---|---|---|---|---|---|---|"]
+    for r in table:
+        L.append(f"| {r['seed']} | {r['iteration']} | {r['env_steps']} | {r['density']} | {pct(r, 'goal')} | "
+                 f"{pct(r, 'coll')} | {100 * r['timeout_rate']:.1f} | {r['stalled']} | {r['goal_ok']} | {r['coll_ok']} |")
+    path.write_text("\n".join(L) + "\n")
 
 
 if __name__ == "__main__":
