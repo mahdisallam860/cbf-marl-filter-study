@@ -20,17 +20,24 @@ def test_reserved_seeds_unique_and_inside_the_reserved_range():
     assert all(s["seed"] == 4_000_000 + 1000 * s["policy_index"] + s["density"] for s in RES["seeds"])
 
 
+BLOCKS = (tuple(RES["reserved_range"]), tuple(RES["method_study_block"]["range"]))
+
+
+def test_reserved_blocks_are_disjoint_from_each_other():
+    (a0, a1), (b0, b1) = BLOCKS
+    assert a1 < b0 or b1 < a0
+
+
 def test_reserved_range_disjoint_from_train_validation_and_pilot_seeds():
-    lo, hi = RES["reserved_range"]
     train = (CFG.train_seed(0, 0, 0), CFG.train_seed(9, 99, 999))
-    assert train[1] < lo
-    for K in range(100):
-        for s in (CFG.validation_seed(K), CFG.pilot_seed(K)):
-            assert not lo <= s <= hi
+    for lo, hi in BLOCKS:
+        assert train[1] < lo
+        for K in range(100):
+            for s in (CFG.validation_seed(K), CFG.pilot_seed(K)):
+                assert not lo <= s <= hi
 
 
 def test_no_saved_result_or_audit_record_uses_a_reserved_seed():
-    lo, hi = RES["reserved_range"]
     hits = []
     for base in ("results", "audit"):
         for p in (ROOT / base).rglob("*.csv"):
@@ -40,10 +47,10 @@ def test_no_saved_result_or_audit_record_uses_a_reserved_seed():
                 for row in rd:
                     for c in cols:
                         for tok in re.findall(r"\d+", row[c] or ""):
-                            if lo <= int(tok) <= hi:
+                            if any(lo <= int(tok) <= hi for lo, hi in BLOCKS):
                                 hits.append((str(p), c, tok))
         for p in (ROOT / base).rglob("*.json"):
             for tok in re.findall(r'"[a-z_]*seed[a-z_]*":\s*"?(\d+)', p.read_text()):
-                if lo <= int(tok) <= hi:
+                if any(lo <= int(tok) <= hi for lo, hi in BLOCKS):
                     hits.append((str(p), "json", tok))
     assert not hits, hits[:5]

@@ -1,0 +1,39 @@
+# Evaluation protocol settings LOCKED BY THE PROJECT AUTHOR (not advisor-approved).
+# Separate from config/study.toml on purpose: the training configuration, its densities [2, 5, 8]
+# and the env fingerprint of the frozen actors stay unchanged. Every value in study.toml keeps
+# approval = "pending". Document: docs/PREFILTER_VALIDATION_PROTOCOL_LOCKED_2026-10-25.md
+
+[lock]
+author_lock      = { locked_by = "project author", locked_at = "2026-10-25 23:40:51 +03 (UTC+03:00, Asia/Riyadh)", note = "chosen by the author without advisor review" }
+advisor_approval = "not obtained"
+env_fingerprint  = "c60352aee3f11ed8"
+actors           = "results/phase1/checkpoint_selection.json"
+
+[densities]
+primary    = [1, 2, 3]
+diagnostic = [4]
+stress     = [5, 8]
+
+[gains]
+grid      = [0.5, 1.0, 2.0, 5.0, 10.0]
+selection = ["max pooled filter-on GOAL count over 9 actors and primary densities", "fewer INFEASIBLE", "larger alpha"]
+
+[confirmatory]
+alpha_density            = 0.016666666666666666   # 0.05 / 3, one-sided, per component, intersection-union
+goal_loss_margin         = 0.05                   # absolute: P(GOAL off) - P(GOAL on)
+formation_margin_m       = 0.01                   # equal-policy mean common-prefix increase (on - off)
+failure_ci               = "Newcombe 1998 method 10, two-sided 1 - 2*alpha_density interval, upper limit"
+goal_ci                  = "Newcombe 1998 method 10 on P(GOAL on) - P(GOAL off); loss upper bound = -lower limit"
+formation_ci             = "stratified paired percentile bootstrap, equal policy weights"
+bootstrap_replicates     = 20000
+bootstrap_seed           = 20261026
+bootstrap_quantile       = "numpy.quantile method='linear' (type 7)"
+min_eligible_per_policy  = 2                      # fewer -> criterion (c) inconclusive
+descriptive_conf         = 0.95
+reached_goal_region_m    = 0.30
+
+[final_test]
+layouts_per_actor_and_density = 1000
+seed_formula                  = "4000000 + 1000 * policy_index + K"
+reserved_block                = [4000000, 4999999]
+method_study_block            = [5000000, 5999999]

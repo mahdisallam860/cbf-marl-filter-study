@@ -1,6 +1,6 @@
 {
  "date": "2026-10-25",
- "status": "RESERVED. Layouts NOT generated and NOT inspected. Pending advisor approval of the protocol (docs/PREFILTER_VALIDATION_PROTOCOL_DRAFT_2026-10-25.md).",
+ "status": "RESERVED. Layouts NOT generated and NOT inspected. Final-test use fixed by the author-locked protocol (docs/PREFILTER_VALIDATION_PROTOCOL_LOCKED_*.md): 1,000 layouts per actor and primary density K = 1, 2, 3; the K = 4, 5, 8 IDs stay reserved and unused. Advisor agreement not obtained.",
  "reserved_range": [
   4000000,
   4999999
@@ -392,5 +392,13 @@
    "seed": 4008008,
    "role": "stress"
   }
- ]
+ ],
+ "method_study_block": {
+  "range": [
+   5000000,
+   5999999
+  ],
+  "status": "RESERVED for a possible later method study; no layout generated",
+  "rule": "a method developed after inspecting Phase 2 findings uses its own untouched block from this range and discloses the findings used"
+ }
 }

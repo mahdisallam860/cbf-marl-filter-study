@@ -1,0 +1,42 @@
+{
+ "env_fingerprint": "c60352aee3f11ed8",
+ "nominal_centre_spacing": 0.5196152422706631,
+ "note": "separations of the BARRIER POINTS (offset ell ahead of the axle) at which u = 0 satisfies the row; below them the row demands motion. Not a guaranteed minimum physical separation. With equal headings barrier-point separation equals centre separation; with unequal headings it can differ by up to 2*ell.",
+ "gains": {
+  "0.5": {
+   "robot_robot_zero_command_separation": 0.6682134733006702,
+   "obstacle_zero_command_distance": 0.47519055050479664,
+   "D_rr": 0.30000000000000004,
+   "D_o": 0.35000000000000003,
+   "ell": 0.05
+  },
+  "1.0": {
+   "robot_robot_zero_command_separation": 0.5014976468003198,
+   "obstacle_zero_command_distance": 0.41359122557815076,
+   "D_rr": 0.30000000000000004,
+   "D_o": 0.35000000000000003,
+   "ell": 0.05
+  },
+  "2.0": {
+   "robot_robot_zero_command_separation": 0.40746125544424744,
+   "obstacle_zero_command_distance": 0.38208272623764783,
+   "D_rr": 0.30000000000000004,
+   "D_o": 0.35000000000000003,
+   "ell": 0.05
+  },
+  "5.0": {
+   "robot_robot_zero_command_separation": 0.34519312857424245,
+   "obstacle_zero_command_distance": 0.36290794942189697,
+   "D_rr": 0.30000000000000004,
+   "D_o": 0.35000000000000003,
+   "ell": 0.05
+  },
+  "10.0": {
+   "robot_robot_zero_command_separation": 0.32304262599787353,
+   "obstacle_zero_command_distance": 0.35646700341501075,
+   "D_rr": 0.30000000000000004,
+   "D_o": 0.35000000000000003,
+   "ell": 0.05
+  }
+ }
+}
