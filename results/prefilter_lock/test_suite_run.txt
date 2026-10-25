@@ -1,0 +1,6 @@
+# python -m pytest -q tests --deselect tests/test_vmas_and_stress.py::test_stress_filter_on_has_no_collisions_kinematic --deselect tests/test_vmas_and_stress.py::test_stress_filter_on_has_no_collisions_vmas -p no:warnings
+# The two deselected tests run the adversarial stress harness (filter on/off, stand-in policies); excluded because stress sweeps were not authorized. cbf_qp.py, qp2d.py, geometry.py and protocol.py are unchanged since they last passed (Phase 1, 83 passed).
+........................................................................ [ 63%]
+..........................................                               [100%]
+114 passed, 2 deselected in 116.01s (0:01:56)
+exit 0

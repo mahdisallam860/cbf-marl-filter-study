@@ -35,6 +35,10 @@ solvable; no filter-on result has been produced.
 | `cbf_study/solvability.py`, `scripts/audit_solvability.py`, `scripts/route_geometry.py` | layout solvability audit (`results/solvability/`) |
 | `cbf_study/stock_env.py`, `scripts/validate_mappo_vmas.py` | MAPPO check on stock VMAS `navigation` (`results/mappo_validation/`) |
 | `scripts/train_curriculum.py`, `scripts/rebuild_curriculum_logs.py` | curriculum K 0→1→2→3→(2,5,8) with pre-set budgets and the K=2 stop rule (`results/curriculum/`) |
+| `cbf_study/bmatch.py` | B-match brake comparator (locked protocol D5): same barrier rows as the filter at a given gain, v = 0 when violated, no QP; protocol adapter with separate actor / applied / brake logs |
+| `cbf_study/trial_metrics.py` | pass-through trajectory recorder, executed-period counts, common-prefix formation difference, reached-goal-region, sampled barrier minima |
+| `cbf_study/locked_stats.py` | confirmatory statistics of the locked protocol (one-sided McNemar, Newcombe bounds, equal-policy stratified bootstrap) |
+| `docs/PREFILTER_VALIDATION_PROTOCOL_LOCKED_2026-10-25.md`, `config/evaluation_protocol_locked.toml` | author-locked (not advisor-approved) evaluation protocol |
 | `docs/CBF_DESIGN.md` | barrier, relative degree, footprint cover, safety lemma, assumptions, limits |
 | `docs/MAPPO_POLICY.md` | training env, reward, observation, MAPPO, freezing, gate and pilot design |
 | `tests/` | protocol, filter, config, training env, MAPPO, frozen policy, statistics |

@@ -54,3 +54,20 @@ def test_no_saved_result_or_audit_record_uses_a_reserved_seed():
                 if any(lo <= int(tok) <= hi for lo, hi in BLOCKS):
                     hits.append((str(p), "json", tok))
     assert not hits, hits[:5]
+
+
+def test_layout_sampler_refuses_reserved_seeds_in_tests():
+    import pytest
+    from cbf_study import scenario
+    for lo, _ in BLOCKS:
+        with pytest.raises(AssertionError):
+            scenario.sample_layout(lo + 1, 1, 1, CFG.layout_filter_config(), CFG.scenario_config())
+
+
+def test_no_test_source_names_a_reserved_seed():
+    hits = []
+    for p in (ROOT / "tests").glob("*.py"):
+        for tok in re.findall(r"(?<![\d_])\d{7}(?![\d_])", p.read_text()):
+            if any(lo <= int(tok) <= hi for lo, hi in BLOCKS):
+                hits.append((p.name, tok))
+    assert not hits, hits
