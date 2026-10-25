@@ -1,0 +1,161 @@
+endpoint,p_a,p_b,def_a,def_b,net_effect,alpha_label,alpha,power,n_pairs_connor,n_pairs_exact_sim,n_per_policy_9_disjoint
+COLLISION,0.02,0,"p10 = P(off collides, on does not)","p01 = P(off does not collide, on collides)",-0.02,two-sided 0.05,0.05,0.8,391,396,44
+COLLISION,0.02,0,"p10 = P(off collides, on does not)","p01 = P(off does not collide, on collides)",-0.02,Bonferroni 0.05/3 (three densities),0.0166667,0.8,521,450,50
+COLLISION,0.02,0.005,"p10 = P(off collides, on does not)","p01 = P(off does not collide, on collides)",-0.015,two-sided 0.05,0.05,0.8,870,924,103
+COLLISION,0.02,0.005,"p10 = P(off collides, on does not)","p01 = P(off does not collide, on collides)",-0.015,Bonferroni 0.05/3 (three densities),0.0166667,0.8,1161,1196,133
+COLLISION,0.02,0.01,"p10 = P(off collides, on does not)","p01 = P(off does not collide, on collides)",-0.01,two-sided 0.05,0.05,0.8,2353,2535,282
+COLLISION,0.02,0.01,"p10 = P(off collides, on does not)","p01 = P(off does not collide, on collides)",-0.01,Bonferroni 0.05/3 (three densities),0.0166667,0.8,3139,3285,365
+COLLISION,0.02,0.02,"p10 = P(off collides, on does not)","p01 = P(off does not collide, on collides)",0,two-sided 0.05,0.05,0.8,inf,inf,inf
+COLLISION,0.02,0.02,"p10 = P(off collides, on does not)","p01 = P(off does not collide, on collides)",0,Bonferroni 0.05/3 (three densities),0.0166667,0.8,inf,inf,inf
+COLLISION,0.02,0.05,"p10 = P(off collides, on does not)","p01 = P(off does not collide, on collides)",0.03,two-sided 0.05,0.05,0.8,609,646,72
+COLLISION,0.02,0.05,"p10 = P(off collides, on does not)","p01 = P(off does not collide, on collides)",0.03,Bonferroni 0.05/3 (three densities),0.0166667,0.8,812,849,95
+COLLISION,0.05,0,"p10 = P(off collides, on does not)","p01 = P(off does not collide, on collides)",-0.05,two-sided 0.05,0.05,0.8,155,156,18
+COLLISION,0.05,0,"p10 = P(off collides, on does not)","p01 = P(off does not collide, on collides)",-0.05,Bonferroni 0.05/3 (three densities),0.0166667,0.8,207,180,20
+COLLISION,0.05,0.005,"p10 = P(off collides, on does not)","p01 = P(off does not collide, on collides)",-0.045,two-sided 0.05,0.05,0.8,211,219,25
+COLLISION,0.05,0.005,"p10 = P(off collides, on does not)","p01 = P(off does not collide, on collides)",-0.045,Bonferroni 0.05/3 (three densities),0.0166667,0.8,282,277,31
+COLLISION,0.05,0.01,"p10 = P(off collides, on does not)","p01 = P(off does not collide, on collides)",-0.04,two-sided 0.05,0.05,0.8,292,305,34
+COLLISION,0.05,0.01,"p10 = P(off collides, on does not)","p01 = P(off does not collide, on collides)",-0.04,Bonferroni 0.05/3 (three densities),0.0166667,0.8,390,402,45
+COLLISION,0.05,0.02,"p10 = P(off collides, on does not)","p01 = P(off does not collide, on collides)",-0.03,two-sided 0.05,0.05,0.8,609,655,73
+COLLISION,0.05,0.02,"p10 = P(off collides, on does not)","p01 = P(off does not collide, on collides)",-0.03,Bonferroni 0.05/3 (three densities),0.0166667,0.8,812,849,95
+COLLISION,0.05,0.05,"p10 = P(off collides, on does not)","p01 = P(off does not collide, on collides)",0,two-sided 0.05,0.05,0.8,inf,inf,inf
+COLLISION,0.05,0.05,"p10 = P(off collides, on does not)","p01 = P(off does not collide, on collides)",0,Bonferroni 0.05/3 (three densities),0.0166667,0.8,inf,inf,inf
+COLLISION,0.1,0,"p10 = P(off collides, on does not)","p01 = P(off does not collide, on collides)",-0.1,two-sided 0.05,0.05,0.8,77,77,9
+COLLISION,0.1,0,"p10 = P(off collides, on does not)","p01 = P(off does not collide, on collides)",-0.1,Bonferroni 0.05/3 (three densities),0.0166667,0.8,102,89,10
+COLLISION,0.1,0.005,"p10 = P(off collides, on does not)","p01 = P(off does not collide, on collides)",-0.095,two-sided 0.05,0.05,0.8,89,91,11
+COLLISION,0.1,0.005,"p10 = P(off collides, on does not)","p01 = P(off does not collide, on collides)",-0.095,Bonferroni 0.05/3 (three densities),0.0166667,0.8,120,112,13
+COLLISION,0.1,0.01,"p10 = P(off collides, on does not)","p01 = P(off does not collide, on collides)",-0.09,two-sided 0.05,0.05,0.8,105,110,13
+COLLISION,0.1,0.01,"p10 = P(off collides, on does not)","p01 = P(off does not collide, on collides)",-0.09,Bonferroni 0.05/3 (three densities),0.0166667,0.8,140,137,16
+COLLISION,0.1,0.02,"p10 = P(off collides, on does not)","p01 = P(off does not collide, on collides)",-0.08,two-sided 0.05,0.05,0.8,145,153,17
+COLLISION,0.1,0.02,"p10 = P(off collides, on does not)","p01 = P(off does not collide, on collides)",-0.08,Bonferroni 0.05/3 (three densities),0.0166667,0.8,194,200,23
+COLLISION,0.1,0.05,"p10 = P(off collides, on does not)","p01 = P(off does not collide, on collides)",-0.05,two-sided 0.05,0.05,0.8,469,504,56
+COLLISION,0.1,0.05,"p10 = P(off collides, on does not)","p01 = P(off does not collide, on collides)",-0.05,Bonferroni 0.05/3 (three densities),0.0166667,0.8,626,655,73
+COLLISION,0.2,0,"p10 = P(off collides, on does not)","p01 = P(off does not collide, on collides)",-0.2,two-sided 0.05,0.05,0.8,37,38,5
+COLLISION,0.2,0,"p10 = P(off collides, on does not)","p01 = P(off does not collide, on collides)",-0.2,Bonferroni 0.05/3 (three densities),0.0166667,0.8,50,44,5
+COLLISION,0.2,0.005,"p10 = P(off collides, on does not)","p01 = P(off does not collide, on collides)",-0.195,two-sided 0.05,0.05,0.8,40,41,5
+COLLISION,0.2,0.005,"p10 = P(off collides, on does not)","p01 = P(off does not collide, on collides)",-0.195,Bonferroni 0.05/3 (three densities),0.0166667,0.8,54,50,6
+COLLISION,0.2,0.01,"p10 = P(off collides, on does not)","p01 = P(off does not collide, on collides)",-0.19,two-sided 0.05,0.05,0.8,44,45,5
+COLLISION,0.2,0.01,"p10 = P(off collides, on does not)","p01 = P(off does not collide, on collides)",-0.19,Bonferroni 0.05/3 (three densities),0.0166667,0.8,59,56,7
+COLLISION,0.2,0.02,"p10 = P(off collides, on does not)","p01 = P(off does not collide, on collides)",-0.18,two-sided 0.05,0.05,0.8,51,54,6
+COLLISION,0.2,0.02,"p10 = P(off collides, on does not)","p01 = P(off does not collide, on collides)",-0.18,Bonferroni 0.05/3 (three densities),0.0166667,0.8,69,68,8
+COLLISION,0.2,0.05,"p10 = P(off collides, on does not)","p01 = P(off does not collide, on collides)",-0.15,two-sided 0.05,0.05,0.8,85,91,11
+COLLISION,0.2,0.05,"p10 = P(off collides, on does not)","p01 = P(off does not collide, on collides)",-0.15,Bonferroni 0.05/3 (three densities),0.0166667,0.8,114,119,14
+COLLISION,0.3,0,"p10 = P(off collides, on does not)","p01 = P(off does not collide, on collides)",-0.3,two-sided 0.05,0.05,0.8,24,25,3
+COLLISION,0.3,0,"p10 = P(off collides, on does not)","p01 = P(off does not collide, on collides)",-0.3,Bonferroni 0.05/3 (three densities),0.0166667,0.8,32,29,4
+COLLISION,0.3,0.005,"p10 = P(off collides, on does not)","p01 = P(off does not collide, on collides)",-0.295,two-sided 0.05,0.05,0.8,26,27,3
+COLLISION,0.3,0.005,"p10 = P(off collides, on does not)","p01 = P(off does not collide, on collides)",-0.295,Bonferroni 0.05/3 (three densities),0.0166667,0.8,34,31,4
+COLLISION,0.3,0.01,"p10 = P(off collides, on does not)","p01 = P(off does not collide, on collides)",-0.29,two-sided 0.05,0.05,0.8,27,28,4
+COLLISION,0.3,0.01,"p10 = P(off collides, on does not)","p01 = P(off does not collide, on collides)",-0.29,Bonferroni 0.05/3 (three densities),0.0166667,0.8,36,34,4
+COLLISION,0.3,0.02,"p10 = P(off collides, on does not)","p01 = P(off does not collide, on collides)",-0.28,two-sided 0.05,0.05,0.8,30,32,4
+COLLISION,0.3,0.02,"p10 = P(off collides, on does not)","p01 = P(off does not collide, on collides)",-0.28,Bonferroni 0.05/3 (three densities),0.0166667,0.8,40,40,5
+COLLISION,0.3,0.05,"p10 = P(off collides, on does not)","p01 = P(off does not collide, on collides)",-0.25,two-sided 0.05,0.05,0.8,42,45,5
+COLLISION,0.3,0.05,"p10 = P(off collides, on does not)","p01 = P(off does not collide, on collides)",-0.25,Bonferroni 0.05/3 (three densities),0.0166667,0.8,56,58,7
+COLLISION or INFEASIBLE,0.02,0,"p10 = P(off collides, on neither collides nor is infeasible)","p01 = P(off collision-free, on collides or is infeasible)",-0.02,two-sided 0.05,0.05,0.8,391,396,44
+COLLISION or INFEASIBLE,0.02,0,"p10 = P(off collides, on neither collides nor is infeasible)","p01 = P(off collision-free, on collides or is infeasible)",-0.02,Bonferroni 0.05/3 (three densities),0.0166667,0.8,521,450,50
+COLLISION or INFEASIBLE,0.02,0.005,"p10 = P(off collides, on neither collides nor is infeasible)","p01 = P(off collision-free, on collides or is infeasible)",-0.015,two-sided 0.05,0.05,0.8,870,924,103
+COLLISION or INFEASIBLE,0.02,0.005,"p10 = P(off collides, on neither collides nor is infeasible)","p01 = P(off collision-free, on collides or is infeasible)",-0.015,Bonferroni 0.05/3 (three densities),0.0166667,0.8,1161,1196,133
+COLLISION or INFEASIBLE,0.02,0.01,"p10 = P(off collides, on neither collides nor is infeasible)","p01 = P(off collision-free, on collides or is infeasible)",-0.01,two-sided 0.05,0.05,0.8,2353,2535,282
+COLLISION or INFEASIBLE,0.02,0.01,"p10 = P(off collides, on neither collides nor is infeasible)","p01 = P(off collision-free, on collides or is infeasible)",-0.01,Bonferroni 0.05/3 (three densities),0.0166667,0.8,3139,3285,365
+COLLISION or INFEASIBLE,0.02,0.02,"p10 = P(off collides, on neither collides nor is infeasible)","p01 = P(off collision-free, on collides or is infeasible)",0,two-sided 0.05,0.05,0.8,inf,inf,inf
+COLLISION or INFEASIBLE,0.02,0.02,"p10 = P(off collides, on neither collides nor is infeasible)","p01 = P(off collision-free, on collides or is infeasible)",0,Bonferroni 0.05/3 (three densities),0.0166667,0.8,inf,inf,inf
+COLLISION or INFEASIBLE,0.02,0.05,"p10 = P(off collides, on neither collides nor is infeasible)","p01 = P(off collision-free, on collides or is infeasible)",0.03,two-sided 0.05,0.05,0.8,609,646,72
+COLLISION or INFEASIBLE,0.02,0.05,"p10 = P(off collides, on neither collides nor is infeasible)","p01 = P(off collision-free, on collides or is infeasible)",0.03,Bonferroni 0.05/3 (three densities),0.0166667,0.8,812,849,95
+COLLISION or INFEASIBLE,0.02,0.1,"p10 = P(off collides, on neither collides nor is infeasible)","p01 = P(off collision-free, on collides or is infeasible)",0.08,two-sided 0.05,0.05,0.8,145,157,18
+COLLISION or INFEASIBLE,0.02,0.1,"p10 = P(off collides, on neither collides nor is infeasible)","p01 = P(off collision-free, on collides or is infeasible)",0.08,Bonferroni 0.05/3 (three densities),0.0166667,0.8,194,203,23
+COLLISION or INFEASIBLE,0.02,0.2,"p10 = P(off collides, on neither collides nor is infeasible)","p01 = P(off collision-free, on collides or is infeasible)",0.18,two-sided 0.05,0.05,0.8,51,54,6
+COLLISION or INFEASIBLE,0.02,0.2,"p10 = P(off collides, on neither collides nor is infeasible)","p01 = P(off collision-free, on collides or is infeasible)",0.18,Bonferroni 0.05/3 (three densities),0.0166667,0.8,69,69,8
+COLLISION or INFEASIBLE,0.05,0,"p10 = P(off collides, on neither collides nor is infeasible)","p01 = P(off collision-free, on collides or is infeasible)",-0.05,two-sided 0.05,0.05,0.8,155,156,18
+COLLISION or INFEASIBLE,0.05,0,"p10 = P(off collides, on neither collides nor is infeasible)","p01 = P(off collision-free, on collides or is infeasible)",-0.05,Bonferroni 0.05/3 (three densities),0.0166667,0.8,207,180,20
+COLLISION or INFEASIBLE,0.05,0.005,"p10 = P(off collides, on neither collides nor is infeasible)","p01 = P(off collision-free, on collides or is infeasible)",-0.045,two-sided 0.05,0.05,0.8,211,219,25
+COLLISION or INFEASIBLE,0.05,0.005,"p10 = P(off collides, on neither collides nor is infeasible)","p01 = P(off collision-free, on collides or is infeasible)",-0.045,Bonferroni 0.05/3 (three densities),0.0166667,0.8,282,277,31
+COLLISION or INFEASIBLE,0.05,0.01,"p10 = P(off collides, on neither collides nor is infeasible)","p01 = P(off collision-free, on collides or is infeasible)",-0.04,two-sided 0.05,0.05,0.8,292,305,34
+COLLISION or INFEASIBLE,0.05,0.01,"p10 = P(off collides, on neither collides nor is infeasible)","p01 = P(off collision-free, on collides or is infeasible)",-0.04,Bonferroni 0.05/3 (three densities),0.0166667,0.8,390,402,45
+COLLISION or INFEASIBLE,0.05,0.02,"p10 = P(off collides, on neither collides nor is infeasible)","p01 = P(off collision-free, on collides or is infeasible)",-0.03,two-sided 0.05,0.05,0.8,609,655,73
+COLLISION or INFEASIBLE,0.05,0.02,"p10 = P(off collides, on neither collides nor is infeasible)","p01 = P(off collision-free, on collides or is infeasible)",-0.03,Bonferroni 0.05/3 (three densities),0.0166667,0.8,812,849,95
+COLLISION or INFEASIBLE,0.05,0.05,"p10 = P(off collides, on neither collides nor is infeasible)","p01 = P(off collision-free, on collides or is infeasible)",0,two-sided 0.05,0.05,0.8,inf,inf,inf
+COLLISION or INFEASIBLE,0.05,0.05,"p10 = P(off collides, on neither collides nor is infeasible)","p01 = P(off collision-free, on collides or is infeasible)",0,Bonferroni 0.05/3 (three densities),0.0166667,0.8,inf,inf,inf
+COLLISION or INFEASIBLE,0.05,0.1,"p10 = P(off collides, on neither collides nor is infeasible)","p01 = P(off collision-free, on collides or is infeasible)",0.05,two-sided 0.05,0.05,0.8,469,504,56
+COLLISION or INFEASIBLE,0.05,0.1,"p10 = P(off collides, on neither collides nor is infeasible)","p01 = P(off collision-free, on collides or is infeasible)",0.05,Bonferroni 0.05/3 (three densities),0.0166667,0.8,626,655,73
+COLLISION or INFEASIBLE,0.05,0.2,"p10 = P(off collides, on neither collides nor is infeasible)","p01 = P(off collision-free, on collides or is infeasible)",0.15,two-sided 0.05,0.05,0.8,85,93,11
+COLLISION or INFEASIBLE,0.05,0.2,"p10 = P(off collides, on neither collides nor is infeasible)","p01 = P(off collision-free, on collides or is infeasible)",0.15,Bonferroni 0.05/3 (three densities),0.0166667,0.8,114,121,14
+COLLISION or INFEASIBLE,0.1,0,"p10 = P(off collides, on neither collides nor is infeasible)","p01 = P(off collision-free, on collides or is infeasible)",-0.1,two-sided 0.05,0.05,0.8,77,77,9
+COLLISION or INFEASIBLE,0.1,0,"p10 = P(off collides, on neither collides nor is infeasible)","p01 = P(off collision-free, on collides or is infeasible)",-0.1,Bonferroni 0.05/3 (three densities),0.0166667,0.8,102,89,10
+COLLISION or INFEASIBLE,0.1,0.005,"p10 = P(off collides, on neither collides nor is infeasible)","p01 = P(off collision-free, on collides or is infeasible)",-0.095,two-sided 0.05,0.05,0.8,89,91,11
+COLLISION or INFEASIBLE,0.1,0.005,"p10 = P(off collides, on neither collides nor is infeasible)","p01 = P(off collision-free, on collides or is infeasible)",-0.095,Bonferroni 0.05/3 (three densities),0.0166667,0.8,120,112,13
+COLLISION or INFEASIBLE,0.1,0.01,"p10 = P(off collides, on neither collides nor is infeasible)","p01 = P(off collision-free, on collides or is infeasible)",-0.09,two-sided 0.05,0.05,0.8,105,110,13
+COLLISION or INFEASIBLE,0.1,0.01,"p10 = P(off collides, on neither collides nor is infeasible)","p01 = P(off collision-free, on collides or is infeasible)",-0.09,Bonferroni 0.05/3 (three densities),0.0166667,0.8,140,137,16
+COLLISION or INFEASIBLE,0.1,0.02,"p10 = P(off collides, on neither collides nor is infeasible)","p01 = P(off collision-free, on collides or is infeasible)",-0.08,two-sided 0.05,0.05,0.8,145,153,17
+COLLISION or INFEASIBLE,0.1,0.02,"p10 = P(off collides, on neither collides nor is infeasible)","p01 = P(off collision-free, on collides or is infeasible)",-0.08,Bonferroni 0.05/3 (three densities),0.0166667,0.8,194,200,23
+COLLISION or INFEASIBLE,0.1,0.05,"p10 = P(off collides, on neither collides nor is infeasible)","p01 = P(off collision-free, on collides or is infeasible)",-0.05,two-sided 0.05,0.05,0.8,469,504,56
+COLLISION or INFEASIBLE,0.1,0.05,"p10 = P(off collides, on neither collides nor is infeasible)","p01 = P(off collision-free, on collides or is infeasible)",-0.05,Bonferroni 0.05/3 (three densities),0.0166667,0.8,626,655,73
+COLLISION or INFEASIBLE,0.1,0.1,"p10 = P(off collides, on neither collides nor is infeasible)","p01 = P(off collision-free, on collides or is infeasible)",0,two-sided 0.05,0.05,0.8,inf,inf,inf
+COLLISION or INFEASIBLE,0.1,0.1,"p10 = P(off collides, on neither collides nor is infeasible)","p01 = P(off collision-free, on collides or is infeasible)",0,Bonferroni 0.05/3 (three densities),0.0166667,0.8,inf,inf,inf
+COLLISION or INFEASIBLE,0.1,0.2,"p10 = P(off collides, on neither collides nor is infeasible)","p01 = P(off collision-free, on collides or is infeasible)",0.1,two-sided 0.05,0.05,0.8,234,255,29
+COLLISION or INFEASIBLE,0.1,0.2,"p10 = P(off collides, on neither collides nor is infeasible)","p01 = P(off collision-free, on collides or is infeasible)",0.1,Bonferroni 0.05/3 (three densities),0.0166667,0.8,312,326,37
+COLLISION or INFEASIBLE,0.2,0,"p10 = P(off collides, on neither collides nor is infeasible)","p01 = P(off collision-free, on collides or is infeasible)",-0.2,two-sided 0.05,0.05,0.8,37,38,5
+COLLISION or INFEASIBLE,0.2,0,"p10 = P(off collides, on neither collides nor is infeasible)","p01 = P(off collision-free, on collides or is infeasible)",-0.2,Bonferroni 0.05/3 (three densities),0.0166667,0.8,50,44,5
+COLLISION or INFEASIBLE,0.2,0.005,"p10 = P(off collides, on neither collides nor is infeasible)","p01 = P(off collision-free, on collides or is infeasible)",-0.195,two-sided 0.05,0.05,0.8,40,41,5
+COLLISION or INFEASIBLE,0.2,0.005,"p10 = P(off collides, on neither collides nor is infeasible)","p01 = P(off collision-free, on collides or is infeasible)",-0.195,Bonferroni 0.05/3 (three densities),0.0166667,0.8,54,50,6
+COLLISION or INFEASIBLE,0.2,0.01,"p10 = P(off collides, on neither collides nor is infeasible)","p01 = P(off collision-free, on collides or is infeasible)",-0.19,two-sided 0.05,0.05,0.8,44,45,5
+COLLISION or INFEASIBLE,0.2,0.01,"p10 = P(off collides, on neither collides nor is infeasible)","p01 = P(off collision-free, on collides or is infeasible)",-0.19,Bonferroni 0.05/3 (three densities),0.0166667,0.8,59,56,7
+COLLISION or INFEASIBLE,0.2,0.02,"p10 = P(off collides, on neither collides nor is infeasible)","p01 = P(off collision-free, on collides or is infeasible)",-0.18,two-sided 0.05,0.05,0.8,51,54,6
+COLLISION or INFEASIBLE,0.2,0.02,"p10 = P(off collides, on neither collides nor is infeasible)","p01 = P(off collision-free, on collides or is infeasible)",-0.18,Bonferroni 0.05/3 (three densities),0.0166667,0.8,69,68,8
+COLLISION or INFEASIBLE,0.2,0.05,"p10 = P(off collides, on neither collides nor is infeasible)","p01 = P(off collision-free, on collides or is infeasible)",-0.15,two-sided 0.05,0.05,0.8,85,91,11
+COLLISION or INFEASIBLE,0.2,0.05,"p10 = P(off collides, on neither collides nor is infeasible)","p01 = P(off collision-free, on collides or is infeasible)",-0.15,Bonferroni 0.05/3 (three densities),0.0166667,0.8,114,119,14
+COLLISION or INFEASIBLE,0.2,0.1,"p10 = P(off collides, on neither collides nor is infeasible)","p01 = P(off collision-free, on collides or is infeasible)",-0.1,two-sided 0.05,0.05,0.8,234,251,28
+COLLISION or INFEASIBLE,0.2,0.1,"p10 = P(off collides, on neither collides nor is infeasible)","p01 = P(off collision-free, on collides or is infeasible)",-0.1,Bonferroni 0.05/3 (three densities),0.0166667,0.8,312,326,37
+COLLISION or INFEASIBLE,0.2,0.2,"p10 = P(off collides, on neither collides nor is infeasible)","p01 = P(off collision-free, on collides or is infeasible)",0,two-sided 0.05,0.05,0.8,inf,inf,inf
+COLLISION or INFEASIBLE,0.2,0.2,"p10 = P(off collides, on neither collides nor is infeasible)","p01 = P(off collision-free, on collides or is infeasible)",0,Bonferroni 0.05/3 (three densities),0.0166667,0.8,inf,inf,inf
+COLLISION or INFEASIBLE,0.3,0,"p10 = P(off collides, on neither collides nor is infeasible)","p01 = P(off collision-free, on collides or is infeasible)",-0.3,two-sided 0.05,0.05,0.8,24,25,3
+COLLISION or INFEASIBLE,0.3,0,"p10 = P(off collides, on neither collides nor is infeasible)","p01 = P(off collision-free, on collides or is infeasible)",-0.3,Bonferroni 0.05/3 (three densities),0.0166667,0.8,32,29,4
+COLLISION or INFEASIBLE,0.3,0.005,"p10 = P(off collides, on neither collides nor is infeasible)","p01 = P(off collision-free, on collides or is infeasible)",-0.295,two-sided 0.05,0.05,0.8,26,27,3
+COLLISION or INFEASIBLE,0.3,0.005,"p10 = P(off collides, on neither collides nor is infeasible)","p01 = P(off collision-free, on collides or is infeasible)",-0.295,Bonferroni 0.05/3 (three densities),0.0166667,0.8,34,31,4
+COLLISION or INFEASIBLE,0.3,0.01,"p10 = P(off collides, on neither collides nor is infeasible)","p01 = P(off collision-free, on collides or is infeasible)",-0.29,two-sided 0.05,0.05,0.8,27,28,4
+COLLISION or INFEASIBLE,0.3,0.01,"p10 = P(off collides, on neither collides nor is infeasible)","p01 = P(off collision-free, on collides or is infeasible)",-0.29,Bonferroni 0.05/3 (three densities),0.0166667,0.8,36,34,4
+COLLISION or INFEASIBLE,0.3,0.02,"p10 = P(off collides, on neither collides nor is infeasible)","p01 = P(off collision-free, on collides or is infeasible)",-0.28,two-sided 0.05,0.05,0.8,30,32,4
+COLLISION or INFEASIBLE,0.3,0.02,"p10 = P(off collides, on neither collides nor is infeasible)","p01 = P(off collision-free, on collides or is infeasible)",-0.28,Bonferroni 0.05/3 (three densities),0.0166667,0.8,40,40,5
+COLLISION or INFEASIBLE,0.3,0.05,"p10 = P(off collides, on neither collides nor is infeasible)","p01 = P(off collision-free, on collides or is infeasible)",-0.25,two-sided 0.05,0.05,0.8,42,45,5
+COLLISION or INFEASIBLE,0.3,0.05,"p10 = P(off collides, on neither collides nor is infeasible)","p01 = P(off collision-free, on collides or is infeasible)",-0.25,Bonferroni 0.05/3 (three densities),0.0166667,0.8,56,58,7
+COLLISION or INFEASIBLE,0.3,0.1,"p10 = P(off collides, on neither collides nor is infeasible)","p01 = P(off collision-free, on collides or is infeasible)",-0.2,two-sided 0.05,0.05,0.8,77,83,10
+COLLISION or INFEASIBLE,0.3,0.1,"p10 = P(off collides, on neither collides nor is infeasible)","p01 = P(off collision-free, on collides or is infeasible)",-0.2,Bonferroni 0.05/3 (three densities),0.0166667,0.8,102,108,12
+COLLISION or INFEASIBLE,0.3,0.2,"p10 = P(off collides, on neither collides nor is infeasible)","p01 = P(off collision-free, on collides or is infeasible)",-0.1,two-sided 0.05,0.05,0.8,391,402,45
+COLLISION or INFEASIBLE,0.3,0.2,"p10 = P(off collides, on neither collides nor is infeasible)","p01 = P(off collision-free, on collides or is infeasible)",-0.1,Bonferroni 0.05/3 (three densities),0.0166667,0.8,521,544,61
+GOAL,0.02,0,"p_gain = P(off not GOAL, on GOAL)","p_loss = P(off GOAL, on not GOAL)",-0.02,two-sided 0.05,0.05,0.8,391,396,44
+GOAL,0.02,0,"p_gain = P(off not GOAL, on GOAL)","p_loss = P(off GOAL, on not GOAL)",-0.02,Bonferroni 0.05/3 (three densities),0.0166667,0.8,521,450,50
+GOAL,0.02,0.02,"p_gain = P(off not GOAL, on GOAL)","p_loss = P(off GOAL, on not GOAL)",0,two-sided 0.05,0.05,0.8,inf,inf,inf
+GOAL,0.02,0.02,"p_gain = P(off not GOAL, on GOAL)","p_loss = P(off GOAL, on not GOAL)",0,Bonferroni 0.05/3 (three densities),0.0166667,0.8,inf,inf,inf
+GOAL,0.02,0.05,"p_gain = P(off not GOAL, on GOAL)","p_loss = P(off GOAL, on not GOAL)",0.03,two-sided 0.05,0.05,0.8,609,646,72
+GOAL,0.02,0.05,"p_gain = P(off not GOAL, on GOAL)","p_loss = P(off GOAL, on not GOAL)",0.03,Bonferroni 0.05/3 (three densities),0.0166667,0.8,812,849,95
+GOAL,0.02,0.1,"p_gain = P(off not GOAL, on GOAL)","p_loss = P(off GOAL, on not GOAL)",0.08,two-sided 0.05,0.05,0.8,145,157,18
+GOAL,0.02,0.1,"p_gain = P(off not GOAL, on GOAL)","p_loss = P(off GOAL, on not GOAL)",0.08,Bonferroni 0.05/3 (three densities),0.0166667,0.8,194,203,23
+GOAL,0.02,0.2,"p_gain = P(off not GOAL, on GOAL)","p_loss = P(off GOAL, on not GOAL)",0.18,two-sided 0.05,0.05,0.8,51,54,6
+GOAL,0.02,0.2,"p_gain = P(off not GOAL, on GOAL)","p_loss = P(off GOAL, on not GOAL)",0.18,Bonferroni 0.05/3 (three densities),0.0166667,0.8,69,69,8
+GOAL,0.05,0,"p_gain = P(off not GOAL, on GOAL)","p_loss = P(off GOAL, on not GOAL)",-0.05,two-sided 0.05,0.05,0.8,155,156,18
+GOAL,0.05,0,"p_gain = P(off not GOAL, on GOAL)","p_loss = P(off GOAL, on not GOAL)",-0.05,Bonferroni 0.05/3 (three densities),0.0166667,0.8,207,180,20
+GOAL,0.05,0.02,"p_gain = P(off not GOAL, on GOAL)","p_loss = P(off GOAL, on not GOAL)",-0.03,two-sided 0.05,0.05,0.8,609,655,73
+GOAL,0.05,0.02,"p_gain = P(off not GOAL, on GOAL)","p_loss = P(off GOAL, on not GOAL)",-0.03,Bonferroni 0.05/3 (three densities),0.0166667,0.8,812,849,95
+GOAL,0.05,0.05,"p_gain = P(off not GOAL, on GOAL)","p_loss = P(off GOAL, on not GOAL)",0,two-sided 0.05,0.05,0.8,inf,inf,inf
+GOAL,0.05,0.05,"p_gain = P(off not GOAL, on GOAL)","p_loss = P(off GOAL, on not GOAL)",0,Bonferroni 0.05/3 (three densities),0.0166667,0.8,inf,inf,inf
+GOAL,0.05,0.1,"p_gain = P(off not GOAL, on GOAL)","p_loss = P(off GOAL, on not GOAL)",0.05,two-sided 0.05,0.05,0.8,469,504,56
+GOAL,0.05,0.1,"p_gain = P(off not GOAL, on GOAL)","p_loss = P(off GOAL, on not GOAL)",0.05,Bonferroni 0.05/3 (three densities),0.0166667,0.8,626,655,73
+GOAL,0.05,0.2,"p_gain = P(off not GOAL, on GOAL)","p_loss = P(off GOAL, on not GOAL)",0.15,two-sided 0.05,0.05,0.8,85,93,11
+GOAL,0.05,0.2,"p_gain = P(off not GOAL, on GOAL)","p_loss = P(off GOAL, on not GOAL)",0.15,Bonferroni 0.05/3 (three densities),0.0166667,0.8,114,121,14
+GOAL,0.1,0,"p_gain = P(off not GOAL, on GOAL)","p_loss = P(off GOAL, on not GOAL)",-0.1,two-sided 0.05,0.05,0.8,77,77,9
+GOAL,0.1,0,"p_gain = P(off not GOAL, on GOAL)","p_loss = P(off GOAL, on not GOAL)",-0.1,Bonferroni 0.05/3 (three densities),0.0166667,0.8,102,89,10
+GOAL,0.1,0.02,"p_gain = P(off not GOAL, on GOAL)","p_loss = P(off GOAL, on not GOAL)",-0.08,two-sided 0.05,0.05,0.8,145,153,17
+GOAL,0.1,0.02,"p_gain = P(off not GOAL, on GOAL)","p_loss = P(off GOAL, on not GOAL)",-0.08,Bonferroni 0.05/3 (three densities),0.0166667,0.8,194,200,23
+GOAL,0.1,0.05,"p_gain = P(off not GOAL, on GOAL)","p_loss = P(off GOAL, on not GOAL)",-0.05,two-sided 0.05,0.05,0.8,469,504,56
+GOAL,0.1,0.05,"p_gain = P(off not GOAL, on GOAL)","p_loss = P(off GOAL, on not GOAL)",-0.05,Bonferroni 0.05/3 (three densities),0.0166667,0.8,626,655,73
+GOAL,0.1,0.1,"p_gain = P(off not GOAL, on GOAL)","p_loss = P(off GOAL, on not GOAL)",0,two-sided 0.05,0.05,0.8,inf,inf,inf
+GOAL,0.1,0.1,"p_gain = P(off not GOAL, on GOAL)","p_loss = P(off GOAL, on not GOAL)",0,Bonferroni 0.05/3 (three densities),0.0166667,0.8,inf,inf,inf
+GOAL,0.1,0.2,"p_gain = P(off not GOAL, on GOAL)","p_loss = P(off GOAL, on not GOAL)",0.1,two-sided 0.05,0.05,0.8,234,255,29
+GOAL,0.1,0.2,"p_gain = P(off not GOAL, on GOAL)","p_loss = P(off GOAL, on not GOAL)",0.1,Bonferroni 0.05/3 (three densities),0.0166667,0.8,312,326,37
+GOAL,0.2,0,"p_gain = P(off not GOAL, on GOAL)","p_loss = P(off GOAL, on not GOAL)",-0.2,two-sided 0.05,0.05,0.8,37,38,5
+GOAL,0.2,0,"p_gain = P(off not GOAL, on GOAL)","p_loss = P(off GOAL, on not GOAL)",-0.2,Bonferroni 0.05/3 (three densities),0.0166667,0.8,50,44,5
+GOAL,0.2,0.02,"p_gain = P(off not GOAL, on GOAL)","p_loss = P(off GOAL, on not GOAL)",-0.18,two-sided 0.05,0.05,0.8,51,54,6
+GOAL,0.2,0.02,"p_gain = P(off not GOAL, on GOAL)","p_loss = P(off GOAL, on not GOAL)",-0.18,Bonferroni 0.05/3 (three densities),0.0166667,0.8,69,68,8
+GOAL,0.2,0.05,"p_gain = P(off not GOAL, on GOAL)","p_loss = P(off GOAL, on not GOAL)",-0.15,two-sided 0.05,0.05,0.8,85,91,11
+GOAL,0.2,0.05,"p_gain = P(off not GOAL, on GOAL)","p_loss = P(off GOAL, on not GOAL)",-0.15,Bonferroni 0.05/3 (three densities),0.0166667,0.8,114,119,14
+GOAL,0.2,0.1,"p_gain = P(off not GOAL, on GOAL)","p_loss = P(off GOAL, on not GOAL)",-0.1,two-sided 0.05,0.05,0.8,234,251,28
+GOAL,0.2,0.1,"p_gain = P(off not GOAL, on GOAL)","p_loss = P(off GOAL, on not GOAL)",-0.1,Bonferroni 0.05/3 (three densities),0.0166667,0.8,312,326,37
+GOAL,0.2,0.2,"p_gain = P(off not GOAL, on GOAL)","p_loss = P(off GOAL, on not GOAL)",0,two-sided 0.05,0.05,0.8,inf,inf,inf
+GOAL,0.2,0.2,"p_gain = P(off not GOAL, on GOAL)","p_loss = P(off GOAL, on not GOAL)",0,Bonferroni 0.05/3 (three densities),0.0166667,0.8,inf,inf,inf

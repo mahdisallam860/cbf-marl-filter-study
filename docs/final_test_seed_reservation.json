@@ -1,0 +1,396 @@
+{
+ "date": "2026-10-25",
+ "status": "RESERVED. Layouts NOT generated and NOT inspected. Pending advisor approval of the protocol (docs/PREFILTER_VALIDATION_PROTOCOL_DRAFT_2026-10-25.md).",
+ "reserved_range": [
+  4000000,
+  4999999
+ ],
+ "formula": "final_test_seed(p, K) = 4000000 + 1000 * p + K; p = policy index 0-8 in results/phase1/checkpoint_selection.json order, K = obstacle count; each seed is used once as sample_layout(seed, n, K, cfg.layout_filter_config(), cfg.scenario_config()) with n fixed before generation",
+ "shared_layout_alternative": "if the advisors prefer one test set shared by all nine policies: seed 4900000 + K (same range)",
+ "disjoint_from": {
+  "train": "1000000-1999999 (train_base + run_seed*100000 + density*1000 + chunk)",
+  "validation": "2000000 + K (gate, curriculum held-out, Phase 1; results seen)",
+  "pilot": "3000000 + K (geometry inspected in the solvability and provenance audits; not untouched)",
+  "other": "test and stress seeds < 1000, 1108377 (a training seed), run_paired default 20261025"
+ },
+ "seeds": [
+  {
+   "policy_index": 0,
+   "policy_id": "s0_early",
+   "density": 1,
+   "seed": 4000001,
+   "role": "primary candidate"
+  },
+  {
+   "policy_index": 0,
+   "policy_id": "s0_early",
+   "density": 2,
+   "seed": 4000002,
+   "role": "primary candidate"
+  },
+  {
+   "policy_index": 0,
+   "policy_id": "s0_early",
+   "density": 3,
+   "seed": 4000003,
+   "role": "primary candidate"
+  },
+  {
+   "policy_index": 0,
+   "policy_id": "s0_early",
+   "density": 4,
+   "seed": 4000004,
+   "role": "diagnostic"
+  },
+  {
+   "policy_index": 0,
+   "policy_id": "s0_early",
+   "density": 5,
+   "seed": 4000005,
+   "role": "stress"
+  },
+  {
+   "policy_index": 0,
+   "policy_id": "s0_early",
+   "density": 8,
+   "seed": 4000008,
+   "role": "stress"
+  },
+  {
+   "policy_index": 1,
+   "policy_id": "s0_middle",
+   "density": 1,
+   "seed": 4001001,
+   "role": "primary candidate"
+  },
+  {
+   "policy_index": 1,
+   "policy_id": "s0_middle",
+   "density": 2,
+   "seed": 4001002,
+   "role": "primary candidate"
+  },
+  {
+   "policy_index": 1,
+   "policy_id": "s0_middle",
+   "density": 3,
+   "seed": 4001003,
+   "role": "primary candidate"
+  },
+  {
+   "policy_index": 1,
+   "policy_id": "s0_middle",
+   "density": 4,
+   "seed": 4001004,
+   "role": "diagnostic"
+  },
+  {
+   "policy_index": 1,
+   "policy_id": "s0_middle",
+   "density": 5,
+   "seed": 4001005,
+   "role": "stress"
+  },
+  {
+   "policy_index": 1,
+   "policy_id": "s0_middle",
+   "density": 8,
+   "seed": 4001008,
+   "role": "stress"
+  },
+  {
+   "policy_index": 2,
+   "policy_id": "s0_late",
+   "density": 1,
+   "seed": 4002001,
+   "role": "primary candidate"
+  },
+  {
+   "policy_index": 2,
+   "policy_id": "s0_late",
+   "density": 2,
+   "seed": 4002002,
+   "role": "primary candidate"
+  },
+  {
+   "policy_index": 2,
+   "policy_id": "s0_late",
+   "density": 3,
+   "seed": 4002003,
+   "role": "primary candidate"
+  },
+  {
+   "policy_index": 2,
+   "policy_id": "s0_late",
+   "density": 4,
+   "seed": 4002004,
+   "role": "diagnostic"
+  },
+  {
+   "policy_index": 2,
+   "policy_id": "s0_late",
+   "density": 5,
+   "seed": 4002005,
+   "role": "stress"
+  },
+  {
+   "policy_index": 2,
+   "policy_id": "s0_late",
+   "density": 8,
+   "seed": 4002008,
+   "role": "stress"
+  },
+  {
+   "policy_index": 3,
+   "policy_id": "s1_early",
+   "density": 1,
+   "seed": 4003001,
+   "role": "primary candidate"
+  },
+  {
+   "policy_index": 3,
+   "policy_id": "s1_early",
+   "density": 2,
+   "seed": 4003002,
+   "role": "primary candidate"
+  },
+  {
+   "policy_index": 3,
+   "policy_id": "s1_early",
+   "density": 3,
+   "seed": 4003003,
+   "role": "primary candidate"
+  },
+  {
+   "policy_index": 3,
+   "policy_id": "s1_early",
+   "density": 4,
+   "seed": 4003004,
+   "role": "diagnostic"
+  },
+  {
+   "policy_index": 3,
+   "policy_id": "s1_early",
+   "density": 5,
+   "seed": 4003005,
+   "role": "stress"
+  },
+  {
+   "policy_index": 3,
+   "policy_id": "s1_early",
+   "density": 8,
+   "seed": 4003008,
+   "role": "stress"
+  },
+  {
+   "policy_index": 4,
+   "policy_id": "s1_middle",
+   "density": 1,
+   "seed": 4004001,
+   "role": "primary candidate"
+  },
+  {
+   "policy_index": 4,
+   "policy_id": "s1_middle",
+   "density": 2,
+   "seed": 4004002,
+   "role": "primary candidate"
+  },
+  {
+   "policy_index": 4,
+   "policy_id": "s1_middle",
+   "density": 3,
+   "seed": 4004003,
+   "role": "primary candidate"
+  },
+  {
+   "policy_index": 4,
+   "policy_id": "s1_middle",
+   "density": 4,
+   "seed": 4004004,
+   "role": "diagnostic"
+  },
+  {
+   "policy_index": 4,
+   "policy_id": "s1_middle",
+   "density": 5,
+   "seed": 4004005,
+   "role": "stress"
+  },
+  {
+   "policy_index": 4,
+   "policy_id": "s1_middle",
+   "density": 8,
+   "seed": 4004008,
+   "role": "stress"
+  },
+  {
+   "policy_index": 5,
+   "policy_id": "s1_late",
+   "density": 1,
+   "seed": 4005001,
+   "role": "primary candidate"
+  },
+  {
+   "policy_index": 5,
+   "policy_id": "s1_late",
+   "density": 2,
+   "seed": 4005002,
+   "role": "primary candidate"
+  },
+  {
+   "policy_index": 5,
+   "policy_id": "s1_late",
+   "density": 3,
+   "seed": 4005003,
+   "role": "primary candidate"
+  },
+  {
+   "policy_index": 5,
+   "policy_id": "s1_late",
+   "density": 4,
+   "seed": 4005004,
+   "role": "diagnostic"
+  },
+  {
+   "policy_index": 5,
+   "policy_id": "s1_late",
+   "density": 5,
+   "seed": 4005005,
+   "role": "stress"
+  },
+  {
+   "policy_index": 5,
+   "policy_id": "s1_late",
+   "density": 8,
+   "seed": 4005008,
+   "role": "stress"
+  },
+  {
+   "policy_index": 6,
+   "policy_id": "s2_early",
+   "density": 1,
+   "seed": 4006001,
+   "role": "primary candidate"
+  },
+  {
+   "policy_index": 6,
+   "policy_id": "s2_early",
+   "density": 2,
+   "seed": 4006002,
+   "role": "primary candidate"
+  },
+  {
+   "policy_index": 6,
+   "policy_id": "s2_early",
+   "density": 3,
+   "seed": 4006003,
+   "role": "primary candidate"
+  },
+  {
+   "policy_index": 6,
+   "policy_id": "s2_early",
+   "density": 4,
+   "seed": 4006004,
+   "role": "diagnostic"
+  },
+  {
+   "policy_index": 6,
+   "policy_id": "s2_early",
+   "density": 5,
+   "seed": 4006005,
+   "role": "stress"
+  },
+  {
+   "policy_index": 6,
+   "policy_id": "s2_early",
+   "density": 8,
+   "seed": 4006008,
+   "role": "stress"
+  },
+  {
+   "policy_index": 7,
+   "policy_id": "s2_middle",
+   "density": 1,
+   "seed": 4007001,
+   "role": "primary candidate"
+  },
+  {
+   "policy_index": 7,
+   "policy_id": "s2_middle",
+   "density": 2,
+   "seed": 4007002,
+   "role": "primary candidate"
+  },
+  {
+   "policy_index": 7,
+   "policy_id": "s2_middle",
+   "density": 3,
+   "seed": 4007003,
+   "role": "primary candidate"
+  },
+  {
+   "policy_index": 7,
+   "policy_id": "s2_middle",
+   "density": 4,
+   "seed": 4007004,
+   "role": "diagnostic"
+  },
+  {
+   "policy_index": 7,
+   "policy_id": "s2_middle",
+   "density": 5,
+   "seed": 4007005,
+   "role": "stress"
+  },
+  {
+   "policy_index": 7,
+   "policy_id": "s2_middle",
+   "density": 8,
+   "seed": 4007008,
+   "role": "stress"
+  },
+  {
+   "policy_index": 8,
+   "policy_id": "s2_late",
+   "density": 1,
+   "seed": 4008001,
+   "role": "primary candidate"
+  },
+  {
+   "policy_index": 8,
+   "policy_id": "s2_late",
+   "density": 2,
+   "seed": 4008002,
+   "role": "primary candidate"
+  },
+  {
+   "policy_index": 8,
+   "policy_id": "s2_late",
+   "density": 3,
+   "seed": 4008003,
+   "role": "primary candidate"
+  },
+  {
+   "policy_index": 8,
+   "policy_id": "s2_late",
+   "density": 4,
+   "seed": 4008004,
+   "role": "diagnostic"
+  },
+  {
+   "policy_index": 8,
+   "policy_id": "s2_late",
+   "density": 5,
+   "seed": 4008005,
+   "role": "stress"
+  },
+  {
+   "policy_index": 8,
+   "policy_id": "s2_late",
+   "density": 8,
+   "seed": 4008008,
+   "role": "stress"
+  }
+ ]
+}

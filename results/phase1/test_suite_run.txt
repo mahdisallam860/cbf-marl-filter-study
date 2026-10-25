@@ -1,0 +1,10 @@
+........................................................................ [ 86%]
+...........                                                              [100%]
+=============================== warnings summary ===============================
+tests/test_qp2d.py: 500 warnings
+  /home/user/cbf-marl-filter-study/venv/lib/python3.13/site-packages/osqp/interface.py:405: PendingDeprecationWarning: The default value of raise_error will change to True in the future.
+    warnings.warn(
+
+-- Docs: https://docs.pytest.org/en/stable/how-to/capture-warnings.html
+83 passed, 500 warnings in 207.86s (0:03:27)
+exit 0

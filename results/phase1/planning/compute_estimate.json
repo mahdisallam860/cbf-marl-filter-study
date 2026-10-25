@@ -1,0 +1,125 @@
+{
+ "max_steps": 400,
+ "batch": 200,
+ "filter_off_s_per_period": {
+  "1": 0.011200000000000002,
+  "2": 0.014325000000000001,
+  "3": 0.0174,
+  "4": 0.02045,
+  "5": 0.0226,
+  "8": 0.03352941176470588
+ },
+ "filter_call_s": {
+  "K1_field": 0.005434330066668736,
+  "K1_packed": 0.005209253600003194,
+  "K2_field": 0.007805414666665911,
+  "K2_packed": 0.007710305233335172,
+  "K3_field": 0.011661773900001057,
+  "K3_packed": 0.010077134266668963,
+  "K4_field": 0.014766903299998073,
+  "K4_packed": 0.013960454599998683,
+  "K5_field": 0.014864593400000103,
+  "K5_packed": 0.014350730000001023,
+  "K8_field": 0.02362333646666836,
+  "K8_packed": 0.02564429563333685
+ },
+ "gains": [
+  0.5,
+  1.0,
+  2.0,
+  5.0,
+  10.0
+ ],
+ "n_policies": 9,
+ "validation_sweep_primary": {
+  "what": "9 policies x K (1, 2, 3) x 5 gains x 200 validation layouts, filter on; brake comparator at each gain; filter off once",
+  "runs_filter_on": 135,
+  "field": {
+   "filter_on_core_h": 0.33913259316667854,
+   "brake_core_h": 0.33913259316667854,
+   "filter_off_core_h": 0.042925000000000005,
+   "total_core_h": 0.7211901863333572,
+   "wall_h_4_cores": 0.1802975465833393
+  },
+  "packed": {
+   "filter_on_core_h": 0.3296084655000367,
+   "brake_core_h": 0.3296084655000367,
+   "filter_off_core_h": 0.042925000000000005,
+   "total_core_h": 0.7021419310000734,
+   "wall_h_4_cores": 0.17553548275001835
+  }
+ },
+ "validation_sweep_stress": {
+  "what": "same at K (5, 8) (baseline stress, optional)",
+  "runs_filter_on": 90,
+  "field": {
+   "filter_on_core_h": 0.4730867081568717,
+   "brake_core_h": 0.4730867081568717,
+   "filter_off_core_h": 0.05612941176470587,
+   "total_core_h": 1.0023028280784492,
+   "wall_h_4_cores": 0.2505757070196123
+  },
+  "packed": {
+   "filter_on_core_h": 0.48062218699021875,
+   "brake_core_h": 0.48062218699021875,
+   "filter_off_core_h": 0.05612941176470587,
+   "total_core_h": 1.0173737857451433,
+   "wall_h_4_cores": 0.2543434464362858
+  }
+ },
+ "final_test_per_1000_layouts_per_policy": {
+  "what": "9 policies x K (1, 2, 3) x 1000 test layouts per policy and density: filter off, filter on at the locked gain, brake at the locked gain",
+  "field": {
+   "filter_on_core_h": 0.33913259316667854,
+   "brake_core_h": 0.33913259316667854,
+   "filter_off_core_h": 0.21462500000000004,
+   "total_core_h": 0.8928901863333571,
+   "wall_h_4_cores": 0.2232225465833393
+  },
+  "packed": {
+   "filter_on_core_h": 0.3296084655000367,
+   "brake_core_h": 0.3296084655000367,
+   "filter_off_core_h": 0.21462500000000004,
+   "total_core_h": 0.8738419310000733,
+   "wall_h_4_cores": 0.21846048275001834
+  }
+ },
+ "filter_off_bounds": {
+  "1": {
+   "coll_min": 0.03,
+   "coll_max": 0.115,
+   "goal_min": 0.17,
+   "goal_max": 0.82
+  },
+  "2": {
+   "coll_min": 0.105,
+   "coll_max": 0.26,
+   "goal_min": 0.485,
+   "goal_max": 0.795
+  },
+  "3": {
+   "coll_min": 0.275,
+   "coll_max": 0.63,
+   "goal_min": 0.14,
+   "goal_max": 0.58
+  },
+  "4": {
+   "coll_min": 0.7,
+   "coll_max": 0.835,
+   "goal_min": 0.05,
+   "goal_max": 0.195
+  },
+  "5": {
+   "coll_min": 0.9,
+   "coll_max": 0.985,
+   "goal_min": 0.0,
+   "goal_max": 0.04
+  },
+  "8": {
+   "coll_min": 1.0,
+   "coll_max": 1.0,
+   "goal_min": 0.0,
+   "goal_max": 0.0
+  }
+ }
+}
