@@ -1,0 +1,29 @@
+#!/usr/bin/env python3
+"""Train one MAPPO seed (filter OFF) on the VMAS formation-navigation task.
+Writes results/train/seed_<s>/{curve.csv, run.json, train.log, checkpoints/ckpt_itNNNN.pt}.
+Hyperparameters come from [mappo] in config/study.toml; command-line values override them."""
+import argparse, sys
+from pathlib import Path
+sys.path.insert(0, str(Path(__file__).resolve().parents[1]))
+from cbf_study.config import StudyConfig
+from cbf_study.mappo import train
+
+ap = argparse.ArgumentParser()
+ap.add_argument("--seed", type=int, required=True)
+ap.add_argument("--out", default=None)
+ap.add_argument("--config", default=None)
+ap.add_argument("--iterations", type=int, default=None)
+ap.add_argument("--time-limit-min", type=float, default=None)
+ap.add_argument("--envs-per-density", type=int, default=None)
+ap.add_argument("--resume", action="store_true")
+a = ap.parse_args()
+cfg = StudyConfig.load(a.config) if a.config else StudyConfig.load()
+ov = {k: v for k, v in (("max_iterations", a.iterations), ("time_limit_min", a.time_limit_min),
+                        ("envs_per_density", a.envs_per_density)) if v is not None}
+out = Path(a.out or f"results/train/seed_{a.seed}")
+out.mkdir(parents=True, exist_ok=True)
+logf = open(out / "train.log", "a")
+def log(msg):
+    print(msg, flush=True); logf.write(msg + "\n"); logf.flush()
+log(f"seed {a.seed} env_fingerprint {cfg.env_fingerprint()} pending_placeholders {len(cfg.pending())} overrides {ov}")
+train(cfg, a.seed, out, overrides=ov, resume=a.resume, log=log)
