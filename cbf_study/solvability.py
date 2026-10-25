@@ -218,7 +218,7 @@ def _plan(grid, C, r, a, b):
     return None if P is None else shortcut(P, C, r)
 
 
-def audit_layout(init_poses, obst_xy, goal, slots, ac: AuditConfig, grid: Grid | None = None):
+def audit_layout(init_poses, obst_xy, goal, slots, ac: AuditConfig, grid: Grid | None = None, return_paths=False):
     grid = grid or Grid(ac)
     N = len(init_poses)
     starts = np.asarray(init_poses, dtype=np.float64)[:, :2]
@@ -298,6 +298,9 @@ def audit_layout(init_poses, obst_xy, goal, slots, ac: AuditConfig, grid: Grid |
             if not grid.connected(possible, c0, goal):
                 c_status = BLOCKED
     out["c_status"], out["c_steps"] = c_status, c_steps
+    if return_paths:
+        out["a_paths"] = ind_paths
+        out["c_path"] = P if c_status == FOUND else None
     # (b) team, no formation constraint in transit -------------------------------------------
     b_status, b_steps, b_mode = UNDETERMINED, None, ""
     if out["a_status"] == BLOCKED:
