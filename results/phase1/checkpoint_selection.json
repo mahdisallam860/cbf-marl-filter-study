@@ -1,0 +1,125 @@
+{
+ "rule": {
+  "text": "final stage only; r = final-stage iteration; early = first saved checkpoint with r >= ceil(n/3), middle = first with r >= ceil(2n/3), late = r = n (end of the final-stage budget)",
+  "n_final_stage_iterations": 326,
+  "env_steps_per_iteration": 24576,
+  "final_stage_budget": 8000000,
+  "r_thresholds": {
+   "early": 109,
+   "middle": 218,
+   "late": 326
+  },
+  "inputs": "checkpoint file names, stages.json stage boundaries, checkpoint files; no evaluation result is read"
+ },
+ "env_fingerprint": "c60352aee3f11ed8",
+ "policies": [
+  {
+   "policy_id": "s0_early",
+   "seed": 0,
+   "phase": "early",
+   "final_stage_iteration": 120,
+   "iteration": 526,
+   "env_steps": 12926976,
+   "ckpt": "results/curriculum/seed_0/checkpoints/ckpt_it0526.pt",
+   "ckpt_sha256": "f7f8cbfd9140ff096b02e9e458c23c7b8733686b4079babbf76bee5555942e05",
+   "actor_param_digest": "ba2dc2ffec8680bac135f51cc81effdc823ca81aa5b079345c6bd4f5c0d8137b",
+   "provenance": "original run"
+  },
+  {
+   "policy_id": "s0_middle",
+   "seed": 0,
+   "phase": "middle",
+   "final_stage_iteration": 220,
+   "iteration": 626,
+   "env_steps": 15384576,
+   "ckpt": "results/curriculum/seed_0/checkpoints/ckpt_it0626.pt",
+   "ckpt_sha256": "bdb424e808028b5d850f7499f5b7c1483fae681baabed6dbb0994217e427ac6d",
+   "actor_param_digest": "71f83df2cd883adb94792ee1d0dc79497d8b34dcd28a2ecedd2943689796e308",
+   "provenance": "original run"
+  },
+  {
+   "policy_id": "s0_late",
+   "seed": 0,
+   "phase": "late",
+   "final_stage_iteration": 326,
+   "iteration": 732,
+   "env_steps": 17989632,
+   "ckpt": "results/curriculum/seed_0/checkpoints/ckpt_it0732.pt",
+   "ckpt_sha256": "e871f450a792a1f005150b0c19529df6a8fc1696a3438737aa2018720b45973b",
+   "actor_param_digest": "736b04ccd92969b4a9a8cfd2978544e7ce9a596853c8173686ca01080893c092",
+   "provenance": "original run"
+  },
+  {
+   "policy_id": "s1_early",
+   "seed": 1,
+   "phase": "early",
+   "final_stage_iteration": 120,
+   "iteration": 506,
+   "env_steps": 12435456,
+   "ckpt": "results/curriculum/seed_1/checkpoints/ckpt_it0506.pt",
+   "ckpt_sha256": "447ba2331145f9172af59a39c4e71ffff001a1a17c94164e91ad0ee6d02c85f4",
+   "actor_param_digest": "266326832e84e51d58a98bad0584080c4d097b1f7f23a3ab434bef0f7377f049",
+   "provenance": "original run"
+  },
+  {
+   "policy_id": "s1_middle",
+   "seed": 1,
+   "phase": "middle",
+   "final_stage_iteration": 220,
+   "iteration": 606,
+   "env_steps": 14893056,
+   "ckpt": "results/curriculum/seed_1/checkpoints/ckpt_it0606.pt",
+   "ckpt_sha256": "8dff53a83d120e31f398a51d1a391eaa65639589db188fea865437a265a2dc2e",
+   "actor_param_digest": "78f7884d2f4aefc680b7c2c819d0b573c403a4aaebe3f4c0807ba0ffac1d2a55",
+   "provenance": "resumed run (seed 1 resumed from its saved iteration-546 state; audit/PROVENANCE.md section 3)"
+  },
+  {
+   "policy_id": "s1_late",
+   "seed": 1,
+   "phase": "late",
+   "final_stage_iteration": 326,
+   "iteration": 712,
+   "env_steps": 17498112,
+   "ckpt": "results/curriculum/seed_1/checkpoints/ckpt_it0712.pt",
+   "ckpt_sha256": "7dbe3544f21726a581600c36d89c40ca63e39e398c9846076d972ab0455febdd",
+   "actor_param_digest": "4ddda0b60c41bf40c81783e6fff8e5df78d5de479ad351209fae9812e422bbd8",
+   "provenance": "resumed run (seed 1 resumed from its saved iteration-546 state; audit/PROVENANCE.md section 3)"
+  },
+  {
+   "policy_id": "s2_early",
+   "seed": 2,
+   "phase": "early",
+   "final_stage_iteration": 120,
+   "iteration": 506,
+   "env_steps": 12435456,
+   "ckpt": "results/curriculum/seed_2/checkpoints/ckpt_it0506.pt",
+   "ckpt_sha256": "c81deba3d827a901bd51143833071450ec7e7208659238d5013a988daa9eaf8c",
+   "actor_param_digest": "ee9ce77fb92222f060a75a8306022ea4788f36c13135c4035915443f14de413d",
+   "provenance": "original run"
+  },
+  {
+   "policy_id": "s2_middle",
+   "seed": 2,
+   "phase": "middle",
+   "final_stage_iteration": 220,
+   "iteration": 606,
+   "env_steps": 14893056,
+   "ckpt": "results/curriculum/seed_2/checkpoints/ckpt_it0606.pt",
+   "ckpt_sha256": "a5ab1de74d5fcb40421de42ed1b592c02ff42e6eba9ac8da7e02995642578fcd",
+   "actor_param_digest": "d5af621725096a82156ef905634c4dfdee0e96502d827f67c9bcdb5c9e90fc4f",
+   "provenance": "original run"
+  },
+  {
+   "policy_id": "s2_late",
+   "seed": 2,
+   "phase": "late",
+   "final_stage_iteration": 326,
+   "iteration": 712,
+   "env_steps": 17498112,
+   "ckpt": "results/curriculum/seed_2/checkpoints/ckpt_it0712.pt",
+   "ckpt_sha256": "b0670c40725e90795ba53f31e6e3d2b4bcf0be5f466e472d2191921d7a833580",
+   "actor_param_digest": "22da0ab337e4027d966a12d28f70e9b6ada29773d2bbb55d8648189f3ec8f192",
+   "provenance": "original run"
+  }
+ ]
+}
