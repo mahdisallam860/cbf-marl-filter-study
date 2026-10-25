@@ -18,8 +18,11 @@
 #   v2: observation.k_obst 4 -> 8 (every obstacle within obs_range is observed; with 4, at K = 5 and 8
 #       every held-out layout had robots with more obstacles in range than observed); dense
 #       unsafe-proximity penalty in [reward]; [curriculum] added; [mappo] epochs/minibatches set to the
-#       recipe of v1 training phase 2. Layout sampler unchanged (solvability audit: all held-out
-#       layouts solvable), filter and outcome scoring unchanged.
+#       recipe of v1 training phase 2. Layout sampler settings unchanged (solvability audit: all
+#       held-out layouts solvable), filter and outcome scoring unchanged.
+#   Sampler code v1.1 (scenario.sample_layout, during the v2 curriculum): a stalled obstacle
+#       placement is restarted instead of raising; every layout v1 could produce is unchanged
+#       (held-out layout hashes pinned in tests/test_config.py), so no setting or fingerprint changes.
 
 [meta]
 config_version = 2
