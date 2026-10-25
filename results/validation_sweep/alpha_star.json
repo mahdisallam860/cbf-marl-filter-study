@@ -1,0 +1,63 @@
+{
+ "alpha_star": 10.0,
+ "rule": "max pooled filter-on GOAL count over 9 actors and K = 1, 2, 3; ties: fewer INFEASIBLE, then larger alpha",
+ "selection_table": [
+  {
+   "alpha": 0.5,
+   "n": 5400,
+   "GOAL": 0,
+   "INFEASIBLE": 1251,
+   "COLLISION": 0,
+   "TIMEOUT": 4149
+  },
+  {
+   "alpha": 1.0,
+   "n": 5400,
+   "GOAL": 255,
+   "INFEASIBLE": 4,
+   "COLLISION": 0,
+   "TIMEOUT": 5141
+  },
+  {
+   "alpha": 2.0,
+   "n": 5400,
+   "GOAL": 1184,
+   "INFEASIBLE": 11,
+   "COLLISION": 0,
+   "TIMEOUT": 4205
+  },
+  {
+   "alpha": 5.0,
+   "n": 5400,
+   "GOAL": 1936,
+   "INFEASIBLE": 61,
+   "COLLISION": 0,
+   "TIMEOUT": 3403
+  },
+  {
+   "alpha": 10.0,
+   "n": 5400,
+   "GOAL": 2224,
+   "INFEASIBLE": 129,
+   "COLLISION": 0,
+   "TIMEOUT": 3047
+  }
+ ],
+ "densities_used": [
+  1,
+  2,
+  3
+ ],
+ "densities_not_used": [
+  4,
+  5,
+  8
+ ],
+ "protocol": "docs/PREFILTER_VALIDATION_PROTOCOL_LOCKED_2026-10-25.md",
+ "protocol_tag": "prefilter-protocol-locked-2026-10-25",
+ "protocol_commit": "9baf6d773b7cf3e6548e02a0c1d9ebc9d21cf893",
+ "data": "existing validation layouts (development data)",
+ "note": "selected on development data; the final test (reserved block) has not been generated",
+ "recorded_at": "2026-10-26 00:51:45 +03 (Asia/Riyadh)",
+ "locked_by": "project author (selection rule applied mechanically); advisor approval not obtained"
+}

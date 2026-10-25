@@ -1,0 +1,32 @@
+{
+ "protocol": "docs/PREFILTER_VALIDATION_PROTOCOL_LOCKED_2026-10-25.md",
+ "protocol_commit": "9baf6d7",
+ "env_fingerprint": "c60352aee3f11ed8",
+ "alphas": [
+  0.5,
+  1.0,
+  2.0,
+  5.0,
+  10.0
+ ],
+ "densities": [
+  1,
+  2,
+  3,
+  4,
+  5,
+  8
+ ],
+ "roles": {
+  "1": "primary",
+  "2": "primary",
+  "3": "primary",
+  "4": "diagnostic",
+  "5": "stress",
+  "8": "stress"
+ },
+ "trials_per_cell": 200,
+ "split": "validation",
+ "workers": 4,
+ "wall_s_this_invocation": 3076.5
+}

@@ -1,0 +1,20 @@
+{
+ "policy_id": "s1_early",
+ "density": 4,
+ "layout_seed": 2000004,
+ "layout_hash": "d1dee2ef9d02beb0",
+ "actor_digest": "266326832e84e51d58a98bad0584080c4d097b1f7f23a3ab434bef0f7377f049",
+ "walls": {
+  "off_None": 13.55,
+  "on_0.5": 22.86,
+  "bmatch_0.5": 15.37,
+  "on_1.0": 23.75,
+  "bmatch_1.0": 14.08,
+  "on_2.0": 22.18,
+  "bmatch_2.0": 14.21,
+  "on_5.0": 23.83,
+  "bmatch_5.0": 15.51,
+  "on_10.0": 22.14,
+  "bmatch_10.0": 15.55
+ }
+}
