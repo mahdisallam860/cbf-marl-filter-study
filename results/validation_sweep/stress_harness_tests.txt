@@ -1,0 +1,3 @@
+python -m pytest -q -p no:warnings tests/test_vmas_and_stress.py::test_stress_filter_on_has_no_collisions_kinematic tests/test_vmas_and_stress.py::test_stress_filter_on_has_no_collisions_vmas
+run 2026-10-26 00:58 +03 (Asia/Riyadh) after the validation sweep, at commit 4fffe62
+result: 2 passed in 366.01s
