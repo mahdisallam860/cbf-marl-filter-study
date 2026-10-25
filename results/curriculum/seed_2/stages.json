@@ -1,0 +1,163 @@
+{
+ "stages": [
+  {
+   "stage": 0,
+   "densities": [
+    0
+   ],
+   "budget": 1000000,
+   "env_steps_used": 491520,
+   "cumulative_env_steps": 491520,
+   "iterations": 20,
+   "advanced_early": true,
+   "heldout_end": {
+    "0": {
+     "goal": 1.0,
+     "collision": 0.0,
+     "timeout": 0.0,
+     "coll_obst": 0,
+     "coll_rr": 0,
+     "stalled": 0,
+     "timeout_goal_dist_median": NaN,
+     "form_err_mean": 0.013830544235311118,
+     "n": 200,
+     "layout_seed": 2000000
+    }
+   },
+   "wall_s": 98.0
+  },
+  {
+   "stage": 1,
+   "densities": [
+    1
+   ],
+   "budget": 2000000,
+   "env_steps_used": 983040,
+   "cumulative_env_steps": 1474560,
+   "iterations": 40,
+   "advanced_early": true,
+   "heldout_end": {
+    "1": {
+     "goal": 0.8,
+     "collision": 0.16,
+     "timeout": 0.04,
+     "coll_obst": 32,
+     "coll_rr": 0,
+     "stalled": 8,
+     "timeout_goal_dist_median": 0.1538952974673658,
+     "form_err_mean": 0.021298109595039954,
+     "n": 200,
+     "layout_seed": 2000001
+    }
+   },
+   "wall_s": 317.6
+  },
+  {
+   "stage": 2,
+   "densities": [
+    2
+   ],
+   "budget": 4000000,
+   "env_steps_used": 4005888,
+   "cumulative_env_steps": 5480448,
+   "iterations": 163,
+   "advanced_early": false,
+   "heldout_end": {
+    "2": {
+     "goal": 0.765,
+     "collision": 0.17,
+     "timeout": 0.065,
+     "coll_obst": 34,
+     "coll_rr": 0,
+     "stalled": 13,
+     "timeout_goal_dist_median": 0.11282600903848326,
+     "form_err_mean": 0.038426194188863005,
+     "n": 200,
+     "layout_seed": 2000002
+    }
+   },
+   "wall_s": 1304.6
+  },
+  {
+   "stage": 3,
+   "densities": [
+    3
+   ],
+   "budget": 4000000,
+   "env_steps_used": 4005888,
+   "cumulative_env_steps": 9486336,
+   "iterations": 163,
+   "advanced_early": false,
+   "heldout_end": {
+    "3": {
+     "goal": 0.65,
+     "collision": 0.29,
+     "timeout": 0.06,
+     "coll_obst": 56,
+     "coll_rr": 2,
+     "stalled": 12,
+     "timeout_goal_dist_median": 0.13806889553628032,
+     "form_err_mean": 0.05066617362062935,
+     "n": 200,
+     "layout_seed": 2000003
+    }
+   },
+   "wall_s": 2371.6
+  },
+  {
+   "stage": 4,
+   "densities": [
+    2,
+    5,
+    8
+   ],
+   "budget": 8000000,
+   "env_steps_used": 8011776,
+   "cumulative_env_steps": 17498112,
+   "iterations": 326,
+   "advanced_early": false,
+   "heldout_end": {
+    "2": {
+     "goal": 0.795,
+     "collision": 0.155,
+     "timeout": 0.05,
+     "coll_obst": 30,
+     "coll_rr": 1,
+     "stalled": 10,
+     "timeout_goal_dist_median": 0.12416847732111014,
+     "form_err_mean": 0.0412788069209131,
+     "n": 200,
+     "layout_seed": 2000002
+    },
+    "5": {
+     "goal": 0.005,
+     "collision": 0.975,
+     "timeout": 0.02,
+     "coll_obst": 195,
+     "coll_rr": 0,
+     "stalled": 4,
+     "timeout_goal_dist_median": 0.12354195487400926,
+     "form_err_mean": 0.04143071361645122,
+     "n": 200,
+     "layout_seed": 2000005
+    },
+    "8": {
+     "goal": 0.0,
+     "collision": 1.0,
+     "timeout": 0.0,
+     "coll_obst": 200,
+     "coll_rr": 0,
+     "stalled": 0,
+     "timeout_goal_dist_median": NaN,
+     "form_err_mean": 0.04936019002822665,
+     "n": 200,
+     "layout_seed": 2000008
+    }
+   },
+   "wall_s": 5151.3
+  }
+ ],
+ "stopped": null,
+ "total_env_steps": 17498112,
+ "wall_s": 5151.3
+}

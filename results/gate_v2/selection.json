@@ -1,0 +1,124 @@
+{
+ "config": "/home/user/cbf-marl-filter-study/config/study.toml",
+ "config_version": 2,
+ "rule": "max_pooled_goal_rate",
+ "goal_rate_min": 0.5,
+ "collision_rate_min": 0.05,
+ "validation_trials_per_density": 200,
+ "env_fingerprint": "c60352aee3f11ed8",
+ "pending_placeholders": 52,
+ "n_checkpoints": 51,
+ "best": {
+  "ckpt": "results/curriculum/seed_1/checkpoints/ckpt_it0666.pt",
+  "seed": 1,
+  "iteration": 666,
+  "goal_rate": 0.2866666666666667,
+  "coll_rate": 0.6633333333333333,
+  "gate_pass": false,
+  "per_density": {
+   "2": {
+    "goal_rate": 0.825,
+    "coll_rate": 0.09,
+    "goal_ok": 1,
+    "coll_ok": 1
+   },
+   "5": {
+    "goal_rate": 0.035,
+    "coll_rate": 0.9,
+    "goal_ok": 0,
+    "coll_ok": 1
+   },
+   "8": {
+    "goal_rate": 0.0,
+    "coll_rate": 1.0,
+    "goal_ok": 0,
+    "coll_ok": 1
+   }
+  }
+ },
+ "best_per_seed": {
+  "0": {
+   "ckpt": "results/curriculum/seed_0/checkpoints/ckpt_it0506.pt",
+   "iteration": 506,
+   "goal_rate": 0.19,
+   "coll_rate": 0.7533333333333333,
+   "gate_pass": false,
+   "per_density": {
+    "2": {
+     "goal_rate": 0.57,
+     "coll_rate": 0.275,
+     "goal_ok": 1,
+     "coll_ok": 1
+    },
+    "5": {
+     "goal_rate": 0.0,
+     "coll_rate": 0.985,
+     "goal_ok": 0,
+     "coll_ok": 1
+    },
+    "8": {
+     "goal_rate": 0.0,
+     "coll_rate": 1.0,
+     "goal_ok": 0,
+     "coll_ok": 1
+    }
+   }
+  },
+  "1": {
+   "ckpt": "results/curriculum/seed_1/checkpoints/ckpt_it0666.pt",
+   "iteration": 666,
+   "goal_rate": 0.2866666666666667,
+   "coll_rate": 0.6633333333333333,
+   "gate_pass": false,
+   "per_density": {
+    "2": {
+     "goal_rate": 0.825,
+     "coll_rate": 0.09,
+     "goal_ok": 1,
+     "coll_ok": 1
+    },
+    "5": {
+     "goal_rate": 0.035,
+     "coll_rate": 0.9,
+     "goal_ok": 0,
+     "coll_ok": 1
+    },
+    "8": {
+     "goal_rate": 0.0,
+     "coll_rate": 1.0,
+     "goal_ok": 0,
+     "coll_ok": 1
+    }
+   }
+  },
+  "2": {
+   "ckpt": "results/curriculum/seed_2/checkpoints/ckpt_it0586.pt",
+   "iteration": 586,
+   "goal_rate": 0.275,
+   "coll_rate": 0.7016666666666667,
+   "gate_pass": false,
+   "per_density": {
+    "2": {
+     "goal_rate": 0.82,
+     "coll_rate": 0.14,
+     "goal_ok": 1,
+     "coll_ok": 1
+    },
+    "5": {
+     "goal_rate": 0.005,
+     "coll_rate": 0.965,
+     "goal_ok": 0,
+     "coll_ok": 1
+    },
+    "8": {
+     "goal_rate": 0.0,
+     "coll_rate": 1.0,
+     "goal_ok": 0,
+     "coll_ok": 1
+    }
+   }
+  }
+ },
+ "any_checkpoint_passes": false,
+ "wall_s": 252.3
+}
