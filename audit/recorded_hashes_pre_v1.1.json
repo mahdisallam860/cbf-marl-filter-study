@@ -1,0 +1,13 @@
+{
+ "note": "sha256(init_poses.tobytes() + obst_xy.tobytes())[:16] of the held-out layout sets, computed by regenerating them with the code then in the working tree (scenario.py blob 0c8bf76 = sampler v1, config v2) immediately before the sampler v1.1 change; also pinned in tests/test_config.py. These are NOT hashes saved by the original runs at run time; no run saved its layouts.",
+ "file_written_utc": "2026-10-25T16:30:09Z",
+ "source": "audit backup session_logs/layout_hashes_before.json",
+ "hashes": {
+  "validation_K2_n200": "3f25bbb76654c9dd",
+  "validation_K5_n200": "8199ec7b1da4b95e",
+  "validation_K8_n200": "6e81fc2b9ec3bc31",
+  "pilot_K2_n500": "7b10e5f870784de0",
+  "pilot_K5_n500": "6da7e69aa59e13bf",
+  "pilot_K8_n500": "c04dfb67f3ac756b"
+ }
+}

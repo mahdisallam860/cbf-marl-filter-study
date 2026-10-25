@@ -1,0 +1,120 @@
+{
+ "commits": {
+  "1280a8a": {
+   "runs": [
+    "gate_v1"
+   ],
+   "blobs": {
+    "cbf_study/scenario.py": "0c8bf7664a3b",
+    "cbf_study/cbf_qp.py": "0294e27672c0",
+    "cbf_study/config.py": "bc66dac9122f",
+    "config/study.toml": "922aeeb3911c"
+   },
+   "config_version": 1,
+   "env_fingerprint": "cf442ee5e99eb55a",
+   "numpy": "2.5.4",
+   "scenario_file": "/home/user/audit_worktrees/1280a8a/cbf_study/scenario.py"
+  },
+  "5b2820f": {
+   "runs": [
+    "curriculum_launch"
+   ],
+   "blobs": {
+    "cbf_study/scenario.py": "0c8bf7664a3b",
+    "cbf_study/cbf_qp.py": "0294e27672c0",
+    "cbf_study/config.py": "4f69e852afe9",
+    "config/study.toml": "520f8c1f3026"
+   },
+   "config_version": 2,
+   "env_fingerprint": "c60352aee3f11ed8",
+   "numpy": "2.5.4",
+   "scenario_file": "/home/user/audit_worktrees/5b2820f/cbf_study/scenario.py"
+  },
+  "871206b": {
+   "runs": [
+    "train_v1_phase1"
+   ],
+   "blobs": {
+    "cbf_study/scenario.py": "0c8bf7664a3b",
+    "cbf_study/cbf_qp.py": "0294e27672c0",
+    "cbf_study/config.py": "bc66dac9122f",
+    "config/study.toml": "922aeeb3911c"
+   },
+   "config_version": 1,
+   "env_fingerprint": "cf442ee5e99eb55a",
+   "numpy": "2.5.4",
+   "scenario_file": "/home/user/audit_worktrees/871206b/cbf_study/scenario.py"
+  },
+  "a99fcc2": {
+   "runs": [
+    "train_v1_phase2"
+   ],
+   "blobs": {
+    "cbf_study/scenario.py": "0c8bf7664a3b",
+    "cbf_study/cbf_qp.py": "0294e27672c0",
+    "cbf_study/config.py": "bc66dac9122f",
+    "config/study.toml": "922aeeb3911c"
+   },
+   "config_version": 1,
+   "env_fingerprint": "cf442ee5e99eb55a",
+   "numpy": "2.5.4",
+   "scenario_file": "/home/user/audit_worktrees/a99fcc2/cbf_study/scenario.py"
+  },
+  "ba87dbf": {
+   "runs": [
+    "solvability_audit"
+   ],
+   "blobs": {
+    "cbf_study/scenario.py": "0c8bf7664a3b",
+    "cbf_study/cbf_qp.py": "0294e27672c0",
+    "cbf_study/config.py": "bc66dac9122f",
+    "config/study.toml": "922aeeb3911c"
+   },
+   "config_version": 1,
+   "env_fingerprint": "cf442ee5e99eb55a",
+   "numpy": "2.5.4",
+   "scenario_file": "/home/user/audit_worktrees/ba87dbf/cbf_study/scenario.py"
+  },
+  "d112bc3": {
+   "runs": [
+    "curriculum_seed1_resume"
+   ],
+   "blobs": {
+    "cbf_study/scenario.py": "c7a60616e0d2",
+    "cbf_study/cbf_qp.py": "0294e27672c0",
+    "cbf_study/config.py": "4f69e852afe9",
+    "config/study.toml": "520f8c1f3026"
+   },
+   "config_version": 2,
+   "env_fingerprint": "c60352aee3f11ed8",
+   "numpy": "2.5.4",
+   "scenario_file": "/home/user/audit_worktrees/d112bc3/cbf_study/scenario.py"
+  },
+  "ff46268": {
+   "runs": [
+    "gate_v2"
+   ],
+   "blobs": {
+    "cbf_study/scenario.py": "c7a60616e0d2",
+    "cbf_study/cbf_qp.py": "0294e27672c0",
+    "cbf_study/config.py": "4f69e852afe9",
+    "config/study.toml": "4a4a01ef8aeb"
+   },
+   "config_version": 2,
+   "env_fingerprint": "c60352aee3f11ed8",
+   "numpy": "2.5.4",
+   "scenario_file": "/home/user/audit_worktrees/ff46268/cbf_study/scenario.py"
+  }
+ },
+ "layout_sets_per_commit": 12,
+ "comparisons": 84,
+ "differences": 0,
+ "recorded_ids": 45,
+ "recorded_ids_seed_or_n_mismatch": 0,
+ "recorded_ids_not_identical_to_HEAD": 0,
+ "pinned_hashes_checked": 42,
+ "pinned_hash_mismatches": 0,
+ "outcome_crosscheck_rows": 153,
+ "outcome_crosscheck_mismatches": 0,
+ "original_layouts_saved_by_runs": false
+}

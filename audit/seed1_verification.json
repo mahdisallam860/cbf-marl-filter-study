@@ -1,0 +1,74 @@
+{
+ "A_curve": {
+  "rows": 712,
+  "reconstructed_rows": 546,
+  "original_rows": 166,
+  "reconstructed_vs_train_log_mismatches": 0,
+  "reconstructed_vs_original_stdout_mismatches": 0,
+  "env_steps_not_equal_iteration_times_24576": 0,
+  "iterations_contiguous": true,
+  "original_iterations_after_last_save_discarded": [
+   547,
+   565
+  ],
+  "discarded_env_steps": 466944
+ },
+ "B_checkpoints": {
+  "stage_checkpoints": 38,
+  "inconsistent": 0,
+  "written_before_crash": 29,
+  "pre_crash_iterations_max": 546,
+  "origin_vs_time_consistent": true
+ },
+ "C_heldout": {
+  "rows": 72,
+  "reconstructed_rows": 45,
+  "original_rows": 27,
+  "reevaluated_again_mismatches": 0,
+  "vs_original_logged_values_mismatches": 0,
+  "logged_heldout_values_up_to_cut": 45
+ },
+ "D_resume": {
+  "saved_by": "original run at its iteration-546 evaluation (pre-patch copy in the backup)",
+  "saved_position": {
+   "stage": 4,
+   "stage_env_steps": 3932160,
+   "env_steps": 13418496,
+   "iteration": 546,
+   "stream_idx": {
+    "0": 9,
+    "1": 48,
+    "2": 260,
+    "3": 162,
+    "5": 165,
+    "8": 341
+   }
+  },
+  "saved_actor_equals_checkpoint_it546": true,
+  "load_roundtrip_bitwise": {
+   "actor": true,
+   "critic": true,
+   "actor_adam": true,
+   "critic_adam": true,
+   "value_normaliser": true,
+   "sampling_generator": true
+  },
+  "adam_step_count": [
+   87360.0
+  ],
+  "patch_preserves_state": true,
+  "resume_log_line": "resumed at stage 4, stage env steps 3932160, cumulative 13418496, iteration 546",
+  "resume_log_matches_saved": true,
+  "patched_file_as_loaded": "not retained: overwritten by the resumed run's own saves",
+  "not_restored": [
+   "VMAS environment states and the episodes in progress at iteration 546",
+   "position inside the partially consumed training-layout chunk (resumed at the next chunk)",
+   "global torch/numpy RNG (not used for action sampling or layouts)",
+   "iterations 547-565 of the original run (computed, then lost in the crash)"
+  ]
+ },
+ "E_labels": {
+  "rows_labelled": 789,
+  "reconstructed": 595
+ }
+}

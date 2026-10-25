@@ -1,0 +1,8 @@
+{
+ "note": "seed 1 files after in-place provenance labels; pre-label versions are in the audit backup (repo_worktree/results/curriculum/seed_1)",
+ "sha256": {
+  "curve.csv": "24bba621d12bab15cf0fb3c0c34557956ee2a8335b40fb63ff79b8738ff5d6ee",
+  "heldout.csv": "1087444779aaa0adc090684ab3ef9af9a648d1e57be658508fdcd2d7ebc3ea0f",
+  "stages.json": "6e38e22b3190f8af461e833f6084114975221ad131e6aa257d91912966f546ee"
+ }
+}
