@@ -1,0 +1,127 @@
+{
+ "alpha_star": 10.0,
+ "protocol": "docs/PREFILTER_VALIDATION_PROTOCOL_LOCKED_2026-10-25.md",
+ "protocol_commit": "9baf6d7",
+ "alpha_star_commit": "4fffe62",
+ "level_one_sided": 0.016666666666666666,
+ "verdict_per_density": {
+  "1": {
+   "verdict": "not shown useful",
+   "n_pairs": 9000,
+   "a": {
+    "diff_on_minus_off": -0.053,
+    "p_one_sided": 2.5626663618343692e-144,
+    "upper_98_33": -0.04818083166685991,
+    "ci95": [
+     -0.057823412380612484,
+     -0.048547721485679825
+    ],
+    "passed": true
+   },
+   "b": {
+    "goal_loss": 0.048111111111111104,
+    "upper_98_33": 0.05309917587515123,
+    "ci95": [
+     0.04350768482641478,
+     0.0527057436101202
+    ],
+    "margin": 0.05,
+    "passed": false
+   },
+   "c": {
+    "status": "fail",
+    "increase_m": 0.011677826926864806,
+    "upper_98_33_bootstrap": 0.012652729216062874,
+    "normal_crosscheck": 0.012638218941201805,
+    "ci95": [
+     0.010794454251826584,
+     0.012562958995115496
+    ],
+    "margin": 0.01,
+    "eligible": 9000,
+    "excluded": 0,
+    "exclusion_reasons": "",
+    "passed": false
+   }
+  },
+  "2": {
+   "verdict": "not shown useful",
+   "n_pairs": 9000,
+   "a": {
+    "diff_on_minus_off": -0.15722222222222224,
+    "p_one_sided": 0.0,
+    "upper_98_33": -0.14916586243379934,
+    "ci95": [
+     -0.16490453196741645,
+     -0.14979223019992635
+    ],
+    "passed": true
+   },
+   "b": {
+    "goal_loss": 0.09811111111111115,
+    "upper_98_33": 0.10586413023272925,
+    "ci95": [
+     0.09095158374048803,
+     0.10525268254584007
+    ],
+    "margin": 0.05,
+    "passed": false
+   },
+   "c": {
+    "status": "fail",
+    "increase_m": 0.020185238125731867,
+    "upper_98_33_bootstrap": 0.02128720928532413,
+    "normal_crosscheck": 0.021290593089726962,
+    "ci95": [
+     0.019169285802933575,
+     0.021194503364886416
+    ],
+    "margin": 0.01,
+    "eligible": 9000,
+    "excluded": 0,
+    "exclusion_reasons": "",
+    "passed": false
+   }
+  },
+  "3": {
+   "verdict": "not shown useful",
+   "n_pairs": 9000,
+   "a": {
+    "diff_on_minus_off": -0.44077777777777777,
+    "p_one_sided": 0.0,
+    "upper_98_33": -0.4295238989258831,
+    "ci95": [
+     -0.45107857534662343,
+     -0.4304155309106641
+    ],
+    "passed": true
+   },
+   "b": {
+    "goal_loss": 0.10555555555555557,
+    "upper_98_33": 0.11334528499615877,
+    "ci95": [
+     0.09840162321248294,
+     0.11272897705822742
+    ],
+    "margin": 0.05,
+    "passed": false
+   },
+   "c": {
+    "status": "fail",
+    "increase_m": 0.027770959635397812,
+    "upper_98_33_bootstrap": 0.02912586375110326,
+    "normal_crosscheck": 0.029110513256302994,
+    "ci95": [
+     0.026568292740165686,
+     0.029010612863527227
+    ],
+    "margin": 0.01,
+    "eligible": 9000,
+    "excluded": 0,
+    "exclusion_reasons": "",
+    "passed": false
+   }
+  }
+ },
+ "scope": "average effect over the nine fixed actors (equal weights); not arbitrary MAPPO policies, not every actor"
+}

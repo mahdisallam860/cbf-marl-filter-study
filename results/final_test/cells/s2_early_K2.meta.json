@@ -1,0 +1,11 @@
+{
+ "policy_id": "s2_early",
+ "density": 2,
+ "layout_hash": "bd9c77cd4852e626",
+ "actor_digest": "ee9ce77fb92222f060a75a8306022ea4788f36c13135c4035915443f14de413d",
+ "walls": {
+  "off": 26.53,
+  "on": 42.37,
+  "bmatch": 26.86
+ }
+}

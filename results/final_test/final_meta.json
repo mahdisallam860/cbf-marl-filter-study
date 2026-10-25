@@ -1,0 +1,20 @@
+{
+ "protocol": "docs/PREFILTER_VALIDATION_PROTOCOL_LOCKED_2026-10-25.md",
+ "protocol_commit": "9baf6d7",
+ "alpha_star": 10.0,
+ "alpha_star_commit": "4fffe62",
+ "env_fingerprint": "c60352aee3f11ed8",
+ "densities": [
+  1,
+  2,
+  3
+ ],
+ "layouts_per_actor_and_density": 1000,
+ "conditions": [
+  "off",
+  "on",
+  "bmatch"
+ ],
+ "workers": 4,
+ "wall_s_this_invocation": 755.9
+}
