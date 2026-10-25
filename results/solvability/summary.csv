@@ -1,0 +1,7 @@
+split,density,layout_seed,n,a_found,a_blocked,a_undetermined,a_found_frac,a_found_lo,a_found_hi,a_steps_median,a_steps_max,b_found,b_blocked,b_undetermined,b_found_frac,b_found_lo,b_found_hi,b_steps_median,b_steps_max,c_found,c_blocked,c_undetermined,c_found_frac,c_found_lo,c_found_hi,c_steps_median,c_steps_max,b_modes
+validation,2,2000002,200,200,0,0,1,0.981155,1,68,89,200,0,0,1,0.981155,1,152,180,200,0,0,1,0.981155,1,152,180,formation:200
+validation,5,2000005,200,200,0,0,1,0.981155,1,81,120,200,0,0,1,0.981155,1,179,210,200,0,0,1,0.981155,1,179,210,formation:200
+validation,8,2000008,200,200,0,0,1,0.981155,1,99,128,200,0,0,1,0.981155,1,193,216,200,0,0,1,0.981155,1,193,216,formation:200
+pilot,2,3000002,500,500,0,0,1,0.992376,1,68,93,500,0,0,1,0.992376,1,151,189,500,0,0,1,0.992376,1,151,189,formation:500
+pilot,5,3000005,500,500,0,0,1,0.992376,1,81,114,500,0,0,1,0.992376,1,181,206,500,0,0,1,0.992376,1,181,206,formation:500
+pilot,8,3000008,500,500,0,0,1,0.992376,1,101,139,500,0,0,1,0.992376,1,192,216,500,0,0,1,0.992376,1,192,216,formation:500
