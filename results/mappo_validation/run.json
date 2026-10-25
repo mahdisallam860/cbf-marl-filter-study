@@ -1,0 +1,92 @@
+{
+ "scenario": "navigation",
+ "n_agents": 3,
+ "envs": 128,
+ "max_steps": 100,
+ "hyperparams": {
+  "seeds": [
+   0,
+   1,
+   2
+  ],
+  "envs_per_density": 128,
+  "rollout_steps": 64,
+  "max_iterations": 400,
+  "time_limit_min": 25.0,
+  "gamma": 0.99,
+  "gae_lambda": 0.95,
+  "clip": 0.2,
+  "epochs": 10,
+  "minibatches": 16,
+  "lr_actor": 0.0003,
+  "lr_critic": 0.001,
+  "entropy_coef": 0.0,
+  "max_grad_norm": 0.5,
+  "hidden_actor": [
+   128,
+   128
+  ],
+  "hidden_critic": [
+   256,
+   256
+  ],
+  "init_std_frac": 0.5,
+  "checkpoint_every": 10
+ },
+ "seed": 0,
+ "eval_seed": 777,
+ "action_box": [
+  [
+   -1.0,
+   -1.0
+  ],
+  [
+   1.0,
+   1.0
+  ]
+ ],
+ "iterations": 300,
+ "env_steps": 2457600,
+ "ratio0_maxdev_max": 0.0,
+ "applied_within_box": true,
+ "initial": {
+  "iteration": 0,
+  "env_steps": 0,
+  "policy": "initial_deterministic",
+  "ret_mean": 0.0024953369051218034,
+  "ret_sd": 0.012005284627088646,
+  "success": 0.0,
+  "len_mean": 100.0,
+  "n": 200
+ },
+ "random": {
+  "iteration": 0,
+  "env_steps": 0,
+  "policy": "uniform_random",
+  "ret_mean": -0.6033568383753299,
+  "ret_sd": 1.613816360232099,
+  "success": 0.0,
+  "len_mean": 100.0,
+  "n": 200
+ },
+ "final": {
+  "iteration": 300,
+  "env_steps": 2457600,
+  "policy": "deterministic",
+  "ret_mean": 3.165800304177683,
+  "ret_sd": 0.7991208843527674,
+  "success": 0.99,
+  "len_mean": 42.105,
+  "n": 200
+ },
+ "best": {
+  "iteration": 175,
+  "env_steps": 1433600,
+  "policy": "deterministic",
+  "ret_mean": 3.220523616266437,
+  "ret_sd": 0.7767130189159951,
+  "success": 0.99,
+  "len_mean": 41.505,
+  "n": 200
+ }
+}

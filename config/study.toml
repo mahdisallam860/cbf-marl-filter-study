@@ -12,6 +12,17 @@
 # Changing any value in [timing], [robot], [obstacles], [scenario], [filter].ell, [protocol] or
 # [observation] changes the environment fingerprint: checkpoints trained under the old values are
 # then refused by policies.FrozenMAPPOPolicy.
+#
+# Version history (earlier versions are kept verbatim in config/archive/):
+#   v1 (env fingerprint cf442ee5e99eb55a): MAPPO runs results/train/seed_*, gate results/gate (FAIL).
+#   v2: observation.k_obst 4 -> 8 (every obstacle within obs_range is observed; with 4, at K = 5 and 8
+#       every held-out layout had robots with more obstacles in range than observed); dense
+#       unsafe-proximity penalty in [reward]; [curriculum] added; [mappo] epochs/minibatches set to the
+#       recipe of v1 training phase 2. Layout sampler unchanged (solvability audit: all held-out
+#       layouts solvable), filter and outcome scoring unchanged.
+
+[meta]
+config_version = 2
 
 [timing]
 dt        = { value = 0.1, approval = "pending", note = "control period [s], zero-order hold; alpha*dt <= 1" }
@@ -60,16 +71,27 @@ w_formation      = { value = 1.0,  approval = "pending", note = "per step, times
 w_collision_obst = { value = 10.0, approval = "pending", note = "one-off penalty when a period is scored as a robot-obstacle collision (episode ends)" }
 w_collision_rr   = { value = 10.0, approval = "pending", note = "one-off penalty when a period is scored as a robot-robot collision (episode ends)" }
 w_control        = { value = 0.01, approval = "pending", note = "per step, times mean over robots of (v/v_max)^2 + (w/w_max)^2" }
+w_proximity      = { value = 0.2,  approval = "pending", note = "v2: per step, times sum over robot-obstacle and robot-robot pairs of max(0, 1 - clearance/proximity_margin)" }
+proximity_margin = { value = 0.15, approval = "pending", note = "v2: surface clearance [m] below which the proximity penalty applies (formation slots are 0.32 m apart: no penalty in formation)" }
 
 [observation]   # policy input, computed from (poses, layout) only
-k_obst    = { value = 4,   approval = "pending", note = "nearest obstacles observed per robot" }
-obs_range = { value = 2.0, approval = "pending", note = "obstacles with centre distance above this are reported absent [m]" }
+k_obst    = { value = 8,   approval = "pending", note = "v2 (was 4): obstacles observed per robot, nearest first; = max density, so every obstacle within obs_range is observed" }
+obs_range = { value = 2.0, approval = "pending", note = "policy perception range: obstacles with centre distance above this are reported absent [m] (the filter's sensing_range is separate)" }
 goal_clip = { value = 2.0, approval = "pending", note = "norm clip of the centroid-to-goal vector [m]" }
 
 [gate]   # decided before training; filter OFF, pooled over the three densities
 goal_rate_min      = { value = 0.50, approval = "pending", note = "below this the policy 'rarely reaches the goal': STOP" }
 collision_rate_min = { value = 0.05, approval = "pending", note = "below this the baseline collision rate is 'near zero': STOP" }
 selection          = { value = "max_pooled_goal_rate", approval = "pending", note = "best checkpoint = highest pooled validation GOAL rate (filter off), ties -> later checkpoint; collision rate is NOT a selection criterion" }
+
+[curriculum]   # v2, fixed before any curriculum run; filter OFF throughout
+stages            = { value = [[0], [1], [2], [3], [2, 5, 8]], approval = "pending", note = "training densities per stage; the last stage is the study mixture" }
+stage_budget      = { value = [1000000, 2000000, 4000000, 4000000, 8000000], approval = "pending", note = "env-step budget per stage (an env step = one control period of one team)" }
+advance_goal_rate = { value = 0.80, approval = "pending", note = "advance early when the held-out team GOAL rate at every stage density reaches this" }
+k2_stop_goal_rate = { value = 0.50, approval = "pending", note = "STOP rule: if the held-out K=2 team GOAL rate is below this when the K=2 stage ends, stop and report diagnostics" }
+eval_every        = { value = 20,   approval = "pending", note = "held-out evaluation every this many iterations (and at the end of each stage)" }
+eval_trials       = { value = 200,  approval = "pending", note = "held-out validation trials per density per evaluation (seeds validation_base + density)" }
+envs_per_iter     = { value = 384,  approval = "pending", note = "parallel envs, split equally over the stage densities" }
 
 [seeds]   # layout-sampler seed ranges; training, validation and pilot never share a layout
 train_base      = { value = 1000000, approval = "pending", note = "train layouts: train_base + run_seed*100000 + density*1000 + chunk" }
@@ -87,8 +109,8 @@ time_limit_min   = 25.0
 gamma            = 0.99
 gae_lambda       = 0.95
 clip             = 0.2
-epochs           = 5
-minibatches      = 4
+epochs           = 10      # v1 phase 1 used 5 (KL ~0.003 per update, too conservative)
+minibatches      = 16      # v1 phase 1 used 4
 lr_actor         = 3e-4
 lr_critic        = 1e-3
 entropy_coef     = 0.0

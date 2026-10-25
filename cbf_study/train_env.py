@@ -18,6 +18,9 @@ Reward per period (weights from [reward] in config/study.toml):
   - w_control   * mean_i[(v_i / v_abs_max)^2 + (w_i / w_max)^2]
   - w_collision_obst * [robot-obstacle collision in the period]
   - w_collision_rr   * [robot-robot collision in the period]
+  - w_proximity * sum over robot-obstacle and robot-robot pairs of max(0, 1 - clearance / proximity_margin)
+    (config v2; clearance = surface gap at the end of the period; shaping only, collisions are still
+    scored by protocol.score_motion)
 """
 from __future__ import annotations
 
@@ -30,6 +33,20 @@ from .envs import VmasEnv
 from .observations import build_obs
 from .protocol import Outcome, formation_error, goal_reached, score_motion
 from .scenario import Layout, sample_layout
+
+
+def proximity_penalty(poses, obst_xy, pc, margin):
+    """sum over robot-obstacle and robot-robot pairs of max(0, 1 - surface clearance / margin). [B]"""
+    xy = poses[..., :2]
+    pen = np.zeros(xy.shape[0])
+    if obst_xy.shape[1]:
+        clr = np.linalg.norm(xy[:, :, None] - obst_xy[:, None], axis=3) - (pc.robot_r + pc.obst_r)
+        pen += np.clip(1.0 - clr / margin, 0.0, None).sum(axis=(1, 2))
+    n = xy.shape[1]
+    i, j = np.triu_indices(n, 1)
+    clr = np.linalg.norm(xy[:, i] - xy[:, j], axis=2) - 2 * pc.robot_r
+    pen += np.clip(1.0 - clr / margin, 0.0, None).sum(axis=1)
+    return pen
 
 
 class TrainVmasEnv(VmasEnv):
@@ -184,6 +201,8 @@ class FormationTrainEnv:
             rc = self.rc
             r = (rc.w_progress * (d0 - d1) - rc.w_formation * ferr - rc.w_control * ctrl
                  - rc.w_collision_obst * hit_o - rc.w_collision_rr * hit_r)
+            if rc.w_proximity:
+                r = r - rc.w_proximity * proximity_penalty(p1, g.layout.obst_xy, self.pc, rc.proximity_margin)
             g.ret += r
             g.form_sum += ferr
             g.poses = p1

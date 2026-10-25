@@ -1,0 +1,405 @@
+[{'iteration': 0, 'env_steps': 0, 'policy': 'uniform_random', 'ret_mean': -0.6033568383753299, 'ret_sd': 1.613816360232099, 'success': 0.0, 'len_mean': 100.0, 'n': 200}, {'iteration': 0, 'env_steps': 0, 'policy': 'initial_deterministic', 'ret_mean': 0.0024953369051218034, 'ret_sd': 0.012005284627088646, 'success': 0.0, 'len_mean': 100.0, 'n': 200}]
+it 1 steps 8192 succ nan ret nan kl 0.0073 ratio0 0.0e+00
+it 2 steps 16384 succ 0.000 ret -0.072 kl 0.0043 ratio0 0.0e+00
+it 3 steps 24576 succ nan ret nan kl 0.0042 ratio0 0.0e+00
+it 4 steps 32768 succ 0.000 ret 0.157 kl 0.0042 ratio0 0.0e+00
+it 5 steps 40960 succ 0.000 ret 0.858 kl 0.0041 ratio0 0.0e+00
+it 6 steps 49152 succ nan ret nan kl 0.0043 ratio0 0.0e+00
+it 7 steps 57344 succ 0.000 ret 1.471 kl 0.0047 ratio0 0.0e+00
+it 8 steps 65536 succ 0.000 ret 1.778 kl 0.0048 ratio0 0.0e+00
+it 9 steps 73728 succ nan ret nan kl 0.0048 ratio0 0.0e+00
+it 10 steps 81920 succ 0.000 ret 2.062 kl 0.0058 ratio0 0.0e+00
+it 11 steps 90112 succ 0.008 ret 2.428 kl 0.0040 ratio0 0.0e+00
+it 12 steps 98304 succ nan ret nan kl 0.0051 ratio0 0.0e+00
+it 13 steps 106496 succ 0.047 ret 2.464 kl 0.0048 ratio0 0.0e+00
+it 14 steps 114688 succ 0.941 ret 2.640 kl 0.0040 ratio0 0.0e+00
+it 15 steps 122880 succ 0.078 ret 2.719 kl 0.0045 ratio0 0.0e+00
+it 16 steps 131072 succ 0.294 ret 2.984 kl 0.0033 ratio0 0.0e+00
+it 17 steps 139264 succ 0.627 ret 2.850 kl 0.0032 ratio0 0.0e+00
+it 18 steps 147456 succ 0.247 ret 2.899 kl 0.0041 ratio0 0.0e+00
+it 19 steps 155648 succ 0.417 ret 3.038 kl 0.0035 ratio0 0.0e+00
+it 20 steps 163840 succ 0.733 ret 2.893 kl 0.0038 ratio0 0.0e+00
+it 21 steps 172032 succ 0.517 ret 2.928 kl 0.0035 ratio0 0.0e+00
+it 22 steps 180224 succ 0.615 ret 2.912 kl 0.0034 ratio0 0.0e+00
+it 23 steps 188416 succ 0.736 ret 2.937 kl 0.0033 ratio0 0.0e+00
+it 24 steps 196608 succ 0.839 ret 2.885 kl 0.0034 ratio0 0.0e+00
+it 25 steps 204800 succ 0.870 ret 2.867 kl 0.0041 ratio0 0.0e+00
+{'iteration': 25, 'env_steps': 204800, 'policy': 'deterministic', 'ret_mean': 3.1607955167267936, 'ret_sd': 0.753301509295268, 'success': 0.965, 'len_mean': 61.1, 'n': 200}
+it 26 steps 212992 succ 0.904 ret 2.991 kl 0.0037 ratio0 0.0e+00
+it 27 steps 221184 succ 0.955 ret 2.940 kl 0.0039 ratio0 0.0e+00
+it 28 steps 229376 succ 0.916 ret 2.972 kl 0.0036 ratio0 0.0e+00
+it 29 steps 237568 succ 0.939 ret 3.088 kl 0.0038 ratio0 0.0e+00
+it 30 steps 245760 succ 0.985 ret 2.910 kl 0.0041 ratio0 0.0e+00
+it 31 steps 253952 succ 0.986 ret 2.947 kl 0.0032 ratio0 0.0e+00
+it 32 steps 262144 succ 0.986 ret 2.877 kl 0.0032 ratio0 0.0e+00
+it 33 steps 270336 succ 0.994 ret 2.889 kl 0.0036 ratio0 0.0e+00
+it 34 steps 278528 succ 1.000 ret 3.101 kl 0.0038 ratio0 0.0e+00
+it 35 steps 286720 succ 0.973 ret 3.008 kl 0.0040 ratio0 0.0e+00
+it 36 steps 294912 succ 0.993 ret 3.073 kl 0.0033 ratio0 0.0e+00
+it 37 steps 303104 succ 0.961 ret 3.041 kl 0.0034 ratio0 0.0e+00
+it 38 steps 311296 succ 1.000 ret 2.981 kl 0.0032 ratio0 0.0e+00
+it 39 steps 319488 succ 1.000 ret 2.991 kl 0.0046 ratio0 0.0e+00
+it 40 steps 327680 succ 0.993 ret 2.960 kl 0.0037 ratio0 0.0e+00
+it 41 steps 335872 succ 0.981 ret 2.933 kl 0.0042 ratio0 0.0e+00
+it 42 steps 344064 succ 0.993 ret 3.080 kl 0.0037 ratio0 0.0e+00
+it 43 steps 352256 succ 0.994 ret 2.985 kl 0.0039 ratio0 0.0e+00
+it 44 steps 360448 succ 1.000 ret 3.072 kl 0.0032 ratio0 0.0e+00
+it 45 steps 368640 succ 0.994 ret 3.046 kl 0.0027 ratio0 0.0e+00
+it 46 steps 376832 succ 0.994 ret 2.963 kl 0.0033 ratio0 0.0e+00
+it 47 steps 385024 succ 1.000 ret 3.123 kl 0.0037 ratio0 0.0e+00
+it 48 steps 393216 succ 1.000 ret 3.017 kl 0.0035 ratio0 0.0e+00
+it 49 steps 401408 succ 0.994 ret 3.012 kl 0.0039 ratio0 0.0e+00
+it 50 steps 409600 succ 0.982 ret 3.062 kl 0.0045 ratio0 0.0e+00
+{'iteration': 50, 'env_steps': 409600, 'policy': 'deterministic', 'ret_mean': 3.1777339223166927, 'ret_sd': 0.7749060620967398, 'success': 0.995, 'len_mean': 44.135, 'n': 200}
+it 51 steps 417792 succ 0.994 ret 2.924 kl 0.0036 ratio0 0.0e+00
+it 52 steps 425984 succ 1.000 ret 3.077 kl 0.0044 ratio0 0.0e+00
+it 53 steps 434176 succ 0.994 ret 2.958 kl 0.0031 ratio0 0.0e+00
+it 54 steps 442368 succ 0.994 ret 3.048 kl 0.0033 ratio0 0.0e+00
+it 55 steps 450560 succ 1.000 ret 2.886 kl 0.0035 ratio0 0.0e+00
+it 56 steps 458752 succ 1.000 ret 3.006 kl 0.0035 ratio0 0.0e+00
+it 57 steps 466944 succ 1.000 ret 3.011 kl 0.0037 ratio0 0.0e+00
+it 58 steps 475136 succ 1.000 ret 3.121 kl 0.0033 ratio0 0.0e+00
+it 59 steps 483328 succ 1.000 ret 3.056 kl 0.0037 ratio0 0.0e+00
+it 60 steps 491520 succ 1.000 ret 3.041 kl 0.0039 ratio0 0.0e+00
+it 61 steps 499712 succ 0.994 ret 2.916 kl 0.0033 ratio0 0.0e+00
+it 62 steps 507904 succ 1.000 ret 3.006 kl 0.0032 ratio0 0.0e+00
+it 63 steps 516096 succ 1.000 ret 3.036 kl 0.0038 ratio0 0.0e+00
+it 64 steps 524288 succ 0.989 ret 3.038 kl 0.0034 ratio0 0.0e+00
+it 65 steps 532480 succ 0.994 ret 3.080 kl 0.0049 ratio0 0.0e+00
+it 66 steps 540672 succ 0.983 ret 2.969 kl 0.0039 ratio0 0.0e+00
+it 67 steps 548864 succ 1.000 ret 3.015 kl 0.0039 ratio0 0.0e+00
+it 68 steps 557056 succ 0.988 ret 3.096 kl 0.0035 ratio0 0.0e+00
+it 69 steps 565248 succ 1.000 ret 3.008 kl 0.0038 ratio0 0.0e+00
+it 70 steps 573440 succ 0.989 ret 3.040 kl 0.0038 ratio0 0.0e+00
+it 71 steps 581632 succ 0.994 ret 3.049 kl 0.0034 ratio0 0.0e+00
+it 72 steps 589824 succ 1.000 ret 2.955 kl 0.0044 ratio0 0.0e+00
+it 73 steps 598016 succ 0.982 ret 3.036 kl 0.0041 ratio0 0.0e+00
+it 74 steps 606208 succ 0.989 ret 2.946 kl 0.0038 ratio0 0.0e+00
+it 75 steps 614400 succ 1.000 ret 3.132 kl 0.0037 ratio0 0.0e+00
+{'iteration': 75, 'env_steps': 614400, 'policy': 'deterministic', 'ret_mean': 3.206640391049441, 'ret_sd': 0.7579490692666824, 'success': 0.99, 'len_mean': 42.685, 'n': 200}
+it 76 steps 622592 succ 0.989 ret 2.988 kl 0.0039 ratio0 0.0e+00
+it 77 steps 630784 succ 0.994 ret 3.166 kl 0.0036 ratio0 0.0e+00
+it 78 steps 638976 succ 0.989 ret 2.956 kl 0.0039 ratio0 0.0e+00
+it 79 steps 647168 succ 1.000 ret 3.038 kl 0.0041 ratio0 0.0e+00
+it 80 steps 655360 succ 0.994 ret 2.866 kl 0.0037 ratio0 0.0e+00
+it 81 steps 663552 succ 0.994 ret 3.092 kl 0.0038 ratio0 0.0e+00
+it 82 steps 671744 succ 0.994 ret 3.081 kl 0.0039 ratio0 0.0e+00
+it 83 steps 679936 succ 1.000 ret 3.149 kl 0.0040 ratio0 0.0e+00
+it 84 steps 688128 succ 0.994 ret 3.002 kl 0.0042 ratio0 0.0e+00
+it 85 steps 696320 succ 1.000 ret 3.066 kl 0.0044 ratio0 0.0e+00
+it 86 steps 704512 succ 1.000 ret 3.019 kl 0.0045 ratio0 0.0e+00
+it 87 steps 712704 succ 0.989 ret 2.921 kl 0.0042 ratio0 0.0e+00
+it 88 steps 720896 succ 1.000 ret 3.127 kl 0.0052 ratio0 0.0e+00
+it 89 steps 729088 succ 0.983 ret 2.969 kl 0.0042 ratio0 0.0e+00
+it 90 steps 737280 succ 0.994 ret 3.085 kl 0.0041 ratio0 0.0e+00
+it 91 steps 745472 succ 0.994 ret 2.969 kl 0.0039 ratio0 0.0e+00
+it 92 steps 753664 succ 0.989 ret 2.979 kl 0.0043 ratio0 0.0e+00
+it 93 steps 761856 succ 1.000 ret 3.085 kl 0.0037 ratio0 0.0e+00
+it 94 steps 770048 succ 0.994 ret 3.002 kl 0.0042 ratio0 0.0e+00
+it 95 steps 778240 succ 0.984 ret 3.063 kl 0.0042 ratio0 0.0e+00
+it 96 steps 786432 succ 0.994 ret 3.043 kl 0.0035 ratio0 0.0e+00
+it 97 steps 794624 succ 1.000 ret 2.989 kl 0.0043 ratio0 0.0e+00
+it 98 steps 802816 succ 0.983 ret 3.010 kl 0.0041 ratio0 0.0e+00
+it 99 steps 811008 succ 1.000 ret 3.079 kl 0.0039 ratio0 0.0e+00
+it 100 steps 819200 succ 0.994 ret 3.091 kl 0.0040 ratio0 0.0e+00
+{'iteration': 100, 'env_steps': 819200, 'policy': 'deterministic', 'ret_mean': 3.2163836096890734, 'ret_sd': 0.7611869262856311, 'success': 0.99, 'len_mean': 42.195, 'n': 200}
+it 101 steps 827392 succ 0.994 ret 3.117 kl 0.0038 ratio0 0.0e+00
+it 102 steps 835584 succ 1.000 ret 3.158 kl 0.0040 ratio0 0.0e+00
+it 103 steps 843776 succ 0.995 ret 2.976 kl 0.0043 ratio0 0.0e+00
+it 104 steps 851968 succ 1.000 ret 3.018 kl 0.0040 ratio0 0.0e+00
+it 105 steps 860160 succ 0.995 ret 2.920 kl 0.0042 ratio0 0.0e+00
+it 106 steps 868352 succ 0.994 ret 3.135 kl 0.0035 ratio0 0.0e+00
+it 107 steps 876544 succ 0.994 ret 3.063 kl 0.0051 ratio0 0.0e+00
+it 108 steps 884736 succ 0.994 ret 3.109 kl 0.0051 ratio0 0.0e+00
+it 109 steps 892928 succ 1.000 ret 3.018 kl 0.0046 ratio0 0.0e+00
+it 110 steps 901120 succ 1.000 ret 2.999 kl 0.0035 ratio0 0.0e+00
+it 111 steps 909312 succ 1.000 ret 3.010 kl 0.0043 ratio0 0.0e+00
+it 112 steps 917504 succ 1.000 ret 2.961 kl 0.0036 ratio0 0.0e+00
+it 113 steps 925696 succ 0.995 ret 3.067 kl 0.0042 ratio0 0.0e+00
+it 114 steps 933888 succ 1.000 ret 3.117 kl 0.0038 ratio0 0.0e+00
+it 115 steps 942080 succ 0.995 ret 3.034 kl 0.0045 ratio0 0.0e+00
+it 116 steps 950272 succ 1.000 ret 3.006 kl 0.0039 ratio0 0.0e+00
+it 117 steps 958464 succ 0.994 ret 3.149 kl 0.0048 ratio0 0.0e+00
+it 118 steps 966656 succ 1.000 ret 3.022 kl 0.0044 ratio0 0.0e+00
+it 119 steps 974848 succ 1.000 ret 3.055 kl 0.0039 ratio0 0.0e+00
+it 120 steps 983040 succ 1.000 ret 3.029 kl 0.0046 ratio0 0.0e+00
+it 121 steps 991232 succ 0.995 ret 2.999 kl 0.0050 ratio0 0.0e+00
+it 122 steps 999424 succ 0.995 ret 3.090 kl 0.0034 ratio0 0.0e+00
+it 123 steps 1007616 succ 1.000 ret 2.943 kl 0.0041 ratio0 0.0e+00
+it 124 steps 1015808 succ 1.000 ret 3.090 kl 0.0045 ratio0 0.0e+00
+it 125 steps 1024000 succ 0.994 ret 3.127 kl 0.0036 ratio0 0.0e+00
+{'iteration': 125, 'env_steps': 1024000, 'policy': 'deterministic', 'ret_mean': 3.214865781797562, 'ret_sd': 0.7568616546610966, 'success': 0.99, 'len_mean': 41.755, 'n': 200}
+it 126 steps 1032192 succ 1.000 ret 3.196 kl 0.0044 ratio0 0.0e+00
+it 127 steps 1040384 succ 1.000 ret 3.154 kl 0.0041 ratio0 0.0e+00
+it 128 steps 1048576 succ 0.995 ret 2.998 kl 0.0045 ratio0 0.0e+00
+it 129 steps 1056768 succ 1.000 ret 2.982 kl 0.0044 ratio0 0.0e+00
+it 130 steps 1064960 succ 1.000 ret 2.926 kl 0.0052 ratio0 0.0e+00
+it 131 steps 1073152 succ 0.995 ret 3.142 kl 0.0044 ratio0 0.0e+00
+it 132 steps 1081344 succ 1.000 ret 3.075 kl 0.0047 ratio0 0.0e+00
+it 133 steps 1089536 succ 1.000 ret 3.122 kl 0.0041 ratio0 0.0e+00
+it 134 steps 1097728 succ 1.000 ret 3.042 kl 0.0042 ratio0 0.0e+00
+it 135 steps 1105920 succ 1.000 ret 3.021 kl 0.0050 ratio0 0.0e+00
+it 136 steps 1114112 succ 1.000 ret 3.037 kl 0.0041 ratio0 0.0e+00
+it 137 steps 1122304 succ 1.000 ret 3.024 kl 0.0045 ratio0 0.0e+00
+it 138 steps 1130496 succ 1.000 ret 3.110 kl 0.0046 ratio0 0.0e+00
+it 139 steps 1138688 succ 1.000 ret 3.092 kl 0.0046 ratio0 0.0e+00
+it 140 steps 1146880 succ 0.990 ret 3.075 kl 0.0053 ratio0 0.0e+00
+it 141 steps 1155072 succ 1.000 ret 3.061 kl 0.0045 ratio0 0.0e+00
+it 142 steps 1163264 succ 0.995 ret 3.144 kl 0.0041 ratio0 0.0e+00
+it 143 steps 1171456 succ 1.000 ret 3.029 kl 0.0046 ratio0 0.0e+00
+it 144 steps 1179648 succ 0.995 ret 3.041 kl 0.0058 ratio0 0.0e+00
+it 145 steps 1187840 succ 0.995 ret 3.082 kl 0.0047 ratio0 0.0e+00
+it 146 steps 1196032 succ 1.000 ret 3.080 kl 0.0043 ratio0 0.0e+00
+it 147 steps 1204224 succ 0.995 ret 2.999 kl 0.0040 ratio0 0.0e+00
+it 148 steps 1212416 succ 1.000 ret 3.110 kl 0.0042 ratio0 0.0e+00
+it 149 steps 1220608 succ 1.000 ret 3.062 kl 0.0048 ratio0 0.0e+00
+it 150 steps 1228800 succ 1.000 ret 3.247 kl 0.0051 ratio0 0.0e+00
+{'iteration': 150, 'env_steps': 1228800, 'policy': 'deterministic', 'ret_mean': 3.2110548405745067, 'ret_sd': 0.7630619907134413, 'success': 0.99, 'len_mean': 41.395, 'n': 200}
+it 151 steps 1236992 succ 1.000 ret 3.055 kl 0.0043 ratio0 0.0e+00
+it 152 steps 1245184 succ 1.000 ret 3.175 kl 0.0060 ratio0 0.0e+00
+it 153 steps 1253376 succ 1.000 ret 3.001 kl 0.0044 ratio0 0.0e+00
+it 154 steps 1261568 succ 0.995 ret 2.959 kl 0.0040 ratio0 0.0e+00
+it 155 steps 1269760 succ 1.000 ret 3.011 kl 0.0057 ratio0 0.0e+00
+it 156 steps 1277952 succ 0.995 ret 3.144 kl 0.0038 ratio0 0.0e+00
+it 157 steps 1286144 succ 1.000 ret 3.091 kl 0.0046 ratio0 0.0e+00
+it 158 steps 1294336 succ 1.000 ret 3.124 kl 0.0049 ratio0 0.0e+00
+it 159 steps 1302528 succ 1.000 ret 3.081 kl 0.0041 ratio0 0.0e+00
+it 160 steps 1310720 succ 0.990 ret 2.983 kl 0.0057 ratio0 0.0e+00
+it 161 steps 1318912 succ 0.995 ret 3.041 kl 0.0047 ratio0 0.0e+00
+it 162 steps 1327104 succ 1.000 ret 3.096 kl 0.0044 ratio0 0.0e+00
+it 163 steps 1335296 succ 1.000 ret 3.102 kl 0.0043 ratio0 0.0e+00
+it 164 steps 1343488 succ 1.000 ret 3.147 kl 0.0049 ratio0 0.0e+00
+it 165 steps 1351680 succ 1.000 ret 2.968 kl 0.0041 ratio0 0.0e+00
+it 166 steps 1359872 succ 1.000 ret 3.083 kl 0.0054 ratio0 0.0e+00
+it 167 steps 1368064 succ 1.000 ret 3.171 kl 0.0044 ratio0 0.0e+00
+it 168 steps 1376256 succ 1.000 ret 3.014 kl 0.0048 ratio0 0.0e+00
+it 169 steps 1384448 succ 0.995 ret 3.085 kl 0.0048 ratio0 0.0e+00
+it 170 steps 1392640 succ 1.000 ret 3.007 kl 0.0055 ratio0 0.0e+00
+it 171 steps 1400832 succ 1.000 ret 3.068 kl 0.0049 ratio0 0.0e+00
+it 172 steps 1409024 succ 0.990 ret 3.025 kl 0.0049 ratio0 0.0e+00
+it 173 steps 1417216 succ 1.000 ret 3.115 kl 0.0048 ratio0 0.0e+00
+it 174 steps 1425408 succ 1.000 ret 3.110 kl 0.0045 ratio0 0.0e+00
+it 175 steps 1433600 succ 1.000 ret 3.286 kl 0.0044 ratio0 0.0e+00
+{'iteration': 175, 'env_steps': 1433600, 'policy': 'deterministic', 'ret_mean': 3.220523616266437, 'ret_sd': 0.7767130189159951, 'success': 0.99, 'len_mean': 41.505, 'n': 200}
+it 176 steps 1441792 succ 1.000 ret 3.082 kl 0.0041 ratio0 0.0e+00
+it 177 steps 1449984 succ 1.000 ret 3.170 kl 0.0052 ratio0 0.0e+00
+it 178 steps 1458176 succ 1.000 ret 2.977 kl 0.0048 ratio0 0.0e+00
+it 179 steps 1466368 succ 1.000 ret 2.939 kl 0.0058 ratio0 0.0e+00
+it 180 steps 1474560 succ 1.000 ret 2.999 kl 0.0049 ratio0 0.0e+00
+it 181 steps 1482752 succ 0.995 ret 3.096 kl 0.0057 ratio0 0.0e+00
+it 182 steps 1490944 succ 0.995 ret 3.062 kl 0.0055 ratio0 0.0e+00
+it 183 steps 1499136 succ 1.000 ret 3.081 kl 0.0058 ratio0 0.0e+00
+it 184 steps 1507328 succ 1.000 ret 3.053 kl 0.0050 ratio0 0.0e+00
+it 185 steps 1515520 succ 0.995 ret 3.000 kl 0.0061 ratio0 0.0e+00
+it 186 steps 1523712 succ 1.000 ret 3.017 kl 0.0052 ratio0 0.0e+00
+it 187 steps 1531904 succ 1.000 ret 3.114 kl 0.0043 ratio0 0.0e+00
+it 188 steps 1540096 succ 1.000 ret 3.056 kl 0.0058 ratio0 0.0e+00
+it 189 steps 1548288 succ 1.000 ret 3.078 kl 0.0053 ratio0 0.0e+00
+it 190 steps 1556480 succ 1.000 ret 2.977 kl 0.0051 ratio0 0.0e+00
+it 191 steps 1564672 succ 0.995 ret 3.145 kl 0.0048 ratio0 0.0e+00
+it 192 steps 1572864 succ 0.995 ret 3.076 kl 0.0049 ratio0 0.0e+00
+it 193 steps 1581056 succ 1.000 ret 3.052 kl 0.0041 ratio0 0.0e+00
+it 194 steps 1589248 succ 0.994 ret 3.125 kl 0.0064 ratio0 0.0e+00
+it 195 steps 1597440 succ 1.000 ret 2.932 kl 0.0056 ratio0 0.0e+00
+it 196 steps 1605632 succ 0.990 ret 3.039 kl 0.0052 ratio0 0.0e+00
+it 197 steps 1613824 succ 0.995 ret 3.037 kl 0.0053 ratio0 0.0e+00
+it 198 steps 1622016 succ 0.995 ret 3.096 kl 0.0046 ratio0 0.0e+00
+it 199 steps 1630208 succ 1.000 ret 3.119 kl 0.0048 ratio0 0.0e+00
+it 200 steps 1638400 succ 1.000 ret 3.217 kl 0.0047 ratio0 0.0e+00
+{'iteration': 200, 'env_steps': 1638400, 'policy': 'deterministic', 'ret_mean': 3.192679943810217, 'ret_sd': 0.802492326371374, 'success': 0.995, 'len_mean': 41.555, 'n': 200}
+it 201 steps 1646592 succ 1.000 ret 3.090 kl 0.0047 ratio0 0.0e+00
+it 202 steps 1654784 succ 0.995 ret 3.170 kl 0.0051 ratio0 0.0e+00
+it 203 steps 1662976 succ 1.000 ret 2.963 kl 0.0066 ratio0 0.0e+00
+it 204 steps 1671168 succ 1.000 ret 2.911 kl 0.0049 ratio0 0.0e+00
+it 205 steps 1679360 succ 1.000 ret 2.983 kl 0.0057 ratio0 0.0e+00
+it 206 steps 1687552 succ 1.000 ret 3.157 kl 0.0049 ratio0 0.0e+00
+it 207 steps 1695744 succ 1.000 ret 3.090 kl 0.0050 ratio0 0.0e+00
+it 208 steps 1703936 succ 0.989 ret 3.053 kl 0.0056 ratio0 0.0e+00
+it 209 steps 1712128 succ 1.000 ret 3.054 kl 0.0053 ratio0 0.0e+00
+it 210 steps 1720320 succ 0.985 ret 2.978 kl 0.0046 ratio0 0.0e+00
+it 211 steps 1728512 succ 1.000 ret 2.992 kl 0.0054 ratio0 0.0e+00
+it 212 steps 1736704 succ 1.000 ret 3.105 kl 0.0053 ratio0 0.0e+00
+it 213 steps 1744896 succ 0.995 ret 3.087 kl 0.0049 ratio0 0.0e+00
+it 214 steps 1753088 succ 0.995 ret 3.075 kl 0.0052 ratio0 0.0e+00
+it 215 steps 1761280 succ 1.000 ret 3.009 kl 0.0064 ratio0 0.0e+00
+it 216 steps 1769472 succ 1.000 ret 3.108 kl 0.0056 ratio0 0.0e+00
+it 217 steps 1777664 succ 0.995 ret 3.082 kl 0.0057 ratio0 0.0e+00
+it 218 steps 1785856 succ 1.000 ret 3.066 kl 0.0050 ratio0 0.0e+00
+it 219 steps 1794048 succ 0.989 ret 3.051 kl 0.0059 ratio0 0.0e+00
+it 220 steps 1802240 succ 0.995 ret 2.994 kl 0.0060 ratio0 0.0e+00
+it 221 steps 1810432 succ 0.995 ret 2.996 kl 0.0058 ratio0 0.0e+00
+it 222 steps 1818624 succ 1.000 ret 2.991 kl 0.0051 ratio0 0.0e+00
+it 223 steps 1826816 succ 1.000 ret 3.119 kl 0.0040 ratio0 0.0e+00
+it 224 steps 1835008 succ 1.000 ret 3.160 kl 0.0057 ratio0 0.0e+00
+it 225 steps 1843200 succ 0.994 ret 3.133 kl 0.0061 ratio0 0.0e+00
+{'iteration': 225, 'env_steps': 1843200, 'policy': 'deterministic', 'ret_mean': 3.198588290384505, 'ret_sd': 0.7697421848627896, 'success': 0.985, 'len_mean': 41.815, 'n': 200}
+it 226 steps 1851392 succ 1.000 ret 3.073 kl 0.0049 ratio0 0.0e+00
+it 227 steps 1859584 succ 1.000 ret 3.132 kl 0.0053 ratio0 0.0e+00
+it 228 steps 1867776 succ 1.000 ret 2.936 kl 0.0064 ratio0 0.0e+00
+it 229 steps 1875968 succ 1.000 ret 2.942 kl 0.0060 ratio0 0.0e+00
+it 230 steps 1884160 succ 1.000 ret 3.015 kl 0.0057 ratio0 0.0e+00
+it 231 steps 1892352 succ 0.995 ret 3.089 kl 0.0072 ratio0 0.0e+00
+it 232 steps 1900544 succ 0.989 ret 3.120 kl 0.0050 ratio0 0.0e+00
+it 233 steps 1908736 succ 0.990 ret 3.097 kl 0.0050 ratio0 0.0e+00
+it 234 steps 1916928 succ 1.000 ret 3.068 kl 0.0056 ratio0 0.0e+00
+it 235 steps 1925120 succ 0.995 ret 3.022 kl 0.0068 ratio0 0.0e+00
+it 236 steps 1933312 succ 0.995 ret 2.967 kl 0.0059 ratio0 0.0e+00
+it 237 steps 1941504 succ 1.000 ret 3.088 kl 0.0052 ratio0 0.0e+00
+it 238 steps 1949696 succ 1.000 ret 3.089 kl 0.0058 ratio0 0.0e+00
+it 239 steps 1957888 succ 1.000 ret 3.043 kl 0.0058 ratio0 0.0e+00
+it 240 steps 1966080 succ 1.000 ret 3.008 kl 0.0051 ratio0 0.0e+00
+it 241 steps 1974272 succ 1.000 ret 3.146 kl 0.0062 ratio0 0.0e+00
+it 242 steps 1982464 succ 1.000 ret 3.014 kl 0.0056 ratio0 0.0e+00
+it 243 steps 1990656 succ 0.995 ret 3.087 kl 0.0052 ratio0 0.0e+00
+it 244 steps 1998848 succ 0.995 ret 3.065 kl 0.0054 ratio0 0.0e+00
+it 245 steps 2007040 succ 1.000 ret 3.012 kl 0.0054 ratio0 0.0e+00
+it 246 steps 2015232 succ 0.995 ret 2.996 kl 0.0055 ratio0 0.0e+00
+it 247 steps 2023424 succ 1.000 ret 3.097 kl 0.0051 ratio0 0.0e+00
+it 248 steps 2031616 succ 1.000 ret 3.127 kl 0.0055 ratio0 0.0e+00
+it 249 steps 2039808 succ 1.000 ret 3.192 kl 0.0063 ratio0 0.0e+00
+it 250 steps 2048000 succ 1.000 ret 3.115 kl 0.0056 ratio0 0.0e+00
+{'iteration': 250, 'env_steps': 2048000, 'policy': 'deterministic', 'ret_mean': 3.1963438442582266, 'ret_sd': 0.8017487880720545, 'success': 0.985, 'len_mean': 41.62, 'n': 200}
+it 251 steps 2056192 succ 1.000 ret 3.057 kl 0.0054 ratio0 0.0e+00
+it 252 steps 2064384 succ 0.990 ret 3.138 kl 0.0055 ratio0 0.0e+00
+it 253 steps 2072576 succ 0.995 ret 2.914 kl 0.0061 ratio0 0.0e+00
+it 254 steps 2080768 succ 0.995 ret 2.928 kl 0.0049 ratio0 0.0e+00
+it 255 steps 2088960 succ 1.000 ret 3.027 kl 0.0056 ratio0 0.0e+00
+it 256 steps 2097152 succ 0.989 ret 3.121 kl 0.0058 ratio0 0.0e+00
+it 257 steps 2105344 succ 0.990 ret 3.125 kl 0.0055 ratio0 0.0e+00
+it 258 steps 2113536 succ 1.000 ret 3.098 kl 0.0065 ratio0 0.0e+00
+it 259 steps 2121728 succ 1.000 ret 3.046 kl 0.0058 ratio0 0.0e+00
+it 260 steps 2129920 succ 0.990 ret 3.001 kl 0.0065 ratio0 0.0e+00
+it 261 steps 2138112 succ 1.000 ret 2.981 kl 0.0055 ratio0 0.0e+00
+it 262 steps 2146304 succ 1.000 ret 3.055 kl 0.0060 ratio0 0.0e+00
+it 263 steps 2154496 succ 0.995 ret 3.132 kl 0.0061 ratio0 0.0e+00
+it 264 steps 2162688 succ 1.000 ret 3.014 kl 0.0058 ratio0 0.0e+00
+it 265 steps 2170880 succ 1.000 ret 3.034 kl 0.0049 ratio0 0.0e+00
+it 266 steps 2179072 succ 1.000 ret 3.091 kl 0.0068 ratio0 0.0e+00
+it 267 steps 2187264 succ 0.995 ret 3.024 kl 0.0054 ratio0 0.0e+00
+it 268 steps 2195456 succ 1.000 ret 3.110 kl 0.0056 ratio0 0.0e+00
+it 269 steps 2203648 succ 1.000 ret 3.050 kl 0.0053 ratio0 0.0e+00
+it 270 steps 2211840 succ 1.000 ret 3.020 kl 0.0065 ratio0 0.0e+00
+it 271 steps 2220032 succ 0.990 ret 2.978 kl 0.0058 ratio0 0.0e+00
+it 272 steps 2228224 succ 1.000 ret 3.117 kl 0.0057 ratio0 0.0e+00
+it 273 steps 2236416 succ 1.000 ret 3.091 kl 0.0055 ratio0 0.0e+00
+it 274 steps 2244608 succ 1.000 ret 3.271 kl 0.0063 ratio0 0.0e+00
+it 275 steps 2252800 succ 1.000 ret 3.070 kl 0.0069 ratio0 0.0e+00
+{'iteration': 275, 'env_steps': 2252800, 'policy': 'deterministic', 'ret_mean': 3.196761471843347, 'ret_sd': 0.7634972739051253, 'success': 0.985, 'len_mean': 41.545, 'n': 200}
+it 276 steps 2260992 succ 1.000 ret 3.112 kl 0.0048 ratio0 0.0e+00
+it 277 steps 2269184 succ 0.995 ret 3.141 kl 0.0054 ratio0 0.0e+00
+it 278 steps 2277376 succ 1.000 ret 2.975 kl 0.0055 ratio0 0.0e+00
+it 279 steps 2285568 succ 1.000 ret 2.950 kl 0.0068 ratio0 0.0e+00
+it 280 steps 2293760 succ 1.000 ret 3.031 kl 0.0054 ratio0 0.0e+00
+it 281 steps 2301952 succ 0.979 ret 3.100 kl 0.0063 ratio0 0.0e+00
+it 282 steps 2310144 succ 0.995 ret 3.111 kl 0.0066 ratio0 0.0e+00
+it 283 steps 2318336 succ 1.000 ret 3.082 kl 0.0064 ratio0 0.0e+00
+it 284 steps 2326528 succ 1.000 ret 3.092 kl 0.0067 ratio0 0.0e+00
+it 285 steps 2334720 succ 0.995 ret 3.030 kl 0.0062 ratio0 0.0e+00
+it 286 steps 2342912 succ 0.995 ret 2.999 kl 0.0059 ratio0 0.0e+00
+it 287 steps 2351104 succ 0.989 ret 3.128 kl 0.0060 ratio0 0.0e+00
+it 288 steps 2359296 succ 0.995 ret 3.097 kl 0.0054 ratio0 0.0e+00
+it 289 steps 2367488 succ 1.000 ret 3.099 kl 0.0058 ratio0 0.0e+00
+it 290 steps 2375680 succ 1.000 ret 3.021 kl 0.0066 ratio0 0.0e+00
+it 291 steps 2383872 succ 1.000 ret 3.160 kl 0.0069 ratio0 0.0e+00
+it 292 steps 2392064 succ 0.990 ret 3.018 kl 0.0056 ratio0 0.0e+00
+it 293 steps 2400256 succ 1.000 ret 3.140 kl 0.0059 ratio0 0.0e+00
+it 294 steps 2408448 succ 0.995 ret 3.039 kl 0.0074 ratio0 0.0e+00
+it 295 steps 2416640 succ 0.994 ret 3.059 kl 0.0057 ratio0 0.0e+00
+it 296 steps 2424832 succ 0.995 ret 2.995 kl 0.0054 ratio0 0.0e+00
+it 297 steps 2433024 succ 1.000 ret 3.058 kl 0.0069 ratio0 0.0e+00
+it 298 steps 2441216 succ 1.000 ret 3.115 kl 0.0052 ratio0 0.0e+00
+it 299 steps 2449408 succ 1.000 ret 3.204 kl 0.0058 ratio0 0.0e+00
+it 300 steps 2457600 succ 1.000 ret 3.148 kl 0.0064 ratio0 0.0e+00
+{'iteration': 300, 'env_steps': 2457600, 'policy': 'deterministic', 'ret_mean': 3.165800304177683, 'ret_sd': 0.7991208843527674, 'success': 0.99, 'len_mean': 42.105, 'n': 200}
+{
+ "scenario": "navigation",
+ "n_agents": 3,
+ "envs": 128,
+ "max_steps": 100,
+ "hyperparams": {
+  "seeds": [
+   0,
+   1,
+   2
+  ],
+  "envs_per_density": 128,
+  "rollout_steps": 64,
+  "max_iterations": 400,
+  "time_limit_min": 25.0,
+  "gamma": 0.99,
+  "gae_lambda": 0.95,
+  "clip": 0.2,
+  "epochs": 10,
+  "minibatches": 16,
+  "lr_actor": 0.0003,
+  "lr_critic": 0.001,
+  "entropy_coef": 0.0,
+  "max_grad_norm": 0.5,
+  "hidden_actor": [
+   128,
+   128
+  ],
+  "hidden_critic": [
+   256,
+   256
+  ],
+  "init_std_frac": 0.5,
+  "checkpoint_every": 10
+ },
+ "seed": 0,
+ "eval_seed": 777,
+ "action_box": [
+  [
+   -1.0,
+   -1.0
+  ],
+  [
+   1.0,
+   1.0
+  ]
+ ],
+ "iterations": 300,
+ "env_steps": 2457600,
+ "ratio0_maxdev_max": 0.0,
+ "applied_within_box": true,
+ "initial": {
+  "iteration": 0,
+  "env_steps": 0,
+  "policy": "initial_deterministic",
+  "ret_mean": 0.0024953369051218034,
+  "ret_sd": 0.012005284627088646,
+  "success": 0.0,
+  "len_mean": 100.0,
+  "n": 200
+ },
+ "random": {
+  "iteration": 0,
+  "env_steps": 0,
+  "policy": "uniform_random",
+  "ret_mean": -0.6033568383753299,
+  "ret_sd": 1.613816360232099,
+  "success": 0.0,
+  "len_mean": 100.0,
+  "n": 200
+ },
+ "final": {
+  "iteration": 300,
+  "env_steps": 2457600,
+  "policy": "deterministic",
+  "ret_mean": 3.165800304177683,
+  "ret_sd": 0.7991208843527674,
+  "success": 0.99,
+  "len_mean": 42.105,
+  "n": 200
+ },
+ "best": {
+  "iteration": 175,
+  "env_steps": 1433600,
+  "policy": "deterministic",
+  "ret_mean": 3.220523616266437,
+  "ret_sd": 0.7767130189159951,
+  "success": 0.99,
+  "len_mean": 41.505,
+  "n": 200
+ }
+}

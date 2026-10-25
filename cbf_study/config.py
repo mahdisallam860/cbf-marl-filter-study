@@ -28,6 +28,7 @@ from .scenario import ScenarioConfig
 DEFAULT_PATH = Path(__file__).resolve().parents[1] / "config" / "study.toml"
 STUDY_SECTIONS = ("timing", "robot", "obstacles", "scenario", "filter", "protocol", "reward",
                   "observation", "gate", "seeds")
+OPTIONAL_SECTIONS = ("curriculum",)      # added in config v2
 # sections / keys that define the environment a policy sees (training == evaluation)
 ENV_KEYS = ("timing", "robot", "obstacles", "scenario", "filter.ell", "protocol", "observation")
 APPROVAL_STATES = ("pending", "approved")
@@ -50,15 +51,20 @@ class RewardConfig:
     w_collision_obst: float
     w_collision_rr: float
     w_control: float
+    w_proximity: float = 0.0          # config v2; absent in v1 (no proximity penalty)
+    proximity_margin: float = 0.15
 
 
 class StudyConfig:
     def __init__(self, raw: dict, path: str = "<dict>"):
         self.path = str(path)
+        self.version = int(raw.get("meta", {}).get("config_version", 1))
         self.values: dict[str, dict] = {}
         self.approval: dict[str, str] = {}
-        for sec in STUDY_SECTIONS:
+        for sec in STUDY_SECTIONS + OPTIONAL_SECTIONS:
             if sec not in raw:
+                if sec in OPTIONAL_SECTIONS:
+                    continue
                 raise ValueError(f"{path}: missing section [{sec}]")
             self.values[sec] = {}
             for key, ent in raw[sec].items():
@@ -140,7 +146,21 @@ class StudyConfig:
                          obs_range=float(o["obs_range"]), goal_clip=float(o["goal_clip"]))
 
     def reward_config(self) -> RewardConfig:
-        return RewardConfig(**{f.name: float(self.values["reward"][f.name]) for f in fields(RewardConfig)})
+        r = self.values["reward"]
+        return RewardConfig(**{f.name: float(r[f.name]) for f in fields(RewardConfig) if f.name in r})
+
+    @property
+    def observes_all_obstacles(self) -> bool:
+        """True when k_obst covers the largest density, so no obstacle within obs_range is dropped."""
+        return int(self["observation.k_obst"]) >= max(self.densities)
+
+    def curriculum(self):
+        if "curriculum" not in self.values:
+            return None
+        c = self.values["curriculum"]
+        return dict(stages=[tuple(int(k) for k in s) for s in c["stages"]], budget=[int(b) for b in c["stage_budget"]],
+                    advance_goal_rate=float(c["advance_goal_rate"]), k2_stop_goal_rate=float(c["k2_stop_goal_rate"]),
+                    eval_every=int(c["eval_every"]), eval_trials=int(c["eval_trials"]), envs_per_iter=int(c["envs_per_iter"]))
 
     # ---- seeds ----------------------------------------------------------------------------------
     def train_seed(self, run_seed, density, chunk):
@@ -184,6 +204,12 @@ class StudyConfig:
             raise ValueError("seed bases must be at least 1e6 apart so train/validation/pilot layouts never coincide")
         if not self.densities or min(self.densities) < 0:
             raise ValueError("densities must be non-negative obstacle counts")
+        cur = self.curriculum()
+        if cur is not None:
+            if len(cur["stages"]) != len(cur["budget"]) or tuple(cur["stages"][-1]) != self.densities:
+                raise ValueError("curriculum: one budget per stage, and the last stage must be the study densities")
+            if any(cur["envs_per_iter"] % len(s) for s in cur["stages"]):
+                raise ValueError("curriculum: envs_per_iter must split equally over every stage's densities")
 
 
 def check_paired(pc_off: ProtocolConfig, fc_off: FilterConfig, pc_on: ProtocolConfig, fc_on: FilterConfig):

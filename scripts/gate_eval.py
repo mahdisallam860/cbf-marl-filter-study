@@ -12,13 +12,13 @@ sys.path.insert(0, str(Path(__file__).resolve().parents[1]))
 
 
 def eval_ckpt(args):
-    path, batch = args
+    path, batch, config_path = args
     import torch
     torch.set_num_threads(1)
     from cbf_study.config import StudyConfig
     from cbf_study.evaluate import eval_layout, outcome_counts, run_condition
     from cbf_study.policies import FrozenMAPPOPolicy
-    cfg = StudyConfig.load()
+    cfg = StudyConfig.load(config_path) if config_path else StudyConfig.load()
     pol = FrozenMAPPOPolicy(path, cfg)
     m = re.search(r"seed_?(\d+).*ckpt_it(\d+)", path)
     rows = []
@@ -40,16 +40,17 @@ def main():
     ap.add_argument("--batch", type=int, default=200, help="validation trials per density")
     ap.add_argument("--workers", type=int, default=4)
     ap.add_argument("--out", default="results/gate")
+    ap.add_argument("--config", default=None, help="config the checkpoints were trained under (v1: config/archive/study_v1.toml)")
     a = ap.parse_args()
     from cbf_study.config import StudyConfig
     from cbf_study.evaluate import rate_ci, write_rows
-    cfg = StudyConfig.load()
+    cfg = StudyConfig.load(a.config) if a.config else StudyConfig.load()
     paths = sorted(glob.glob(a.ckpts))
     out = Path(a.out); out.mkdir(parents=True, exist_ok=True)
     t0 = time.time()
     rows = []
     with ProcessPoolExecutor(a.workers) as ex:
-        for r in ex.map(eval_ckpt, [(p, a.batch) for p in paths]):
+        for r in ex.map(eval_ckpt, [(p, a.batch, a.config) for p in paths]):
             rows += r
             print(f"{r[0]['ckpt']}: " + "  ".join(f"K{x['density']} goal {x['GOAL']}/{x['n']} coll {x['COLLISION']}/{x['n']}" for x in r),
                   flush=True)
@@ -81,7 +82,7 @@ def main():
     per_density = lambda r: {str(x["density"]): dict(goal_rate=x["goal_rate"], coll_rate=x["coll_rate"],
                                                      goal_ok=x["goal_ok"], coll_ok=x["coll_ok"])
                              for x in table if x["ckpt"] == r["ckpt"] and x["density"] != "pooled"}
-    sel = dict(rule=cfg["gate.selection"], goal_rate_min=gmin, collision_rate_min=cmin,
+    sel = dict(config=cfg.path, config_version=cfg.version, rule=cfg["gate.selection"], goal_rate_min=gmin, collision_rate_min=cmin,
                validation_trials_per_density=a.batch, env_fingerprint=cfg.env_fingerprint(),
                pending_placeholders=len(cfg.pending()), n_checkpoints=len(pooled),
                best=dict(ckpt=best["ckpt"], seed=best["seed"], iteration=best["iteration"], goal_rate=best["goal_rate"],
