@@ -10,8 +10,10 @@
 * Training layouts: each density keeps one seeded stream across stages, so no training layout is
   repeated and none coincides with validation or pilot layouts.
 
-Writes results/curriculum/seed_<s>/{curve.csv, heldout.csv, stages.json, train.log,
-stage_checkpoints/, checkpoints/ (final stage only: the gate reads these)}."""
+Rows of curve.csv and heldout.csv are appended as they happen and stages.json is rewritten after
+every stage; latest.pt (full learner state) is saved at every held-out evaluation and --resume
+continues from it. Writes results/curriculum/seed_<s>/{curve.csv, heldout.csv, stages.json,
+train.log, stage_checkpoints/, checkpoints/ (final stage only: the gate reads these)}."""
 import argparse, csv, json, sys, time
 from pathlib import Path
 sys.path.insert(0, str(Path(__file__).resolve().parents[1]))
@@ -44,6 +46,7 @@ def main():
     ap.add_argument("--out", default=None)
     ap.add_argument("--config", default=None)
     ap.add_argument("--smoke", action="store_true", help="TEST ONLY: tiny budgets, envs and evaluations")
+    ap.add_argument("--resume", action="store_true", help="continue from latest.pt (saved at every held-out evaluation)")
     a = ap.parse_args()
     from cbf_study.config import StudyConfig
     from cbf_study.mappo import MappoLearner, _episode_row, save_actor
@@ -73,49 +76,76 @@ def main():
                                                   env_fingerprint=cfg.env_fingerprint(), curriculum=cur, hyperparams=hp), indent=1))
     log(f"seed {a.seed} config v{cfg.version} fingerprint {cfg.env_fingerprint()} curriculum {cur}")
     T = int(hp["rollout_steps"])
-    stream_idx = {}
-    total, it_global, t0 = 0, 0, time.time()
-    stages, heldout_rows, curve = [], [], []
-    stopped = None
+    stream_idx, total, it_global, si0, steps0, wall0 = {}, 0, 0, 0, 0, 0.0
+    stages, stopped = [], None
+    if a.resume and (out / "stages.json").exists() and json.loads((out / "stages.json").read_text()).get("complete"):
+        sys.exit(f"{out}: run already complete (final stage done or STOP rule applied); nothing to resume")
+    if a.resume and (out / "latest.pt").exists():
+        st = torch.load(out / "latest.pt", map_location="cpu", weights_only=False)
+        learner.load(st)
+        si0, steps0, total, it_global = st["stage"], st["stage_env_steps"], st["env_steps"], st["iteration"]
+        stream_idx = {int(k): v for k, v in st["stream_idx"].items()}
+        stages, wall0 = list(st.get("stages", [])), float(st.get("wall", 0.0))
+        for name in ("curve.csv", "heldout.csv"):       # drop rows logged after the restored point
+            trim_csv(out / name, it_global)
+        log(f"resumed at stage {si0}, stage env steps {steps0}, cumulative {total}, iteration {it_global}")
+    else:
+        for name in ("curve.csv", "heldout.csv", "stages.json"):
+            (out / name).unlink(missing_ok=True)
+    t0 = time.time() - wall0
+
+    def save_state(si, steps):
+        torch.save(dict(learner.state(), stage=si, stage_env_steps=steps, env_steps=total, iteration=it_global,
+                        stream_idx={**stream_idx, **{g.K: g.stream.idx for g in env.groups}}, stages=stages,
+                        wall=time.time() - t0), out / "latest.pt")
+
+    def evaluate(si, dens, steps, final_stage):
+        name = f"stage{si}_K{'-'.join(map(str, dens))}_it{it_global:04d}.pt"
+        ck = out / "stage_checkpoints" / name
+        save_actor(ck, learner.actor, dict(meta, iteration=it_global, env_steps=total, stage=si, train_densities=list(dens)))
+        if final_stage:
+            save_actor(out / "checkpoints" / f"ckpt_it{it_global:04d}.pt", learner.actor,
+                       dict(meta, iteration=it_global, env_steps=total, stage=si, train_densities=list(dens)))
+        save_state(si, steps)
+        ev = heldout(cfg, ck, dens, cur["eval_trials"])
+        for K, e in ev.items():
+            append_row(out / "heldout.csv", dict(stage=si, densities="/".join(map(str, dens)), iteration=it_global,
+                                                 stage_env_steps=steps, env_steps=total, density=K, ckpt=str(ck), **e))
+        log(f"  held-out {', '.join(f'K{K}: goal {e['goal']:.3f} coll {e['collision']:.3f} timeout {e['timeout']:.3f}' for K, e in ev.items())}")
+        return ev
+
     for si, (dens, budget) in enumerate(zip(cur["stages"], cur["budget"])):
+        if si < si0:
+            continue
         final_stage = si == len(cur["stages"]) - 1
         E_d = cur["envs_per_iter"] // len(dens)
         env = FormationTrainEnv(cfg, a.seed, E_d, densities=dens, vmas_seed=a.seed * 100 + si)
         for g in env.groups:
             g.stream.idx = stream_idx.get(g.K, 0)
         obs = env.reset()
-        steps, it, last_eval = 0, 0, None
-        log(f"stage {si} densities {dens} budget {budget} env steps, {E_d} envs per density, cumulative {total}")
+        steps = steps0 if si == si0 else 0
+        it, last_eval = steps // (T * env.n_envs), None
+        log(f"stage {si} densities {dens} budget {budget} env steps, {E_d} envs per density, cumulative {total}"
+            + (f" (resumed at stage env step {steps})" if steps else ""))
         while steps < budget:
             b, obs, eps = learner.collect(env, obs, T)
             st = learner.update(b)
             steps += T * env.n_envs; total += T * env.n_envs; it += 1; it_global += 1
             row = _episode_row(it_global, total, time.time() - t0, eps, list(dens))
-            curve.append(dict(stage=si, densities="/".join(map(str, dens)), stage_env_steps=steps,
-                              **dict(zip(["iteration", "env_steps", "wall_s", "episodes", "goal_rate", "collision_rate",
-                                          "timeout_rate", "ep_return", "ep_len", "form_err_mean"], row[:10])),
-                              approx_kl=st["approx_kl"], clipfrac=st["clipfrac"], ratio0_maxdev=st["ratio0_maxdev"]))
+            append_row(out / "curve.csv", dict(stage=si, densities="/".join(map(str, dens)), stage_env_steps=steps,
+                                               **dict(zip(["iteration", "env_steps", "wall_s", "episodes", "goal_rate",
+                                                           "collision_rate", "timeout_rate", "ep_return", "ep_len",
+                                                           "form_err_mean"], row[:10])),
+                                               approx_kl=st["approx_kl"], clipfrac=st["clipfrac"], ratio0_maxdev=st["ratio0_maxdev"]))
             log(f"stage {si} it {it} steps {steps}/{budget} total {total} goal {row[4]:.3f} coll {row[5]:.3f} "
                 f"timeout {row[6]:.3f} kl {st['approx_kl']:.4f}")
-            end = steps >= budget
-            if it % cur["eval_every"] == 0 or end:
-                name = f"stage{si}_K{'-'.join(map(str, dens))}_it{it_global:04d}.pt"
-                ck = out / "stage_checkpoints" / name
-                save_actor(ck, learner.actor, dict(meta, iteration=it_global, env_steps=total, stage=si, train_densities=list(dens)))
-                if final_stage:
-                    save_actor(out / "checkpoints" / f"ckpt_it{it_global:04d}.pt", learner.actor,
-                               dict(meta, iteration=it_global, env_steps=total, stage=si, train_densities=list(dens)))
-                torch.save(dict(learner.state(), stage=si, stage_env_steps=steps, env_steps=total, iteration=it_global,
-                                stream_idx={**stream_idx, **{g.K: g.stream.idx for g in env.groups}}), out / "latest.pt")
-                ev = heldout(cfg, ck, dens, cur["eval_trials"])
-                last_eval = ev
-                for K, e in ev.items():
-                    heldout_rows.append(dict(stage=si, densities="/".join(map(str, dens)), iteration=it_global,
-                                             stage_env_steps=steps, env_steps=total, density=K, ckpt=str(ck), **e))
-                log(f"  held-out {', '.join(f'K{K}: goal {e['goal']:.3f} coll {e['collision']:.3f} timeout {e['timeout']:.3f}' for K, e in ev.items())}")
-                if all(e["goal"] >= cur["advance_goal_rate"] for e in ev.values()) and not final_stage:
+            if it % cur["eval_every"] == 0 or steps >= budget:
+                last_eval = evaluate(si, dens, steps, final_stage)
+                if all(e["goal"] >= cur["advance_goal_rate"] for e in last_eval.values()) and not final_stage:
                     log(f"  advance: held-out GOAL >= {cur['advance_goal_rate']} at every stage density")
                     break
+        if last_eval is None:          # resumed exactly at the end of a stage
+            last_eval = evaluate(si, dens, steps, final_stage)
         for g in env.groups:
             stream_idx[g.K] = g.stream.idx
         stages.append(dict(stage=si, densities=list(dens), budget=budget, env_steps_used=steps, cumulative_env_steps=total,
@@ -124,16 +154,36 @@ def main():
             stopped = (f"STOP: held-out K=2 team GOAL {last_eval[2]['goal']:.3f} < {cur['k2_stop_goal_rate']} "
                        f"after the K=2 budget ({steps} env steps, cumulative {total})")
             log(stopped)
+        save_state(si + 1, 0)
+        (out / "stages.json").write_text(json.dumps(dict(stages=stages, stopped=stopped, total_env_steps=total,
+                                                         complete=final_stage or stopped is not None,
+                                                         wall_s=round(time.time() - t0, 1)), indent=1, default=str))
+        if stopped:
             break
-    for name, data in (("curve.csv", curve), ("heldout.csv", heldout_rows)):
-        with open(out / name, "w", newline="") as f:
-            w = csv.DictWriter(f, fieldnames=list(data[0])); w.writeheader(); w.writerows(data)
-    torch.save(dict(learner.state(), env_steps=total, iteration=it_global, stream_idx=stream_idx), out / "latest.pt")
-    (out / "stages.json").write_text(json.dumps(dict(stages=stages, stopped=stopped, total_env_steps=total,
-                                                     wall_s=round(time.time() - t0, 1)), indent=1, default=str))
     log(json.dumps(dict(stages=[(s["stage"], s["densities"], s["env_steps_used"], s["cumulative_env_steps"]) for s in stages],
                         stopped=stopped)))
 
+
+def append_row(path, row):
+    """append one row; an existing file keeps its header (missing fields are written empty)."""
+    new = not path.exists()
+    fields = list(row) if new else next(csv.reader(open(path)))
+    with open(path, "a", newline="") as f:
+        w = csv.DictWriter(f, fieldnames=fields, restval="")
+        if new:
+            w.writeheader()
+        w.writerow(row)
+
+
+def trim_csv(path, max_iteration):
+    if not path.exists():
+        return
+    rows = list(csv.DictReader(open(path)))
+    with open(path, "w", newline="") as f:
+        if rows:
+            w = csv.DictWriter(f, fieldnames=list(rows[0]))
+            w.writeheader()
+            w.writerows(r for r in rows if int(r["iteration"]) <= max_iteration)
 
 if __name__ == "__main__":
     main()

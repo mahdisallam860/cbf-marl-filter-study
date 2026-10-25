@@ -65,10 +65,19 @@ def sample_layout(seed, batch, n_obst, fcfg: FilterConfig, sc: ScenarioConfig = 
                 break
         k = 0
         tries = 0
+        restarts = 0
         while k < n_obst:
             tries += 1
             if tries > 10000:
-                raise RuntimeError("could not place obstacles; relax ScenarioConfig")
+                # Sampler v1.1: the obstacles placed so far can leave no room for the rest (seen at
+                # K = 8, e.g. layout seed 1108377). Resample this layout's obstacles from scratch
+                # instead of failing. The random stream is consumed exactly as before up to this
+                # point, so every layout that v1 could produce is unchanged.
+                restarts += 1
+                if restarts > 100:
+                    raise RuntimeError("could not place obstacles; relax ScenarioConfig")
+                k, tries = 0, 0
+                continue
             c = np.array([rng.uniform(*sc.obst_x), rng.uniform(*sc.obst_y)])
             if np.linalg.norm(c - start) < sc.edge_clear + fcfg.d_obst + sc.slot_radius:
                 continue

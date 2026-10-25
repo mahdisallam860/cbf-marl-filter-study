@@ -103,3 +103,28 @@ def test_seed_ranges_are_disjoint():
     pil = {cfg.pilot_seed(k) for k in cfg.densities}
     assert not (train & val) and not (train & pil) and not (val & pil)
     assert max(train) < min(val) < max(val) < min(pil)
+
+
+# Held-out layout hashes recorded with sampler v1 (before the stall restart was added).
+HELD_OUT_HASHES_V1 = {"validation_K2_n200": "3f25bbb76654c9dd", "validation_K5_n200": "8199ec7b1da4b95e",
+                      "validation_K8_n200": "6e81fc2b9ec3bc31", "pilot_K2_n500": "7b10e5f870784de0",
+                      "pilot_K5_n500": "6da7e69aa59e13bf", "pilot_K8_n500": "c04dfb67f3ac756b"}
+
+
+def test_sampler_restart_keeps_held_out_layouts_and_fixes_the_stall():
+    import hashlib
+    from cbf_study.cbf_qp import barrier_point
+    from cbf_study.evaluate import eval_layout
+    cfg = StudyConfig.load()
+    for key, h in HELD_OUT_HASHES_V1.items():
+        split, K, n = key.split("_")
+        lay = eval_layout(cfg, int(K[1:]), split, int(n[1:]))
+        assert hashlib.sha256(lay.init_poses.tobytes() + lay.obst_xy.tobytes()).hexdigest()[:16] == h, key
+    # this training chunk raised "could not place obstacles" under v1; now it yields valid layouts
+    fc, sc = cfg.layout_filter_config(), cfg.scenario_config()
+    lay = sample_layout(1108377, 256, 8, fc, sc)
+    gap = np.linalg.norm(lay.obst_xy[:, :, None] - lay.obst_xy[:, None], axis=3) + np.eye(8) * 1e9
+    assert (gap >= 2 * fc.obst_r + sc.obst_gap).all()
+    for c in (np.array(sc.start_centroid), np.array(sc.goal_centroid)):
+        assert (np.linalg.norm(lay.obst_xy - c, axis=2) >= sc.edge_clear + fc.d_obst + sc.slot_radius).all()
+    assert (np.abs(lay.obst_xy[..., 0]) <= sc.obst_x[1]).all() and (np.abs(lay.obst_xy[..., 1]) <= sc.obst_y[1]).all()
