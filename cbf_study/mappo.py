@@ -136,14 +136,16 @@ def _gae(rew, val, done, last_val, gamma, lam):
     return adv
 
 
-def train(cfg: StudyConfig, run_seed: int, out_dir, overrides=None, resume=False, log=print):
+def train(cfg: StudyConfig, run_seed: int, out_dir, overrides=None, resume=False, log=print, densities=None):
+    """densities=None trains on the study densities; anything else is a diagnostic run (recorded in
+    every checkpoint as train_densities)."""
     hp = dict(cfg.mappo)
     hp.update(overrides or {})
     out = Path(out_dir)
     (out / "checkpoints").mkdir(parents=True, exist_ok=True)
     torch.set_num_threads(1)
 
-    env = FormationTrainEnv(cfg, run_seed, int(hp["envs_per_density"]))   # VMAS seeds global RNGs here
+    env = FormationTrainEnv(cfg, run_seed, int(hp["envs_per_density"]), densities=densities)   # VMAS seeds global RNGs here
     torch.manual_seed(run_seed)
     gen = torch.Generator().manual_seed(run_seed)
     oc = cfg.obs_config()
@@ -151,7 +153,7 @@ def train(cfg: StudyConfig, run_seed: int, out_dir, overrides=None, resume=False
     lo, hi = env.lo.tolist(), env.hi.tolist()
     meta = dict(obs_dim=D, n_agents=N, hidden_actor=list(hp["hidden_actor"]), lo=lo, hi=hi,
                 init_std_frac=float(hp["init_std_frac"]), env_fingerprint=cfg.env_fingerprint(),
-                config=cfg.as_dict(), run_seed=run_seed, hyperparams=hp)
+                config=cfg.as_dict(), run_seed=run_seed, hyperparams=hp, train_densities=[g.K for g in env.groups])
     actor = build_actor(meta)
     critic = Critic(N * D, list(hp["hidden_critic"]))
     opt_a = torch.optim.Adam(actor.parameters(), lr=float(hp["lr_actor"]), eps=1e-5)
