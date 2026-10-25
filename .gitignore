@@ -4,3 +4,4 @@ __pycache__/
 venv/
 results/train/*/latest.pt
 results/diagnostics/*/latest.pt
+results/curriculum/*/latest.pt

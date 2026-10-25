@@ -105,6 +105,8 @@ def main():
                 if final_stage:
                     save_actor(out / "checkpoints" / f"ckpt_it{it_global:04d}.pt", learner.actor,
                                dict(meta, iteration=it_global, env_steps=total, stage=si, train_densities=list(dens)))
+                torch.save(dict(learner.state(), stage=si, stage_env_steps=steps, env_steps=total, iteration=it_global,
+                                stream_idx={**stream_idx, **{g.K: g.stream.idx for g in env.groups}}), out / "latest.pt")
                 ev = heldout(cfg, ck, dens, cur["eval_trials"])
                 last_eval = ev
                 for K, e in ev.items():
