@@ -1,0 +1,99 @@
+# EE 609 study configuration: the ONE source of every placeholder used by training, evaluation
+# and the filter (loaded by cbf_study/config.py).
+#
+# Every entry in the study sections below has the form
+#     key = { value = ..., approval = "pending", note = "..." }
+# "pending" means PLACEHOLDER PENDING ADVISOR APPROVAL. When an advisor approves a value, change
+# approval to "approved" and record who and when in the note. The loader refuses entries without
+# an approval field, and every report prints how many values are still pending.
+#
+# Filter-on and filter-off trials are built from this one file; config.check_paired() verifies
+# that they differ in nothing but the barrier gain alpha (which only the filter uses).
+# Changing any value in [timing], [robot], [obstacles], [scenario], [filter].ell, [protocol] or
+# [observation] changes the environment fingerprint: checkpoints trained under the old values are
+# then refused by policies.FrozenMAPPOPolicy.
+
+[timing]
+dt        = { value = 0.1, approval = "pending", note = "control period [s], zero-order hold; alpha*dt <= 1" }
+max_steps = { value = 400, approval = "pending", note = "trial and training-episode horizon [control periods]" }
+
+[robot]
+n_agents = { value = 3,    approval = "pending", note = "robots in the formation" }
+robot_r  = { value = 0.10, approval = "pending", note = "body radius R [m]" }
+v_min    = { value = -0.5, approval = "pending", note = "lower forward-speed bound [m/s]; reverse allowed" }
+v_max    = { value = 0.5,  approval = "pending", note = "upper forward-speed bound [m/s]" }
+w_max    = { value = 1.0,  approval = "pending", note = "|w| <= w_max [rad/s]" }
+
+[obstacles]
+obst_r    = { value = 0.20,      approval = "pending", note = "obstacle radius R_o [m]" }
+densities = { value = [2, 5, 8], approval = "pending", note = "obstacle counts in the obstacle field (low, medium, high)" }
+
+[scenario]
+slot_radius    = { value = 0.30,         approval = "pending", note = "triangle formation: slot distance from the centroid [m]" }
+start_centroid = { value = [-1.5, 0.0],  approval = "pending", note = "nominal start of the team centroid [m]" }
+goal_centroid  = { value = [1.5, 0.0],   approval = "pending", note = "goal for the team centroid [m]" }
+obst_x         = { value = [-0.8, 0.8],  approval = "pending", note = "obstacle-centre x range [m]" }
+obst_y         = { value = [-0.9, 0.9],  approval = "pending", note = "obstacle-centre y range [m]; no arena walls (A6)" }
+obst_gap       = { value = 0.10,         approval = "pending", note = "min free gap between obstacle surfaces [m]" }
+edge_clear     = { value = 0.10,         approval = "pending", note = "extra obstacle clearance from start and goal [m]" }
+start_xy_std   = { value = 0.03,         approval = "pending", note = "start position noise around each slot [m]" }
+start_th_std   = { value = 0.15,         approval = "pending", note = "start heading noise [rad]" }
+
+[filter]
+ell              = { value = 0.05, approval = "pending", note = "barrier-point offset l [m], > 0 (relative degree 1); also used by the layout sampler" }
+sensing_range    = { value = 1.0,  approval = "pending", note = "obstacles within this barrier-point distance enter the QP [m]" }
+comm_range       = { value = 1.5,  approval = "pending", note = "neighbours within this distance enter the QP [m]" }
+alpha_sweep      = { value = [0.5, 1.0, 2.0, 5.0, 10.0], approval = "pending", note = "barrier gains [1/s]; each must satisfy alpha*dt <= 1" }
+intervention_tol = { value = 1e-6, approval = "pending", note = "|u - clip(u_nom)|_inf above this counts as an intervention" }
+solver_tol       = { value = 1e-9, approval = "pending", note = "QP feasibility tolerance (m/s, rad/s)" }
+
+[protocol]
+goal_tol      = { value = 0.10, approval = "pending", note = "centroid-to-goal distance for GOAL [m]" }
+formation_tol = { value = 0.10, approval = "pending", note = "mean slot error for GOAL [m]" }
+substeps      = { value = 64,   approval = "pending", note = "swept-path scoring sub-samples per control period" }
+stall_window  = { value = 50,   approval = "pending", note = "deadlock diagnostic window [control periods]" }
+stall_dist    = { value = 0.05, approval = "pending", note = "TIMEOUT with centroid progress below this over the window is flagged stalled [m]" }
+
+[reward]   # training only; the filter never sees it
+w_progress       = { value = 10.0, approval = "pending", note = "per metre of centroid progress toward the goal" }
+w_formation      = { value = 1.0,  approval = "pending", note = "per step, times the mean slot error [m]" }
+w_collision_obst = { value = 10.0, approval = "pending", note = "one-off penalty when a period is scored as a robot-obstacle collision (episode ends)" }
+w_collision_rr   = { value = 10.0, approval = "pending", note = "one-off penalty when a period is scored as a robot-robot collision (episode ends)" }
+w_control        = { value = 0.01, approval = "pending", note = "per step, times mean over robots of (v/v_max)^2 + (w/w_max)^2" }
+
+[observation]   # policy input, computed from (poses, layout) only
+k_obst    = { value = 4,   approval = "pending", note = "nearest obstacles observed per robot" }
+obs_range = { value = 2.0, approval = "pending", note = "obstacles with centre distance above this are reported absent [m]" }
+goal_clip = { value = 2.0, approval = "pending", note = "norm clip of the centroid-to-goal vector [m]" }
+
+[gate]   # decided before training; filter OFF, pooled over the three densities
+goal_rate_min      = { value = 0.50, approval = "pending", note = "below this the policy 'rarely reaches the goal': STOP" }
+collision_rate_min = { value = 0.05, approval = "pending", note = "below this the baseline collision rate is 'near zero': STOP" }
+selection          = { value = "max_pooled_goal_rate", approval = "pending", note = "best checkpoint = highest pooled validation GOAL rate (filter off), ties -> later checkpoint; collision rate is NOT a selection criterion" }
+
+[seeds]   # layout-sampler seed ranges; training, validation and pilot never share a layout
+train_base      = { value = 1000000, approval = "pending", note = "train layouts: train_base + run_seed*100000 + density*1000 + chunk" }
+validation_base = { value = 2000000, approval = "pending", note = "gate / checkpoint-selection layouts: validation_base + density" }
+pilot_base      = { value = 3000000, approval = "pending", note = "pilot layouts: pilot_base + density" }
+
+[mappo]
+# Training recipe. These are optimiser settings, not study placeholders: no approval field.
+# They are stored in every checkpoint.
+seeds            = [0, 1, 2]
+envs_per_density = 128
+rollout_steps    = 64
+max_iterations   = 400
+time_limit_min   = 25.0
+gamma            = 0.99
+gae_lambda       = 0.95
+clip             = 0.2
+epochs           = 5
+minibatches      = 4
+lr_actor         = 3e-4
+lr_critic        = 1e-3
+entropy_coef     = 0.0
+max_grad_norm    = 0.5
+hidden_actor     = [128, 128]
+hidden_critic    = [256, 256]
+init_std_frac    = 0.5     # initial action std as a fraction of each half-range
+checkpoint_every = 10      # iterations

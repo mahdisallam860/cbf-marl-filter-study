@@ -34,6 +34,8 @@ class ScenarioConfig:
     obst_y: tuple = (-0.9, 0.9)
     obst_gap: float = 0.10          # min free gap between obstacle surfaces
     edge_clear: float = 0.10        # obstacle-centre clearance from start and goal centroids
+    start_xy_std: float = 0.03      # start position noise around each slot
+    start_th_std: float = 0.15      # start heading noise
 
 
 def triangle_slots(n, radius):
@@ -53,8 +55,8 @@ def sample_layout(seed, batch, n_obst, fcfg: FilterConfig, sc: ScenarioConfig = 
     obst = np.zeros((batch, n_obst, 2))
     for b in range(batch):
         while True:   # start poses
-            xy = start + slots + rng.normal(0, 0.03, slots.shape)
-            th = rng.normal(0, 0.15, sc.n_agents)
+            xy = start + slots + rng.normal(0, sc.start_xy_std, slots.shape)
+            th = rng.normal(0, sc.start_th_std, sc.n_agents)
             pose = np.concatenate([xy, th[:, None]], axis=1)
             p = barrier_point(pose, fcfg.ell)
             d = np.linalg.norm(p[:, None] - p[None], axis=2) + np.eye(sc.n_agents) * 1e9
