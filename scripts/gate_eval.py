@@ -20,14 +20,14 @@ def eval_ckpt(args):
     from cbf_study.policies import FrozenMAPPOPolicy
     cfg = StudyConfig.load()
     pol = FrozenMAPPOPolicy(path, cfg)
-    m = re.search(r"seed_(\d+).*ckpt_it(\d+)", path)
+    m = re.search(r"seed_?(\d+).*ckpt_it(\d+)", path)
     rows = []
     for K in cfg.densities:
         lay = eval_layout(cfg, K, "validation", batch)
         res = run_condition(cfg, pol, lay, K, alpha=None)
         c = outcome_counts(res)
         rows.append(dict(seed=int(m.group(1)), iteration=int(m.group(2)), env_steps=pol.meta["env_steps"],
-                         density=K, n=batch, **c, stalled=int(res.stalled.sum()),
+                         density=K, eval_split="validation", eval_layout_seed=str(cfg.validation_seed(K)), n=batch, **c, stalled=int(res.stalled.sum()),
                          form_err_mean=float(res.form_err_mean.mean()),
                          goal_steps_mean=float(res.end_step[res.outcome == 1].mean()) if c["GOAL"] else float("nan"),
                          ckpt=path))
@@ -58,6 +58,7 @@ def main():
     for (seed, it) in sorted({(r["seed"], r["iteration"]) for r in rows}):
         rs = [r for r in rows if r["seed"] == seed and r["iteration"] == it]
         pooled = dict(rs[0], density="pooled", n=sum(r["n"] for r in rs),
+                      eval_layout_seed="+".join(r["eval_layout_seed"] for r in rs),
                       **{k: sum(r[k] for r in rs) for k in ("GOAL", "COLLISION", "INFEASIBLE", "TIMEOUT", "stalled")})
         pooled["form_err_mean"] = sum(r["form_err_mean"] * r["n"] for r in rs) / pooled["n"]
         pooled["goal_steps_mean"] = float("nan")
@@ -67,7 +68,7 @@ def main():
             r.update(goal_rate=g, goal_lo=glo, goal_hi=ghi, coll_rate=c, coll_lo=clo, coll_hi=chi,
                      timeout_rate=r["TIMEOUT"] / r["n"], goal_ok=int(g >= gmin), coll_ok=int(c >= cmin))
             table.append(r)
-    cols = ["seed", "iteration", "env_steps", "density", "n", "GOAL", "COLLISION", "INFEASIBLE", "TIMEOUT", "stalled",
+    cols = ["seed", "iteration", "env_steps", "density", "eval_split", "eval_layout_seed", "n", "GOAL", "COLLISION", "INFEASIBLE", "TIMEOUT", "stalled",
             "goal_rate", "goal_lo", "goal_hi", "coll_rate", "coll_lo", "coll_hi", "timeout_rate", "goal_ok", "coll_ok",
             "form_err_mean", "goal_steps_mean", "ckpt"]
     write_rows(out / "gate_by_checkpoint.csv", [{k: r[k] for k in cols} for r in table])
@@ -98,7 +99,8 @@ def write_markdown(path, table, sel, cfg):
     pct = lambda r, k: f"{100 * r[k + '_rate']:.1f} [{100 * r[k + '_lo']:.1f}, {100 * r[k + '_hi']:.1f}]"
     L = ["# Gate: filter-OFF baseline per checkpoint", "",
          f"Validation layouts, {sel['validation_trials_per_density']} trials per density, VmasEnv, deterministic policy "
-         f"(mean action). Rates in % with Wilson 95% CIs. Thresholds (pre-registered, pending approval): pooled GOAL "
+         f"(mean action); layout seeds `validation_base + density` (sample_layout, batch = trials per density). "
+         f"Rates in % with Wilson 95% CIs. Thresholds (pre-registered, pending approval): pooled GOAL "
          f">= {100 * sel['goal_rate_min']:.0f}%, pooled COLLISION >= {100 * sel['collision_rate_min']:.0f}%. "
          f"Env fingerprint `{sel['env_fingerprint']}`, {sel['pending_placeholders']} config values pending approval.", "",
          f"**Any checkpoint passes: {'YES' if sel['any_checkpoint_passes'] else 'NO'}.** "

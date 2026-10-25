@@ -1,0 +1,122 @@
+{
+ "rule": "max_pooled_goal_rate",
+ "goal_rate_min": 0.5,
+ "collision_rate_min": 0.05,
+ "validation_trials_per_density": 200,
+ "env_fingerprint": "cf442ee5e99eb55a",
+ "pending_placeholders": 43,
+ "n_checkpoints": 100,
+ "best": {
+  "ckpt": "results/train/seed_0/checkpoints/ckpt_it0300.pt",
+  "seed": 0,
+  "iteration": 300,
+  "goal_rate": 0.11,
+  "coll_rate": 0.21833333333333332,
+  "gate_pass": false,
+  "per_density": {
+   "2": {
+    "goal_rate": 0.325,
+    "coll_rate": 0.555,
+    "goal_ok": 0,
+    "coll_ok": 1
+   },
+   "5": {
+    "goal_rate": 0.005,
+    "coll_rate": 0.055,
+    "goal_ok": 0,
+    "coll_ok": 1
+   },
+   "8": {
+    "goal_rate": 0.0,
+    "coll_rate": 0.045,
+    "goal_ok": 0,
+    "coll_ok": 0
+   }
+  }
+ },
+ "best_per_seed": {
+  "0": {
+   "ckpt": "results/train/seed_0/checkpoints/ckpt_it0300.pt",
+   "iteration": 300,
+   "goal_rate": 0.11,
+   "coll_rate": 0.21833333333333332,
+   "gate_pass": false,
+   "per_density": {
+    "2": {
+     "goal_rate": 0.325,
+     "coll_rate": 0.555,
+     "goal_ok": 0,
+     "coll_ok": 1
+    },
+    "5": {
+     "goal_rate": 0.005,
+     "coll_rate": 0.055,
+     "goal_ok": 0,
+     "coll_ok": 1
+    },
+    "8": {
+     "goal_rate": 0.0,
+     "coll_rate": 0.045,
+     "goal_ok": 0,
+     "coll_ok": 0
+    }
+   }
+  },
+  "1": {
+   "ckpt": "results/train/seed_1/checkpoints/ckpt_it0330.pt",
+   "iteration": 330,
+   "goal_rate": 0.08333333333333333,
+   "coll_rate": 0.19,
+   "gate_pass": false,
+   "per_density": {
+    "2": {
+     "goal_rate": 0.25,
+     "coll_rate": 0.54,
+     "goal_ok": 0,
+     "coll_ok": 1
+    },
+    "5": {
+     "goal_rate": 0.0,
+     "coll_rate": 0.015,
+     "goal_ok": 0,
+     "coll_ok": 0
+    },
+    "8": {
+     "goal_rate": 0.0,
+     "coll_rate": 0.015,
+     "goal_ok": 0,
+     "coll_ok": 0
+    }
+   }
+  },
+  "2": {
+   "ckpt": "results/train/seed_2/checkpoints/ckpt_it0300.pt",
+   "iteration": 300,
+   "goal_rate": 0.09666666666666666,
+   "coll_rate": 0.24166666666666667,
+   "gate_pass": false,
+   "per_density": {
+    "2": {
+     "goal_rate": 0.29,
+     "coll_rate": 0.62,
+     "goal_ok": 0,
+     "coll_ok": 1
+    },
+    "5": {
+     "goal_rate": 0.0,
+     "coll_rate": 0.08,
+     "goal_ok": 0,
+     "coll_ok": 1
+    },
+    "8": {
+     "goal_rate": 0.0,
+     "coll_rate": 0.025,
+     "goal_ok": 0,
+     "coll_ok": 0
+    }
+   }
+  }
+ },
+ "any_checkpoint_passes": false,
+ "wall_s": 808.3
+}

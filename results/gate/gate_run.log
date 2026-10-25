@@ -1,0 +1,226 @@
+results/train/seed_0/checkpoints/ckpt_it0010.pt: K2 goal 0/200 coll 177/200  K5 goal 0/200 coll 190/200  K8 goal 0/200 coll 198/200
+results/train/seed_0/checkpoints/ckpt_it0020.pt: K2 goal 7/200 coll 193/200  K5 goal 0/200 coll 105/200  K8 goal 0/200 coll 69/200
+results/train/seed_0/checkpoints/ckpt_it0030.pt: K2 goal 20/200 coll 180/200  K5 goal 0/200 coll 45/200  K8 goal 0/200 coll 15/200
+results/train/seed_0/checkpoints/ckpt_it0040.pt: K2 goal 14/200 coll 185/200  K5 goal 0/200 coll 94/200  K8 goal 0/200 coll 70/200
+results/train/seed_0/checkpoints/ckpt_it0050.pt: K2 goal 25/200 coll 171/200  K5 goal 0/200 coll 47/200  K8 goal 0/200 coll 11/200
+results/train/seed_0/checkpoints/ckpt_it0060.pt: K2 goal 21/200 coll 176/200  K5 goal 0/200 coll 22/200  K8 goal 0/200 coll 1/200
+results/train/seed_0/checkpoints/ckpt_it0070.pt: K2 goal 25/200 coll 172/200  K5 goal 0/200 coll 21/200  K8 goal 0/200 coll 4/200
+results/train/seed_0/checkpoints/ckpt_it0080.pt: K2 goal 30/200 coll 169/200  K5 goal 0/200 coll 9/200  K8 goal 0/200 coll 1/200
+results/train/seed_0/checkpoints/ckpt_it0090.pt: K2 goal 17/200 coll 166/200  K5 goal 0/200 coll 5/200  K8 goal 0/200 coll 0/200
+results/train/seed_0/checkpoints/ckpt_it0100.pt: K2 goal 18/200 coll 162/200  K5 goal 0/200 coll 10/200  K8 goal 0/200 coll 1/200
+results/train/seed_0/checkpoints/ckpt_it0110.pt: K2 goal 17/200 coll 153/200  K5 goal 0/200 coll 17/200  K8 goal 0/200 coll 4/200
+results/train/seed_0/checkpoints/ckpt_it0120.pt: K2 goal 16/200 coll 147/200  K5 goal 0/200 coll 9/200  K8 goal 0/200 coll 4/200
+results/train/seed_0/checkpoints/ckpt_it0130.pt: K2 goal 10/200 coll 148/200  K5 goal 0/200 coll 4/200  K8 goal 0/200 coll 1/200
+results/train/seed_0/checkpoints/ckpt_it0140.pt: K2 goal 10/200 coll 146/200  K5 goal 0/200 coll 5/200  K8 goal 0/200 coll 1/200
+results/train/seed_0/checkpoints/ckpt_it0150.pt: K2 goal 12/200 coll 144/200  K5 goal 0/200 coll 8/200  K8 goal 0/200 coll 2/200
+results/train/seed_0/checkpoints/ckpt_it0160.pt: K2 goal 15/200 coll 144/200  K5 goal 0/200 coll 9/200  K8 goal 0/200 coll 8/200
+results/train/seed_0/checkpoints/ckpt_it0170.pt: K2 goal 23/200 coll 145/200  K5 goal 0/200 coll 3/200  K8 goal 0/200 coll 0/200
+results/train/seed_0/checkpoints/ckpt_it0180.pt: K2 goal 19/200 coll 137/200  K5 goal 0/200 coll 4/200  K8 goal 0/200 coll 1/200
+results/train/seed_0/checkpoints/ckpt_it0190.pt: K2 goal 17/200 coll 130/200  K5 goal 0/200 coll 11/200  K8 goal 0/200 coll 3/200
+results/train/seed_0/checkpoints/ckpt_it0200.pt: K2 goal 10/200 coll 130/200  K5 goal 1/200 coll 8/200  K8 goal 0/200 coll 5/200
+results/train/seed_0/checkpoints/ckpt_it0210.pt: K2 goal 41/200 coll 128/200  K5 goal 1/200 coll 9/200  K8 goal 0/200 coll 6/200
+results/train/seed_0/checkpoints/ckpt_it0220.pt: K2 goal 37/200 coll 125/200  K5 goal 1/200 coll 12/200  K8 goal 0/200 coll 10/200
+results/train/seed_0/checkpoints/ckpt_it0230.pt: K2 goal 40/200 coll 124/200  K5 goal 1/200 coll 25/200  K8 goal 0/200 coll 17/200
+results/train/seed_0/checkpoints/ckpt_it0240.pt: K2 goal 49/200 coll 120/200  K5 goal 1/200 coll 15/200  K8 goal 0/200 coll 4/200
+results/train/seed_0/checkpoints/ckpt_it0250.pt: K2 goal 49/200 coll 122/200  K5 goal 1/200 coll 20/200  K8 goal 0/200 coll 14/200
+results/train/seed_0/checkpoints/ckpt_it0260.pt: K2 goal 49/200 coll 115/200  K5 goal 1/200 coll 15/200  K8 goal 0/200 coll 6/200
+results/train/seed_0/checkpoints/ckpt_it0270.pt: K2 goal 55/200 coll 114/200  K5 goal 1/200 coll 9/200  K8 goal 0/200 coll 3/200
+results/train/seed_0/checkpoints/ckpt_it0280.pt: K2 goal 57/200 coll 111/200  K5 goal 1/200 coll 22/200  K8 goal 0/200 coll 19/200
+results/train/seed_0/checkpoints/ckpt_it0290.pt: K2 goal 60/200 coll 113/200  K5 goal 1/200 coll 13/200  K8 goal 0/200 coll 12/200
+results/train/seed_0/checkpoints/ckpt_it0300.pt: K2 goal 65/200 coll 111/200  K5 goal 1/200 coll 11/200  K8 goal 0/200 coll 9/200
+results/train/seed_0/checkpoints/ckpt_it0310.pt: K2 goal 64/200 coll 111/200  K5 goal 1/200 coll 9/200  K8 goal 0/200 coll 6/200
+results/train/seed_0/checkpoints/ckpt_it0320.pt: K2 goal 63/200 coll 110/200  K5 goal 1/200 coll 6/200  K8 goal 0/200 coll 1/200
+results/train/seed_0/checkpoints/ckpt_it0330.pt: K2 goal 55/200 coll 110/200  K5 goal 1/200 coll 4/200  K8 goal 0/200 coll 0/200
+results/train/seed_1/checkpoints/ckpt_it0010.pt: K2 goal 4/200 coll 173/200  K5 goal 0/200 coll 190/200  K8 goal 0/200 coll 199/200
+results/train/seed_1/checkpoints/ckpt_it0020.pt: K2 goal 10/200 coll 189/200  K5 goal 0/200 coll 198/200  K8 goal 0/200 coll 200/200
+results/train/seed_1/checkpoints/ckpt_it0030.pt: K2 goal 6/200 coll 193/200  K5 goal 0/200 coll 198/200  K8 goal 0/200 coll 200/200
+results/train/seed_1/checkpoints/ckpt_it0040.pt: K2 goal 8/200 coll 192/200  K5 goal 0/200 coll 192/200  K8 goal 0/200 coll 200/200
+results/train/seed_1/checkpoints/ckpt_it0050.pt: K2 goal 16/200 coll 176/200  K5 goal 0/200 coll 136/200  K8 goal 0/200 coll 140/200
+results/train/seed_1/checkpoints/ckpt_it0060.pt: K2 goal 19/200 coll 166/200  K5 goal 0/200 coll 108/200  K8 goal 0/200 coll 76/200
+results/train/seed_1/checkpoints/ckpt_it0070.pt: K2 goal 22/200 coll 162/200  K5 goal 0/200 coll 91/200  K8 goal 0/200 coll 65/200
+results/train/seed_1/checkpoints/ckpt_it0080.pt: K2 goal 15/200 coll 159/200  K5 goal 0/200 coll 40/200  K8 goal 0/200 coll 35/200
+results/train/seed_1/checkpoints/ckpt_it0090.pt: K2 goal 9/200 coll 158/200  K5 goal 0/200 coll 33/200  K8 goal 0/200 coll 4/200
+results/train/seed_1/checkpoints/ckpt_it0100.pt: K2 goal 11/200 coll 157/200  K5 goal 0/200 coll 30/200  K8 goal 0/200 coll 9/200
+results/train/seed_1/checkpoints/ckpt_it0110.pt: K2 goal 11/200 coll 156/200  K5 goal 0/200 coll 13/200  K8 goal 0/200 coll 0/200
+results/train/seed_1/checkpoints/ckpt_it0120.pt: K2 goal 8/200 coll 155/200  K5 goal 0/200 coll 25/200  K8 goal 0/200 coll 15/200
+results/train/seed_1/checkpoints/ckpt_it0130.pt: K2 goal 14/200 coll 152/200  K5 goal 0/200 coll 5/200  K8 goal 0/200 coll 1/200
+results/train/seed_1/checkpoints/ckpt_it0140.pt: K2 goal 21/200 coll 147/200  K5 goal 0/200 coll 9/200  K8 goal 0/200 coll 4/200
+results/train/seed_1/checkpoints/ckpt_it0150.pt: K2 goal 22/200 coll 147/200  K5 goal 0/200 coll 12/200  K8 goal 0/200 coll 4/200
+results/train/seed_1/checkpoints/ckpt_it0160.pt: K2 goal 20/200 coll 145/200  K5 goal 0/200 coll 11/200  K8 goal 0/200 coll 10/200
+results/train/seed_1/checkpoints/ckpt_it0170.pt: K2 goal 21/200 coll 141/200  K5 goal 0/200 coll 8/200  K8 goal 0/200 coll 1/200
+results/train/seed_1/checkpoints/ckpt_it0180.pt: K2 goal 24/200 coll 134/200  K5 goal 0/200 coll 13/200  K8 goal 0/200 coll 8/200
+results/train/seed_1/checkpoints/ckpt_it0190.pt: K2 goal 24/200 coll 133/200  K5 goal 0/200 coll 16/200  K8 goal 0/200 coll 8/200
+results/train/seed_1/checkpoints/ckpt_it0200.pt: K2 goal 28/200 coll 129/200  K5 goal 0/200 coll 10/200  K8 goal 0/200 coll 1/200
+results/train/seed_1/checkpoints/ckpt_it0210.pt: K2 goal 31/200 coll 130/200  K5 goal 0/200 coll 9/200  K8 goal 0/200 coll 2/200
+results/train/seed_1/checkpoints/ckpt_it0220.pt: K2 goal 30/200 coll 124/200  K5 goal 0/200 coll 9/200  K8 goal 0/200 coll 2/200
+results/train/seed_1/checkpoints/ckpt_it0230.pt: K2 goal 22/200 coll 114/200  K5 goal 1/200 coll 11/200  K8 goal 0/200 coll 5/200
+results/train/seed_1/checkpoints/ckpt_it0240.pt: K2 goal 25/200 coll 117/200  K5 goal 0/200 coll 12/200  K8 goal 0/200 coll 2/200
+results/train/seed_1/checkpoints/ckpt_it0250.pt: K2 goal 37/200 coll 117/200  K5 goal 1/200 coll 12/200  K8 goal 0/200 coll 5/200
+results/train/seed_1/checkpoints/ckpt_it0260.pt: K2 goal 32/200 coll 121/200  K5 goal 1/200 coll 9/200  K8 goal 0/200 coll 3/200
+results/train/seed_1/checkpoints/ckpt_it0270.pt: K2 goal 33/200 coll 111/200  K5 goal 0/200 coll 9/200  K8 goal 0/200 coll 2/200
+results/train/seed_1/checkpoints/ckpt_it0280.pt: K2 goal 26/200 coll 107/200  K5 goal 0/200 coll 11/200  K8 goal 0/200 coll 10/200
+results/train/seed_1/checkpoints/ckpt_it0290.pt: K2 goal 34/200 coll 107/200  K5 goal 1/200 coll 16/200  K8 goal 0/200 coll 7/200
+results/train/seed_1/checkpoints/ckpt_it0300.pt: K2 goal 33/200 coll 107/200  K5 goal 1/200 coll 13/200  K8 goal 0/200 coll 7/200
+results/train/seed_1/checkpoints/ckpt_it0310.pt: K2 goal 38/200 coll 109/200  K5 goal 1/200 coll 8/200  K8 goal 0/200 coll 1/200
+results/train/seed_1/checkpoints/ckpt_it0320.pt: K2 goal 45/200 coll 106/200  K5 goal 0/200 coll 13/200  K8 goal 0/200 coll 6/200
+results/train/seed_1/checkpoints/ckpt_it0330.pt: K2 goal 50/200 coll 108/200  K5 goal 0/200 coll 3/200  K8 goal 0/200 coll 3/200
+results/train/seed_2/checkpoints/ckpt_it0010.pt: K2 goal 0/200 coll 163/200  K5 goal 0/200 coll 199/200  K8 goal 0/200 coll 200/200
+results/train/seed_2/checkpoints/ckpt_it0020.pt: K2 goal 12/200 coll 188/200  K5 goal 0/200 coll 198/200  K8 goal 0/200 coll 200/200
+results/train/seed_2/checkpoints/ckpt_it0030.pt: K2 goal 4/200 coll 196/200  K5 goal 0/200 coll 141/200  K8 goal 0/200 coll 154/200
+results/train/seed_2/checkpoints/ckpt_it0040.pt: K2 goal 11/200 coll 182/200  K5 goal 0/200 coll 82/200  K8 goal 0/200 coll 56/200
+results/train/seed_2/checkpoints/ckpt_it0050.pt: K2 goal 14/200 coll 168/200  K5 goal 0/200 coll 36/200  K8 goal 0/200 coll 8/200
+results/train/seed_2/checkpoints/ckpt_it0060.pt: K2 goal 16/200 coll 166/200  K5 goal 0/200 coll 35/200  K8 goal 0/200 coll 6/200
+results/train/seed_2/checkpoints/ckpt_it0070.pt: K2 goal 13/200 coll 165/200  K5 goal 0/200 coll 23/200  K8 goal 0/200 coll 4/200
+results/train/seed_2/checkpoints/ckpt_it0080.pt: K2 goal 19/200 coll 162/200  K5 goal 0/200 coll 13/200  K8 goal 0/200 coll 3/200
+results/train/seed_2/checkpoints/ckpt_it0090.pt: K2 goal 16/200 coll 159/200  K5 goal 0/200 coll 47/200  K8 goal 0/200 coll 26/200
+results/train/seed_2/checkpoints/ckpt_it0100.pt: K2 goal 7/200 coll 160/200  K5 goal 0/200 coll 26/200  K8 goal 0/200 coll 8/200
+results/train/seed_2/checkpoints/ckpt_it0110.pt: K2 goal 7/200 coll 160/200  K5 goal 0/200 coll 16/200  K8 goal 0/200 coll 5/200
+results/train/seed_2/checkpoints/ckpt_it0120.pt: K2 goal 15/200 coll 158/200  K5 goal 0/200 coll 28/200  K8 goal 0/200 coll 27/200
+results/train/seed_2/checkpoints/ckpt_it0130.pt: K2 goal 3/200 coll 154/200  K5 goal 0/200 coll 12/200  K8 goal 0/200 coll 3/200
+results/train/seed_2/checkpoints/ckpt_it0140.pt: K2 goal 12/200 coll 156/200  K5 goal 0/200 coll 6/200  K8 goal 0/200 coll 0/200
+results/train/seed_2/checkpoints/ckpt_it0150.pt: K2 goal 8/200 coll 154/200  K5 goal 0/200 coll 8/200  K8 goal 0/200 coll 0/200
+results/train/seed_2/checkpoints/ckpt_it0160.pt: K2 goal 16/200 coll 148/200  K5 goal 0/200 coll 7/200  K8 goal 0/200 coll 4/200
+results/train/seed_2/checkpoints/ckpt_it0170.pt: K2 goal 13/200 coll 146/200  K5 goal 0/200 coll 12/200  K8 goal 0/200 coll 15/200
+results/train/seed_2/checkpoints/ckpt_it0180.pt: K2 goal 18/200 coll 141/200  K5 goal 0/200 coll 11/200  K8 goal 0/200 coll 5/200
+results/train/seed_2/checkpoints/ckpt_it0190.pt: K2 goal 15/200 coll 142/200  K5 goal 0/200 coll 15/200  K8 goal 0/200 coll 12/200
+results/train/seed_2/checkpoints/ckpt_it0200.pt: K2 goal 17/200 coll 138/200  K5 goal 0/200 coll 15/200  K8 goal 0/200 coll 12/200
+results/train/seed_2/checkpoints/ckpt_it0210.pt: K2 goal 9/200 coll 140/200  K5 goal 0/200 coll 14/200  K8 goal 0/200 coll 8/200
+results/train/seed_2/checkpoints/ckpt_it0220.pt: K2 goal 24/200 coll 142/200  K5 goal 0/200 coll 5/200  K8 goal 0/200 coll 3/200
+results/train/seed_2/checkpoints/ckpt_it0230.pt: K2 goal 27/200 coll 139/200  K5 goal 0/200 coll 4/200  K8 goal 0/200 coll 3/200
+results/train/seed_2/checkpoints/ckpt_it0240.pt: K2 goal 36/200 coll 139/200  K5 goal 0/200 coll 18/200  K8 goal 0/200 coll 14/200
+results/train/seed_2/checkpoints/ckpt_it0250.pt: K2 goal 44/200 coll 134/200  K5 goal 0/200 coll 15/200  K8 goal 0/200 coll 6/200
+results/train/seed_2/checkpoints/ckpt_it0260.pt: K2 goal 44/200 coll 131/200  K5 goal 0/200 coll 18/200  K8 goal 0/200 coll 11/200
+results/train/seed_2/checkpoints/ckpt_it0270.pt: K2 goal 46/200 coll 130/200  K5 goal 0/200 coll 16/200  K8 goal 0/200 coll 8/200
+results/train/seed_2/checkpoints/ckpt_it0280.pt: K2 goal 50/200 coll 129/200  K5 goal 0/200 coll 23/200  K8 goal 0/200 coll 14/200
+results/train/seed_2/checkpoints/ckpt_it0290.pt: K2 goal 53/200 coll 127/200  K5 goal 0/200 coll 29/200  K8 goal 0/200 coll 16/200
+results/train/seed_2/checkpoints/ckpt_it0300.pt: K2 goal 58/200 coll 124/200  K5 goal 0/200 coll 16/200  K8 goal 0/200 coll 5/200
+results/train/seed_2/checkpoints/ckpt_it0310.pt: K2 goal 44/200 coll 119/200  K5 goal 0/200 coll 7/200  K8 goal 0/200 coll 3/200
+results/train/seed_2/checkpoints/ckpt_it0320.pt: K2 goal 51/200 coll 116/200  K5 goal 0/200 coll 7/200  K8 goal 0/200 coll 4/200
+results/train/seed_2/checkpoints/ckpt_it0330.pt: K2 goal 52/200 coll 118/200  K5 goal 0/200 coll 6/200  K8 goal 0/200 coll 4/200
+results/train/seed_2/checkpoints/ckpt_it0333.pt: K2 goal 45/200 coll 118/200  K5 goal 0/200 coll 5/200  K8 goal 0/200 coll 1/200
+{
+ "rule": "max_pooled_goal_rate",
+ "goal_rate_min": 0.5,
+ "collision_rate_min": 0.05,
+ "validation_trials_per_density": 200,
+ "env_fingerprint": "cf442ee5e99eb55a",
+ "pending_placeholders": 43,
+ "n_checkpoints": 100,
+ "best": {
+  "ckpt": "results/train/seed_0/checkpoints/ckpt_it0300.pt",
+  "seed": 0,
+  "iteration": 300,
+  "goal_rate": 0.11,
+  "coll_rate": 0.21833333333333332,
+  "gate_pass": false,
+  "per_density": {
+   "2": {
+    "goal_rate": 0.325,
+    "coll_rate": 0.555,
+    "goal_ok": 0,
+    "coll_ok": 1
+   },
+   "5": {
+    "goal_rate": 0.005,
+    "coll_rate": 0.055,
+    "goal_ok": 0,
+    "coll_ok": 1
+   },
+   "8": {
+    "goal_rate": 0.0,
+    "coll_rate": 0.045,
+    "goal_ok": 0,
+    "coll_ok": 0
+   }
+  }
+ },
+ "best_per_seed": {
+  "0": {
+   "ckpt": "results/train/seed_0/checkpoints/ckpt_it0300.pt",
+   "iteration": 300,
+   "goal_rate": 0.11,
+   "coll_rate": 0.21833333333333332,
+   "gate_pass": false,
+   "per_density": {
+    "2": {
+     "goal_rate": 0.325,
+     "coll_rate": 0.555,
+     "goal_ok": 0,
+     "coll_ok": 1
+    },
+    "5": {
+     "goal_rate": 0.005,
+     "coll_rate": 0.055,
+     "goal_ok": 0,
+     "coll_ok": 1
+    },
+    "8": {
+     "goal_rate": 0.0,
+     "coll_rate": 0.045,
+     "goal_ok": 0,
+     "coll_ok": 0
+    }
+   }
+  },
+  "1": {
+   "ckpt": "results/train/seed_1/checkpoints/ckpt_it0330.pt",
+   "iteration": 330,
+   "goal_rate": 0.08333333333333333,
+   "coll_rate": 0.19,
+   "gate_pass": false,
+   "per_density": {
+    "2": {
+     "goal_rate": 0.25,
+     "coll_rate": 0.54,
+     "goal_ok": 0,
+     "coll_ok": 1
+    },
+    "5": {
+     "goal_rate": 0.0,
+     "coll_rate": 0.015,
+     "goal_ok": 0,
+     "coll_ok": 0
+    },
+    "8": {
+     "goal_rate": 0.0,
+     "coll_rate": 0.015,
+     "goal_ok": 0,
+     "coll_ok": 0
+    }
+   }
+  },
+  "2": {
+   "ckpt": "results/train/seed_2/checkpoints/ckpt_it0300.pt",
+   "iteration": 300,
+   "goal_rate": 0.09666666666666666,
+   "coll_rate": 0.24166666666666667,
+   "gate_pass": false,
+   "per_density": {
+    "2": {
+     "goal_rate": 0.29,
+     "coll_rate": 0.62,
+     "goal_ok": 0,
+     "coll_ok": 1
+    },
+    "5": {
+     "goal_rate": 0.0,
+     "coll_rate": 0.08,
+     "goal_ok": 0,
+     "coll_ok": 1
+    },
+    "8": {
+     "goal_rate": 0.0,
+     "coll_rate": 0.025,
+     "goal_ok": 0,
+     "coll_ok": 0
+    }
+   }
+  }
+ },
+ "any_checkpoint_passes": false,
+ "wall_s": 808.3
+}
+
+real	13m28.536s
+user	44m30.327s
+sys	8m9.229s
