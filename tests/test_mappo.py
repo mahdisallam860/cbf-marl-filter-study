@@ -36,5 +36,10 @@ def test_tiny_training_run_writes_curves_and_checkpoints(tmp_path):
     m = actor.mean(torch.randn(1000, meta["obs_dim"]) * 100).detach().numpy()
     assert (m >= np.array(meta["lo"]) - 1e-6).all() and (m <= np.array(meta["hi"]) + 1e-6).all()
     # resume continues from the saved iteration
-    train(cfg, 0, tmp_path, overrides=dict(TINY, max_iterations=3), resume=True, log=lambda m: None)
+    train(cfg, 0, tmp_path, overrides=dict(TINY, max_iterations=3, epochs=3), resume=True, log=lambda m: None)
     assert len(list(csv.DictReader(open(tmp_path / "curve.csv")))) == 3
+    # each training phase keeps its own recipe record
+    import json
+    assert json.load(open(tmp_path / "run.json"))["hyperparams"]["epochs"] == 2
+    assert json.load(open(tmp_path / "run_resume_it0002.json"))["hyperparams"]["epochs"] == 3
+    assert load_actor_checkpoint(tmp_path / "checkpoints" / "ckpt_it0003.pt")[1]["hyperparams"]["epochs"] == 3

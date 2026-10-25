@@ -166,9 +166,14 @@ def train(cfg: StudyConfig, run_seed: int, out_dir, overrides=None, resume=False
         it0, env_steps, wall0 = st["iteration"], st["env_steps"], st["wall"]
         for g, idx in zip(env.groups, st["stream_idx"]):
             g.stream.idx = idx
-        log(f"resumed at iteration {it0}")
-    (out / "run.json").write_text(json.dumps(dict(run_seed=run_seed, env_fingerprint=meta["env_fingerprint"],
-                                                  obs_dim=D, hyperparams=hp, config=meta["config"]), indent=1, default=str))
+        for opt, key in ((opt_a, "lr_actor"), (opt_c, "lr_critic")):   # a resumed phase may change the recipe
+            for pg in opt.param_groups:
+                pg["lr"] = float(hp[key])
+        log(f"resumed at iteration {it0} with hyperparameters {hp}")
+    # one record per training phase: run.json for the first, run_resume_itNNNN.json for each resume
+    phase = "run.json" if it0 == 0 else f"run_resume_it{it0:04d}.json"
+    (out / phase).write_text(json.dumps(dict(run_seed=run_seed, start_iteration=it0, env_fingerprint=meta["env_fingerprint"],
+                                             obs_dim=D, hyperparams=hp, config=meta["config"]), indent=1, default=str))
 
     T, E = int(hp["rollout_steps"]), env.n_envs
     gamma, lam, clip = float(hp["gamma"]), float(hp["gae_lambda"]), float(hp["clip"])
