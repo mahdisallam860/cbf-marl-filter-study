@@ -176,8 +176,14 @@ def wilcoxon_power_sim(d_pilot, n, alpha=0.05, reps=2000, seed=0):
     """Power of the signed-rank test with n pairs, resampling the pilot differences."""
     d = np.asarray(d_pilot, dtype=np.float64)
     rng = np.random.default_rng(seed)
-    D = d[rng.integers(0, len(d), (reps, int(n)))]
-    return float((signed_rank_p_approx(D) < alpha).mean())
+    n = int(n)
+    chunk = max(1, min(reps, 2_000_000 // max(n, 1)))      # bound memory for large n
+    hits, done = 0, 0
+    while done < reps:
+        m = min(chunk, reps - done)
+        hits += int((signed_rank_p_approx(d[rng.integers(0, len(d), (m, n))]) < alpha).sum())
+        done += m
+    return hits / reps
 
 
 def wilcoxon_summary(x_off, x_on, conf=0.95):

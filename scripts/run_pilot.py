@@ -14,6 +14,8 @@ from concurrent.futures import ProcessPoolExecutor
 from pathlib import Path
 sys.path.insert(0, str(Path(__file__).resolve().parents[1]))
 
+N_CAP = 20000   # sample sizes above this are reported as inf (effect too small to test in this study)
+
 
 def layout_hash(lay):
     h = hashlib.sha256()
@@ -69,7 +71,8 @@ def cell_stats(off, on, n_agents, alpha_bonf):
         p10, p01 = m["n10"] / m["n"], m["n01"] / m["n"]
         for lab, a in (("a05", 0.05), ("bonf", alpha_bonf)):
             n_c = S.mcnemar_n_connor(p10, p01, alpha=a)
-            n_s = S.min_n_for_power(lambda n: S.mcnemar_power_sim(p10, p01, n, alpha=a, reps=4000, seed=11)) if np.isfinite(n_c) else float("inf")
+            n_s = (S.min_n_for_power(lambda n: S.mcnemar_power_sim(p10, p01, n, alpha=a, reps=4000, seed=11),
+                                     n_start=max(10, n_c // 2), n_max=N_CAP) if n_c <= N_CAP else float("inf"))
             ss.append(dict(endpoint=ep, test="McNemar", alpha_level=a, label=lab, effect=m["diff"],
                            p10=p10, p01=p01, n_closed_form=n_c, n_simulated=n_s))
     for ep, sel in (("form_err_all", np.ones(len(off), bool)), ("form_err_both_goal", both_goal)):
@@ -83,7 +86,8 @@ def cell_stats(off, on, n_agents, alpha_bonf):
         d = fe_on[sel] - fe_off[sel]
         for lab, a in (("a05", 0.05), ("bonf", alpha_bonf)):
             n_c = S.wilcoxon_n_noether(d, alpha=a)
-            n_s = S.min_n_for_power(lambda n: S.wilcoxon_power_sim(d, n, alpha=a, reps=2000, seed=12)) if np.isfinite(n_c) else float("inf")
+            n_s = (S.min_n_for_power(lambda n: S.wilcoxon_power_sim(d, n, alpha=a, reps=2000, seed=12),
+                                     n_start=max(10, n_c // 2), n_max=N_CAP) if n_c <= N_CAP else float("inf"))
             ss.append(dict(endpoint=ep, test="Wilcoxon", alpha_level=a, label=lab, effect=w["mean_diff"],
                            p10=float("nan"), p01=float("nan"), n_closed_form=n_c, n_simulated=n_s))
     return cell, ss
