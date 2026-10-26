@@ -90,7 +90,7 @@ Safe learning in robotics is surveyed in \cite{brunke2022} and control barrier f
 training \cite{cai2021} or learn barrier certificates together with the policy
 \cite{qin2021,zhang2025gcbf,zhang2025dgppo}; some filter during both training and execution
 \cite{choi2025,dawood2025}; one learns a safety correction on top of a frozen MAPPO policy
-\cite{deng2026}; and one filters at execution a policy trained without the filter, using a centralised
+\cite{deng2026}; and one filters at execution a separately obtained RL planner, using a centralised
 QP for double-integrator agents \cite{vinod2022}. Table~\ref{tab:related} summarises them. Here
 \emph{paired on/off} means that the same frozen policy is evaluated with and without the filter on
 matched layouts; a comparison between separately trained policies (a training ablation) does not count
@@ -129,7 +129,7 @@ DGPPO \cite{zhang2025dgppo} & graph CBF learned simultaneously with the policy &
 Choi et al. \cite{choi2025} & CBVF filter in the second half of training and at execution & No: separately trained variants & goal reach, near collisions, conflicts, travel time & F\\
 Deng et al. \cite{deng2026} & learned correction added to a frozen MAPPO policy & base policy reported; pairing not stated & return, arrival rate, violation rate & F\\
 Dawood et al. \cite{dawood2025} & MPC filter in training and execution & Yes, for a policy trained with the filter & goals, timeouts, collisions, time, formation error & F\\
-Vinod et al. \cite{vinod2022} & centralised QP filter at execution; policy trained without it & same policy and start states, shown qualitatively & completion, deadlock, loitering & F\\
+Vinod et al. \cite{vinod2022} & centralised QP filter at execution on a separately obtained RL planner (filter use in training not stated) & same policy and start states, reported mainly qualitatively & completion, deadlock, loitering & F\\
 This study & decentralised CBF-QP at execution; policies trained without it & Yes: 9{,}000 matched layouts per density & collisions, infeasibility, completion, formation, stalls & --\\
 \bottomrule
 \end{tabular}
@@ -179,7 +179,8 @@ $h(t_k+s)\ge (1-\alpha s)\,h(t_k)\ge 0$ for all $s\in[0,\Delta]$.
 
 This is the second-order approach of \cite{breeden2022} (Theorem~3, stated there with the opposite
 sign convention for $h$; $\gamma\le1$ corresponds to $\alpha\Delta\le1$). With
-$V_p=\sqrt{\bar v^2+\ell^2\bar\omega^2}$ and $A_p=\bar\omega V_p$, the implemented margins use the
+$\bar v=\max|v|=0.5$\,m/s, $\bar\omega=\max|\omega|=1$\,rad/s,
+$V_p=\sqrt{\bar v^2+\ell^2\bar\omega^2}\approx0.5025$\,m/s (an upper bound on $\|\dot p\|$) and $A_p=\bar\omega V_p$ (an upper bound on $\|\ddot p\|$ under a held command), the implemented margins use the
 two-sided bounds of the design document,
 \begin{equation}
 \delta_o(d)=\tfrac{\Delta}{2}\big[2V_p^2+2(d+V_p\Delta)A_p\big],\qquad
@@ -212,20 +213,29 @@ to the centroid, the centroid-to-goal vector (norm-clipped at 2.0\,m), teammates
 and headings, the eight nearest obstacles within 2.0\,m (relative centre, surface gap, present flag)
 and an agent one-hot. The per-period reward is
 $10\cdot$(centroid progress toward the goal) $-1\cdot$(mean slot error) $-0.01\cdot$(control effort)
-$-10\cdot$[collision] $-0.2\cdot\sum_{\rm pairs}\max(0,1-\text{clearance}/0.15\,\mathrm{m})$; a collision
+$-10\cdot$[collision] $-0.2\cdot\sum_{\rm pairs}\max(0,1-\text{clearance}/0.15\,\mathrm{m})$, summed over robot--obstacle and robot--robot pairs (surface clearance); control effort is the mean over robots of $(v/0.5)^2+\omega^2$; a collision
 ends the episode and a timeout is bootstrapped. The filter is never used in training.
 
 \paragraph{MAPPO and curriculum.} A compact PyTorch implementation of MAPPO \cite{yu2022mappo} (shared Gaussian actor with tanh-bounded
 mean, centralised critic, GAE with $\gamma=0.99$, $\lambda=0.95$, clip 0.2, 10 epochs, 16 minibatches,
-learning rates $3\times10^{-4}$ actor and $10^{-3}$ critic, 384 parallel environments of 64 steps) was
-trained with three seeds through a curriculum $K=0\to1\to2\to3\to(2,5,8)$ with stage budgets of 1, 2,
-4, 4 and 8 million environment steps. The implementation was sanity-checked only on the stock VMAS
+learning rates $3\times10^{-4}$ actor and $10^{-3}$ critic, no entropy bonus, gradient-norm clip 0.5,
+hidden layers $128\times128$ (actor) and $256\times256$ (critic), initial action standard deviation half
+of each half-range, 384 parallel environments of 64 steps) was
+trained with three seeds through a curriculum $K=0\to1\to2\to3\to(2,5,8)$ with maximum stage budgets of 1, 2,
+4, 4 and 8 million environment steps; a stage ended early once the held-out GOAL rate reached 80\% at
+every stage density, which happened in the $K=0$ and $K=1$ stages for all three seeds. The implementation was sanity-checked only on the stock VMAS
 navigation task, where the deterministic policy reached \MappoNavSuccess\% success on 200 fixed
 episodes (uniform random: \MappoNavRandom\%).
 
 \paragraph{Checkpoints and gate history.} The nine actors are the early, middle and late checkpoints
 of the final curriculum stage of each seed, fixed by an iteration rule (first saved checkpoint with
-$r\ge\lceil n/3\rceil$, $r\ge\lceil 2n/3\rceil$, and $r=n$, with $n=326$ final-stage iterations). The
+$r\ge\lceil n/3\rceil$, $r\ge\lceil 2n/3\rceil$, and $r=n$, with $n=326$ final-stage iterations).
+Seed~1 crashed at global iteration 565 (a layout-sampler stall) and was resumed from the state it had
+saved at iteration 546: actor, critic, optimiser states, value normaliser and action-sampling
+generator were restored bit for bit, but the environments, the position in the training-layout chunk
+and the global random-number state were not, and iterations 547--565 (466{,}944 environment steps) were
+discarded. Actors s1\_middle and s1\_late come from the resumed run; s1\_early predates the crash
+(audit/PROVENANCE.md, Section~3). The
 original pre-registered filter-off gate (pooled GOAL $\ge$ 50\% over $K=2,5,8$) was not met by any
 checkpoint: the best pooled GOAL rate was \GateVoneBest\% (first configuration) and \GateVtwoBest\%
 (curriculum). $K=5,8$ were therefore moved to stress cells and $K=1,2,3$ became the primary densities.
@@ -267,7 +277,7 @@ combined through the estimated correlation $\hat\phi$), whose appropriate limit 
 98.33\% bound. The locked protocol names this ``method~10'', but the analysis code, committed before
 any frozen-MAPPO filter-on data, uses the uncorrected $\hat\phi$, which is Newcombe's method~8;
 method~10 applies a continuity correction to $\hat\phi$. This was found after the final test.
-Recomputing every bound for (a) and (b) with method~10 changes it by at most \NewcombeMaxDiffPP{}
+Recomputing every bound for (a) and (b) with method~10 changes it by less than 0.001
 percentage points and changes no criterion (\texttt{scripts/newcombe\_method10\_check.py}); the
 reported numbers are those of the locked code. Per-seed and per-actor results, episode length,
 reached-goal-region (centroid within 0.30\,m of the goal before any collision or infeasibility),
@@ -498,7 +508,7 @@ numerical sensitivity near the boundary, not proof of the cause.
 
 \paragraph{Transit.} During formation transit the equal-split cap on a robot's closing speed toward
 a neighbour had median \CapMedMin--\CapMedMax\,m/s, above the largest barrier-point speed
-\Vp\,m/s, and bound in \CapBindMin--\CapBindMax\% of moving closing periods.
+$V_p\approx\Vp$\,m/s, and bound in \CapBindMin--\CapBindMax\% of moving closing periods.
 
 \begin{figure}[t]\centering
 \includegraphics[width=0.48\linewidth]{figures/F4_clearance_groups.pdf}\hfill
@@ -616,9 +626,10 @@ re-running trials.\par}
 \item The methodology report was committed after the final test.
 \item The mechanism categories were chosen after the confirmatory results were known.
 \item The post-test decision rule was not committed before the mechanism results were read.
-\item The locked protocol names the paired interval for criteria (a) and (b) ``Newcombe method~10'', but the analysis code implements method~8 (uncorrected correlation); with method~10 every bound changes by at most \NewcombeMaxDiffPP{} percentage points and no criterion changes (found after the final test).
+\item The locked protocol names the paired interval for criteria (a) and (b) ``Newcombe method~10'', but the analysis code implements method~8 (uncorrected correlation); with method~10 every bound changes by less than 0.001 percentage points and no criterion changes (found after the final test).
 \item The example in Fig.~\ref{fig:f6} was first recorded as the unique nearest candidate; exact decimal comparison shows two equally close candidates, and the stated actor-index tie-break selects the same pair (regenerated metadata in \texttt{results/paper\_revision/example\_selection.json}).
 \item One of the \TrialsTotal{} final-test trials (s2\_early, $K=3$, trial 646) started with a negative obstacle cover barrier ($h=\AfiveH$\,m$^2$, body clearance \AfiveGap\,m), an exception to assumption A5; it is kept in all confirmatory numbers.
+\item Training seed~1 crashed at iteration 565 and was resumed from its saved iteration-546 state without restoring the environments or the global random-number state; iterations 547--565 were discarded. Actors s1\_middle and s1\_late come from the resumed run (Section~\ref{sec:policy}).
 \item Claims cover these nine fixed actors in this simulated scenario only.
 \item Safety statements are numerical under the design-document assumptions (A1--A9), not a continuous-time proof.
 \item The MAPPO implementation is custom and was sanity-checked only on the stock VMAS navigation task.
@@ -644,11 +655,11 @@ and common-prefix formation error.
 \bibitem{agarwal2021} R.~Agarwal, M.~Schwarzer, P.~S.~Castro, A.~Courville, M.~G.~Bellemare, ``Deep reinforcement learning at the edge of the statistical precipice,'' NeurIPS 2021, vol.~34, pp.~29304--29320, arXiv:2108.13264.
 \bibitem{vinod2022} A.~P.~Vinod, S.~Safaoui, A.~Chakrabarty, R.~Quirynen, N.~Yoshikawa, S.~Di~Cairano, ``Safe multi-agent motion planning via filtered reinforcement learning,'' IEEE International Conference on Robotics and Automation (ICRA), 2022 (MERL TR2022-053). \url{https://www.merl.com/publications/docs/TR2022-053.pdf}
 \bibitem{singletary2020} A.~Singletary, Y.~Chen, A.~D.~Ames, ``Control barrier functions for sampled-data systems with input delays,'' IEEE Conference on Decision and Control (CDC), 2020; arXiv:2005.06418.
-\bibitem{breeden2022} J.~Breeden, K.~Garg, D.~Panagou, ``Control barrier functions in sampled-data systems,'' \emph{IEEE Control Systems Letters}, doi:10.1109/LCSYS.2021.3076127. \url{https://arxiv.org/abs/2103.03677} (Theorem~3, second-order approach; checked against arXiv v2 on 2026-10-26; the paper uses the opposite sign convention for $h$)
+\bibitem{breeden2022} J.~Breeden, K.~Garg, D.~Panagou, ``Control barrier functions in sampled-data systems,'' \emph{IEEE Control Systems Letters}, vol.~6, pp.~367--372, 2022, doi:10.1109/LCSYS.2021.3076127. \url{https://arxiv.org/abs/2103.03677} (Theorem~3, second-order approach; checked against arXiv v2 on 2026-10-26; the paper uses the opposite sign convention for $h$)
 \bibitem{tan_zocbf} X.~Tan, E.~Da\c{s}, A.~D.~Ames, J.~W.~Burdick, ``Zero-order control barrier functions for sampled-data systems with state and input dependent safety constraints,'' arXiv:2411.17079, 2024.
 \bibitem{liu_sacbf} S.~Liu, W.~Xiao, C.~A.~Belta, ``Sampling-aware control barrier functions for safety-critical and finite-time constrained control,'' arXiv:2511.11897, 2025.
 \bibitem{vandenberg2011} J.~van~den~Berg, S.~J.~Guy, M.~Lin, D.~Manocha, ``Reciprocal n-body collision avoidance,'' in \emph{Robotics Research}, Springer Tracts in Advanced Robotics, vol.~70, Springer, 2011, doi:10.1007/978-3-642-19457-3\_1.
-\bibitem{chen2021} Y.~Chen, A.~Singletary, A.~D.~Ames, ``Guaranteed obstacle avoidance for multi-robot operations with limited actuation: A control barrier function approach,'' \emph{IEEE Control Systems Letters}, vol.~5, no.~1, 2021.
+\bibitem{chen2021} Y.~Chen, A.~Singletary, A.~D.~Ames, ``Guaranteed obstacle avoidance for multi-robot operations with limited actuation: A control barrier function approach,'' \emph{IEEE Control Systems Letters}, vol.~5, no.~1, pp.~127--132, 2021.
 \bibitem{emam2019} Y.~Emam, P.~Glotfelter, M.~Egerstedt, ``Robust barrier functions for a fully autonomous, remotely accessible swarm-robotics testbed,'' arXiv:1909.02966, 2019.
 \bibitem{kim2026} T.~Kim, ``Is your safe controller actually safe? A critical review of CBF tautologies and hidden assumptions,'' arXiv:2603.06954, 2026.
 \bibitem{yang2019} G.~Yang, C.~Belta, R.~Tron, ``Self-triggered control for safety critical systems using control barrier functions,'' arXiv:1903.03692, 2019.
