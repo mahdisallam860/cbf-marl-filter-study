@@ -132,9 +132,12 @@ measures exactly this trade-off.
 only `ḧ ≥ −M` on the period; the two-sided bounds `M_o`, `M_r` above are sufficient, not
 necessary. A one-sided sampled-data result of this form exists in the literature (Breeden, Garg,
 Panagou, IEEE Control Systems Letters 2022, arXiv 2103.03677, reported as Theorem 3 in
-`docs/methodology/ZR_method_audit_2026-10-26.md`): **citation to be verified** (the arXiv text
-could not be accessed when this was written, so the theorem number and statement have not been
-checked here).
+`docs/methodology/ZR_method_audit_2026-10-26.md`). **Citation checked on 2026-10-26 against arXiv
+2103.03677v2** ("Control Barrier Functions in Sampled-Data Systems", DOI 10.1109/LCSYS.2021.3076127):
+Theorem 3 is the second-order approach, phi_3 = -(gamma/T) h - (1/2) T eta with gamma in (0, 1] and
+eta >= 0 bounding the second derivative of h between samples. That paper uses the opposite sign
+convention for h, so its one-sided upper bound corresponds to the lower bound `ḧ >= -M` used here,
+and gamma <= 1 corresponds to alpha*dt <= 1.
 
 **One-sided margin B (analytic comparison only; NOT implemented).** Under a held command
 `s = |ṗ|` is constant and `|p̈| = |ω| s`, so `ḧ_o ≥ 2s² − 2(d + sΔ)|ω|s`. Taking the worst case
@@ -175,7 +178,7 @@ feasibility witness for decentralised half-responsibility constraints (van den B
 ORCA, https://ics-websites.science.uu.nl/docs/vakken/mcrws/papers_new/van%20den%20Berg%20et%20al%20-%202011%20-%20Reciprocal%20n-body%20collision%20avoidance.pdf),
 and stopping as the feasibility-guaranteeing backup (Chen, Singletary, Ames, IEEE L-CSS 2021,
 https://par.nsf.gov/servlets/purl/10281485); theorem and section numbers as given in
-`docs/methodology/ZR_method_audit_2026-10-26.md`, citation to be verified. See that audit for the
+`docs/methodology/ZR_method_audit_2026-10-26.md` (Breeden et al. Theorem 3 checked on 2026-10-26; the ORCA and Chen-Singletary-Ames section numbers are as given in the audit and not independently checked here). See that audit for the
 derivation and its limits.
 
 ## 5. The QP and its solver
