@@ -1,0 +1,2 @@
+label,source,policy_id,density,trial,min_h_obst,min_h_rr,min_body_gap_obst,min_body_gap_rr,obst_to_start_centroid
+"EXPLORATORY, POST HOC",final_test (saved per-step initial poses),s2_early,3,646,-0.00777472,0.0958172,0.0869621,0.241614,0.769518

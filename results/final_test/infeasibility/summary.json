@@ -1,0 +1,20 @@
+{
+ "label": "EXPLORATORY, POST HOC",
+ "infeasible_trials": 433,
+ "reproduced": 433,
+ "infeasible_robots": 433,
+ "near_boundary_reproduced_robots": 410,
+ "reproduced_robots": 433,
+ "initial_state_totals": {
+  "final_test_K1": 9000,
+  "final_test_K2": 9000,
+  "final_test_K3": 9000,
+  "validation_K0": 200,
+  "validation_K1": 200,
+  "validation_K2": 200,
+  "validation_K3": 200,
+  "validation_K5": 200,
+  "validation_K8": 200
+ },
+ "initial_state_negative": 1
+}
