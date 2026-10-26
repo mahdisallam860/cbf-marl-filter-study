@@ -23,3 +23,23 @@ GLOSSARY
 
 PHASES (caps): 1 clearance thresholds 30 min (+10 optional AUC); 2 infeasibility audit 45 min; 3 design-doc corrections 40 min; 4 paper draft 2 h 15 min; 5 verification 40 min; FINISH 20 min reserved.
 Run `date` before every phase; re-read this file before every phase.
+
+## Paper revision run (2026-10-26, start 09:14:04 UTC)
+
+Same HARD RULES and GLOSSARY as above, plus:
+- No training, no simulation of study trials, no new layouts; never touch 5,000,000-5,999,999; never regenerate
+  4,000,000-block layouts (saved files only); no change to confirmatory numbers, protocol, filter, scoring,
+  tolerances, actors, config or sampler. Do not call CBFQPFilter or any QP solver; do not reproduce
+  infeasibility again. Missing saved data -> report the analysis as unavailable.
+- Labels: locked-protocol secondaries (per-seed/per-actor tables) = "pre-declared secondary, descriptive";
+  time to goal = "pre-declared episode-length endpoint; exploratory, post hoc joint-success analysis"
+  (difference = test arm minus filter off, positive = slower; equal-actor mean; pooled median / Wilcoxon /
+  Hodges-Lehmann are pair-weighted); everything newly chosen = "exploratory, post hoc".
+- Every empirical number via scripts/paper_numbers.py -> paper/numbers.tex; anchor check vs verdict.json must pass.
+- Citations only from the prompt's Stage 2 bibliography, the existing paper bibliography, and (permitted by the
+  overrides) the original MAPPO, VMAS and Newcombe references, with metadata verified from primary sources or
+  left out. Never invent title/venue/year/page/DOI; missing titles -> "title to add".
+- Comparison-table entries are provisional; classifications not verified against the papers are marked "not verified".
+- Implications are suggestions tied to specific results; increasing estimates across densities are not a tested trend.
+- Caps (overrides): setup 10 min, analyses 60, paper 65, verification 25, finish 20; at 2 h 15 start verification;
+  at 2 h 40 skip to FINISH.
