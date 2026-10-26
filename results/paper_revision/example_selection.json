@@ -3,7 +3,23 @@
  "rule": "group-A pair with filter-off minimum sampled obstacle clearance closest to the unrounded group-A median; ties by actor index (checkpoint_selection order), density, trial index",
  "group_A_n": 2274,
  "group_A_median_m": 0.03298875,
- "n_tied_at_min_distance": 1,
+ "group_A_median_exact": "0.03298875",
+ "n_tied_at_min_distance": 2,
+ "tied_candidates": [
+  {
+   "policy_id": "s1_late",
+   "density": 2,
+   "trial": 348,
+   "min_gap_obst": "0.0329879"
+  },
+  {
+   "policy_id": "s2_late",
+   "density": 2,
+   "trial": 717,
+   "min_gap_obst": "0.0329896"
+  }
+ ],
+ "tie_comparison": "exact decimal on stored values",
  "policy_id": "s1_late",
  "density": 2,
  "trial": 348,

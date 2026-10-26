@@ -16,6 +16,7 @@
     obstacle clearance is closest to the UNROUNDED group-A median; ties by actor index, density, trial.
 Writes results/paper_revision/*.csv, example_selection.json and paper/figures/F6_example_trajectory.pdf."""
 import csv, gzip, json, sys
+from decimal import Decimal
 from pathlib import Path
 
 import numpy as np
@@ -142,11 +143,15 @@ def example(cfg):
     matplotlib.use("pdf")
     import matplotlib.pyplot as plt
     rows = [r for r in csv.DictReader(open(FT / "mechanism/clearance_trajectories.csv")) if r["in_A"] == "1"]
-    g = np.array([float(r["min_gap_obst"]) for r in rows])
-    med = float(np.median(g))
-    key = lambda r: (abs(float(r["min_gap_obst"]) - med), POLS.index(r["policy_id"]), int(r["density"]), int(r["trial"]))
+    # Exact decimal arithmetic on the stored strings: the median of an even count is the midpoint of the two
+    # middle values, which are then exactly equidistant; float subtraction can split such a tie by one ulp.
+    gd = sorted(Decimal(r["min_gap_obst"]) for r in rows)
+    n = len(gd)
+    med_d = gd[n // 2] if n % 2 else (gd[n // 2 - 1] + gd[n // 2]) / 2
+    med = float(med_d)
+    key = lambda r: (abs(Decimal(r["min_gap_obst"]) - med_d), POLS.index(r["policy_id"]), int(r["density"]), int(r["trial"]))
     best = min(rows, key=key)
-    ties = [r for r in rows if abs(float(r["min_gap_obst"]) - med) == key(best)[0]]
+    ties = [r for r in rows if abs(Decimal(r["min_gap_obst"]) - med_d) == key(best)[0]]
     pid, K, t = best["policy_id"], int(best["density"]), int(best["trial"])
     pc, fc = cfg.protocol_config(), cfg.filter_config(10.0)
     R, Ro, ell = pc.robot_r, pc.obst_r, fc.ell
@@ -187,9 +192,10 @@ def example(cfg):
         ax.set_xlabel("x [m]")
     axs[0].set_ylabel("y [m]")
     fig.tight_layout(); fig.savefig(ROOT / "paper/figures/F6_example_trajectory.pdf"); plt.close(fig)
+    tied = [dict(policy_id=r["policy_id"], density=int(r["density"]), trial=int(r["trial"]), min_gap_obst=r["min_gap_obst"]) for r in ties]
     sel = dict(label=EXP, rule="group-A pair with filter-off minimum sampled obstacle clearance closest to the unrounded group-A "
                                "median; ties by actor index (checkpoint_selection order), density, trial index",
-               group_A_n=len(rows), group_A_median_m=med, n_tied_at_min_distance=len(ties), policy_id=pid, density=K, trial=t,
+               group_A_n=len(rows), group_A_median_m=med, group_A_median_exact=str(med_d), n_tied_at_min_distance=len(ties), tied_candidates=tied, tie_comparison="exact decimal on stored values", policy_id=pid, density=K, trial=t,
                selected_min_gap_obst_m=float(best["min_gap_obst"]), off_executed_periods=Toff, on_executed_periods=Ton,
                off_outcome_code=ooff, on_outcome_code=oon, off_closest_approach_state=k_ca,
                off_min_clearance_at_that_state_m=float(gap_off[k_ca].min()),
@@ -205,6 +211,9 @@ def example(cfg):
 def main():
     OUT.mkdir(parents=True, exist_ok=True)
     cfg = StudyConfig.load()
+    if "--example-only" in sys.argv:          # regenerate only example_selection.json and Fig. F6
+        print(json.dumps(example(cfg), indent=1))
+        return
     cells = load_cells()
     ttg = time_to_goal(cells)
     per_seed(); val_vs_test(); stress(); baseline()
