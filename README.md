@@ -8,9 +8,17 @@ test double for the protocol tests. Every number (radii, limits, `ℓ`, ranges, 
 formation tolerances, reward and collision-penalty weights, gate thresholds) lives in
 `config/study.toml` and is a placeholder pending advisor approval.
 
-**Current status: STOP at the filter-off gate** (`results/REPORT.md`). No trained policy (config v1,
-or the config v2 curriculum) reaches the goal at K = 5 or K = 8, although every held-out layout is
-solvable; no filter-on result has been produced.
+**Current status (2026-10-26): final test complete.** The author-locked protocol
+(`docs/PREFILTER_VALIDATION_PROTOCOL_LOCKED_2026-10-25.md`; not advisor-approved) was run on the
+reserved final-test layouts with the gain alpha* = 10 selected on validation layouts
+(`results/validation_sweep/`). Verdict, per primary density K = 1, 2, 3: **not shown useful under
+the pre-set criteria**. Collision-or-infeasible failures fell at every density (criterion (a) met),
+but the GOAL-loss and common-prefix formation non-inferiority criteria (b) and (c) were not met
+(`results/final_test/FINAL_TEST.md`, `verdict.json`). Exploratory, post hoc analyses of the saved
+logs: `results/final_test/MECHANISM_EXPLORATORY.md` (stall classes, clearances, filter-C row checks,
+clearance thresholds) and `results/final_test/INFEASIBILITY_AUDIT.md` (infeasible QPs, the A5
+exception). The earlier filter-off gate history (config v1 and the curriculum) is kept in
+`results/gate/`, `results/gate_v2/` and `results/phase1/`.
 
 ## Layout
 
@@ -39,6 +47,8 @@ solvable; no filter-on result has been produced.
 | `cbf_study/trial_metrics.py` | pass-through trajectory recorder, executed-period counts, common-prefix formation difference, reached-goal-region, sampled barrier minima |
 | `cbf_study/locked_stats.py` | confirmatory statistics of the locked protocol (one-sided McNemar, Newcombe bounds, equal-policy stratified bootstrap) |
 | `docs/PREFILTER_VALIDATION_PROTOCOL_LOCKED_2026-10-25.md`, `config/evaluation_protocol_locked.toml` | author-locked (not advisor-approved) evaluation protocol |
+| `docs/methodology/` | methodology report (written before the sweep, committed after the final test) and the ZR audit; provenance in its README |
+| `results/final_test/`, `scripts/final_test*.py`, `scripts/mechanism_*.py`, `scripts/clearance_thresholds.py`, `scripts/infeasibility_audit*.py` | final test, verdict, exploratory mechanism and infeasibility analyses |
 | `docs/CBF_DESIGN.md` | barrier, relative degree, footprint cover, safety lemma, assumptions, limits |
 | `docs/MAPPO_POLICY.md` | training env, reward, observation, MAPPO, freezing, gate and pilot design |
 | `tests/` | protocol, filter, config, training env, MAPPO, frozen policy, statistics |

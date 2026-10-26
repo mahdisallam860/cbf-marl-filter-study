@@ -126,6 +126,58 @@ Larger `α` gives a smaller margin but a stiffer filter (more abrupt interventio
 share of infeasible steps near the limit of `αΔ ≤ 1`). The barrier-gain sweep in the study
 measures exactly this trade-off.
 
+### 4a. Corrections and additions (2026-10-26; documentation only, the filter is unchanged)
+
+**Lemma 1 needs only a lower bound on `ḧ`.** The proof uses `ḣ(t_k + s) ≥ ḣ(t_k) − M s`, i.e.
+only `ḧ ≥ −M` on the period; the two-sided bounds `M_o`, `M_r` above are sufficient, not
+necessary. A one-sided sampled-data result of this form exists in the literature (Breeden, Garg,
+Panagou, IEEE Control Systems Letters 2022, arXiv 2103.03677, reported as Theorem 3 in
+`docs/methodology/ZR_method_audit_2026-10-26.md`): **citation to be verified** (the arXiv text
+could not be accessed when this was written, so the theorem number and statement have not been
+checked here).
+
+**One-sided margin B (analytic comparison only; NOT implemented).** Under a held command
+`s = |ṗ|` is constant and `|p̈| = |ω| s`, so `ḧ_o ≥ 2s² − 2(d + sΔ)|ω|s`. Taking the worst case
+over the box gives the state-only one-sided obstacle margin `m_B,o(d) = κ_o(d) ω̄` with
+`κ_o(d) = Δ F(ω̄)/(2ω̄)`, `F(ω) = max_{0 ≤ σ ≤ V_p} [2(d + σΔ)σω − 2σ²]₊`, in closed form
+
+| distance | `κ_o(d)` |
+|---|---|
+| `D_o ≤ d ≤ d* = 2V_p(1 − Δω̄)/ω̄` (0.9045 m here) | `Δ d² ω̄ / (4(1 − Δω̄))` |
+| `d* < d ≤ sensing_range` | `(Δ/ω̄)[(d + V_pΔ)ω̄V_p − V_p²]` |
+
+and each robot's pair share `m_B,r(d) = κ_r(d) ω̄`, `κ_r(d) = ΔV_p(d + 2V_pΔ)`. For the placeholder
+values the obstacle margin at `d = D_o` is 0.0034 (B) against 0.0454 (C, implemented), and the pair
+share at `d = 0.52` m is 0.0312 (B) against 0.0817 (C). These constants, and a brute-force check of
+both `κ_o` branches (maximum error 1.4e-13), come from `scripts/design_doc_constants.py`
+(`results/design/margin_constants.json`). B is the worst case within this one bounding chain, not
+the exact worst case of `−ḧ`. The implemented filter keeps the two-sided margins of section 4.
+
+**Boundary case.** At alpha*dt = 1, the lemma provides no strictly positive endpoint lower bound
+from the initial barrier alone. Numerical robustness requires separate analysis. The final test
+ran at `α* = 10`, `Δ = 0.1`, i.e. exactly on this boundary. In the exploratory, post hoc audit of
+its 433 INFEASIBLE trials (`results/final_test/INFEASIBILITY_AUDIT.md`), all 433 were reproduced
+by the unchanged code at the saved states, every binding row sat at its stand-off `h* = δ/α` to
+within about 4e-8 m², the zero command violated it by 8e-9 to 5e-6 (normalised), and 410 of 433
+met the pre-declared near-boundary diagnostic. This is consistent with numerical sensitivity near
+the boundary; it is not proof of the cause.
+
+**Remark (ZR, exact arithmetic only; not implemented).** For these offset-point unicycle barriers
+the second-order sampled-data margin can instead be evaluated at the held command and bounded by
+two affine rows per barrier (`κ_o(d)|ω|` and `κ_r(d)|ω_i|`, each written as two rows `± κ ω`). Then `u = 0`
+satisfies every enabled row whenever `h ≥ 0`, and the decentralised equal-split filter is
+recursively feasible and intersample-safe in exact arithmetic under A1–A8. The admissible sets
+satisfy `K_C ⊆ K_B ⊆ K_ZR` (non-strict inclusion; they can coincide, e.g. with no enabled row).
+This does not survive float32 rounding without a separate tolerance or robustness rule (a float32
+tracking error near `h = 0` can make the zero-command row fail the 1e-9 tolerance). The ingredients
+are existing ideas: the one-sided lemma (Breeden et al., arXiv 2103.03677), zero command as the
+feasibility witness for decentralised half-responsibility constraints (van den Berg et al. 2011,
+ORCA, https://ics-websites.science.uu.nl/docs/vakken/mcrws/papers_new/van%20den%20Berg%20et%20al%20-%202011%20-%20Reciprocal%20n-body%20collision%20avoidance.pdf),
+and stopping as the feasibility-guaranteeing backup (Chen, Singletary, Ames, IEEE L-CSS 2021,
+https://par.nsf.gov/servlets/purl/10281485); theorem and section numbers as given in
+`docs/methodology/ZR_method_audit_2026-10-26.md`, citation to be verified. See that audit for the
+derivation and its limits.
+
 ## 5. The QP and its solver
 
 For each robot, every step:
@@ -190,6 +242,20 @@ fall back to braking or to the nominal command, so infeasible steps cannot be hi
 | A7 | Velocity box contains `u = 0` and the same box is used by the policy clip and the QP | `δ`, stopping |
 | A8 | `αΔ ≤ 1`, `ℓ > 0`, ranges as in the range rule | enforced by `validate()` |
 | A9 | Every QP is feasible at every period | otherwise the trial ends as `INFEASIBLE` |
+
+**A5 exception (2026-10-26, exploratory audit).** One of the 27,000 final-test trials
+(actor `s2_early`, K = 3, trial 646) starts with a negative obstacle cover barrier
+(`h_o = −0.00777` m², body surface gap 0.087 m); none of the 1,200 saved validation layouts does
+(validation K = 4 was not saved and is unchecked). Likely cause: the layout sampler checks obstacle
+placement against the nominal start centroid, while the noisy start poses move the barrier points
+(`results/final_test/INFEASIBILITY_AUDIT.md`). The sampler is unchanged; Lemma 1 does not cover
+that start, and the trial is kept in every confirmatory number.
+
+**B-match is not a certified stop.** The B-match comparator (`cbf_study/bmatch.py`) applies
+`(v, ω) = (0, ω_nom)` when a barrier row is violated. With `v = 0` the body disc does not move,
+but the offset point rotates, so the barrier value can still decrease and the premise `h ≥ 0`
+can be lost; a neighbour can also drive into a stopped robot. No safety statement of this
+document applies to B-match.
 
 ## 8. What the numerical tests do and do not show
 
