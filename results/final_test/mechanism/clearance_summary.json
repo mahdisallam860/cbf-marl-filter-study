@@ -1,0 +1,19 @@
+{
+ "label": "EXPLORATORY, POST HOC",
+ "group_counts": {
+  "A": 2274,
+  "A_obst": 2259,
+  "A_nb": 15,
+  "A'": 2540,
+  "B": 11255
+ },
+ "A_prime_breakdown": {
+  "filter-induced stall: obstacle": 1463,
+  "filter-induced stall: obstacle+neighbour": 796,
+  "near-goal parking stall": 236,
+  "INFEASIBLE": 9,
+  "slow progress": 7,
+  "filter-induced stall: neighbour": 15,
+  "other stall": 14
+ }
+}
