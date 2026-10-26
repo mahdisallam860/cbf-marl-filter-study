@@ -1,0 +1,10 @@
+# Overnight phase 5, Mon Oct 26 00:50:47 -> 00:52:43 UTC 2026, at commit 01942dc
+# python -m pytest -q tests --deselect tests/test_vmas_and_stress.py::test_stress_filter_on_has_no_collisions_kinematic --deselect tests/test_vmas_and_stress.py::test_stress_filter_on_has_no_collisions_vmas -p no:warnings
+1 failed, 113 passed, 2 deselected in 104.54s
+FAILED tests/test_seed_reservation.py::test_no_saved_result_or_audit_record_uses_a_reserved_seed
+# Expected given the authorized final test: the test (written before the final test) asserts that no
+# saved result records a seed in 4,000,000-5,999,999. The only hits are results/final_test/ files
+# (layouts.csv, cells) with 4,000,000-block seeds used by the authorized final test; no 5,000,000-block
+# seed appears anywhere. The test was NOT modified overnight (conservative); updating it to exempt the
+# final-test outputs while still guarding the 5,000,000 block is a decision for the author.
+# The two stress-harness tests were skipped by rule (deselected), not run.

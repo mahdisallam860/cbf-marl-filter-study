@@ -36,8 +36,8 @@ infeasibility at every density (from \FailOffone\% to \FailOnone\%, \FailOfftwo\
 useful} at any density: the non-inferiority criteria for goal completion (margin five percentage
 points) and for formation error over the common executed prefix (margin 0.01\,m) were not met.
 Exploratory, post hoc analyses of the saved logs indicate that many filtered runs stalled in
-front of obstacles on layouts the unfiltered policy completed or collided on, and that all
-\InfTotal{} infeasible quadratic programmes sat at the barrier stand-off, consistent with
+front of obstacles on layouts the unfiltered policy completed or collided on, and that in all
+\InfTotal{} infeasible trials the binding barrier row sat at its stand-off, consistent with
 numerical sensitivity at $\alpha\Delta=1$. Claims cover these nine actors in this simulated
 scenario only.
 \end{abstract}
@@ -195,7 +195,7 @@ $x$, per density, with the filter-on GOAL rate (dashed).}\label{fig:f4}\label{fi
 \end{figure}
 
 \section{Discussion}
-\emph{Collisions versus stalls.} The filter removed almost all collisions (Table~\ref{tab:conf});
+\emph{Collisions versus stalls.} With the filter on there were no collisions (\CollOnone, \CollOntwo{} and \CollOnthree{} at $K=1,2,3$; the remaining failures were INFEASIBLE; Table~\ref{tab:conf});
 in the exploratory classification most filtered timeouts were stalls with active obstacle rows, mostly
 on layouts where the unfiltered run collided or reached GOAL (stall classes above). We read this as a
 description of where the lost completions occurred, not as a causal attribution.
