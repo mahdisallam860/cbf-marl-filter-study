@@ -1,0 +1,10 @@
+label,density,arm,n,GOAL,COLLISION,INFEASIBLE,TIMEOUT
+"exploratory, post hoc; validation layouts; not part of the final test",4,filter off,1800,0.120556,0.786667,0,0.0927778
+"exploratory, post hoc; validation layouts; not part of the final test",4,filter on (alpha = 10),1800,0.0533333,0,0.0833333,0.863333
+"exploratory, post hoc; validation layouts; not part of the final test",4,B-match (alpha = 10),1800,0.0461111,0,0,0.953889
+"exploratory, post hoc; validation layouts; not part of the final test",5,filter off,1800,0.00944444,0.958889,0,0.0316667
+"exploratory, post hoc; validation layouts; not part of the final test",5,filter on (alpha = 10),1800,0.00333333,0,0.0733333,0.923333
+"exploratory, post hoc; validation layouts; not part of the final test",5,B-match (alpha = 10),1800,0.00222222,0,0,0.997778
+"exploratory, post hoc; validation layouts; not part of the final test",8,filter off,1800,0,1,0,0
+"exploratory, post hoc; validation layouts; not part of the final test",8,filter on (alpha = 10),1800,0,0,0.0705556,0.929444
+"exploratory, post hoc; validation layouts; not part of the final test",8,B-match (alpha = 10),1800,0,0,0,1
