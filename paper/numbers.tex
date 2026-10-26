@@ -81,6 +81,21 @@
 \newcommand{\Cupperone}{0.0127}
 \newcommand{\Cupperthree}{0.0291}
 \newcommand{\Cuppertwo}{0.0213}
+\newcommand{\EngStressOffColl}{3{,}378}
+\newcommand{\EngStressOnColl}{0}
+\newcommand{\EngStressOnInf}{232}
+\newcommand{\EngStressTrials}{4{,}200}
+\newcommand{\ExActor}{s1\_late}
+\newcommand{\ExCaState}{21}
+\newcommand{\ExCoverGapCm}{9.5}
+\newcommand{\ExCoverH}{0.0046}
+\newcommand{\ExGapCm}{3.30}
+\newcommand{\ExK}{2}
+\newcommand{\ExMedCm}{3.30}
+\newcommand{\ExOffT}{83}
+\newcommand{\ExRobot}{0}
+\newcommand{\ExStallState}{78}
+\newcommand{\ExTrial}{348}
 \newcommand{\FailOffone}{5.4}
 \newcommand{\FailOffthree}{48.0}
 \newcommand{\FailOfftwo}{16.6}
@@ -89,6 +104,8 @@
 \newcommand{\FailOntwo}{0.8}
 \newcommand{\GapAmedCm}{3.3}
 \newcommand{\GapBmedCm}{14.4}
+\newcommand{\GateVoneBest}{11.0}
+\newcommand{\GateVtwoBest}{28.7}
 \newcommand{\GoalBmone}{48.8}
 \newcommand{\GoalBmthree}{19.3}
 \newcommand{\GoalBmtwo}{53.5}
@@ -103,6 +120,24 @@
 \newcommand{\GroupAobst}{2{,}259}
 \newcommand{\GroupAprime}{2{,}540}
 \newcommand{\GroupB}{11{,}255}
+\newcommand{\HthreeInfone}{6}
+\newcommand{\HthreeInfthree}{352}
+\newcommand{\HthreeInftwo}{75}
+\newcommand{\HthreeMovingAll}{25}
+\newcommand{\HthreeMovingone}{3}
+\newcommand{\HthreeMovingthree}{14}
+\newcommand{\HthreeMovingtwo}{8}
+\newcommand{\HthreeNongoalAll}{15{,}471}
+\newcommand{\HthreeNongoalone}{4{,}511}
+\newcommand{\HthreeNongoalthree}{7{,}069}
+\newcommand{\HthreeNongoaltwo}{3{,}891}
+\newcommand{\HthreeShareAll}{99.8}
+\newcommand{\HthreeShareone}{99.9}
+\newcommand{\HthreeSharethree}{99.8}
+\newcommand{\HthreeSharetwo}{99.8}
+\newcommand{\HthreeStalledone}{4{,}502}
+\newcommand{\HthreeStalledthree}{6{,}703}
+\newcommand{\HthreeStalledtwo}{3{,}808}
 \newcommand{\InfBmone}{0}
 \newcommand{\InfBmthree}{0}
 \newcommand{\InfBmtwo}{0}
@@ -116,6 +151,8 @@
 \newcommand{\InfSlackMax}{\ensuremath{-8.4\times 10^{-9}}}
 \newcommand{\InfSlackMin}{\ensuremath{-4.9\times 10^{-6}}}
 \newcommand{\InfTotal}{433}
+\newcommand{\MappoNavRandom}{0.0}
+\newcommand{\MappoNavSuccess}{99.0}
 \newcommand{\OnBmGoalMax}{3.2}
 \newcommand{\OnBmGoalMin}{1.0}
 \newcommand{\OnMinusBmGoalone}{1.0}
@@ -157,11 +194,92 @@
 \newcommand{\TOonone}{50.1}
 \newcommand{\TOonthree}{74.6}
 \newcommand{\TOontwo}{42.4}
+\newcommand{\TabBaselineRows}{s0\_early & 82/5/13 & 52/26/22 & 16/63/22 & 6/84/10 & 0/98/2 & 0/100/0\\
+s0\_middle & 64/3/33 & 48/24/28 & 14/58/28 & 7/80/12 & 0/98/2 & 0/100/0\\
+s0\_late & 56/4/39 & 50/24/26 & 16/57/27 & 5/80/15 & 0/98/2 & 0/100/0\\
+s1\_early & 17/12/72 & 56/21/23 & 25/56/20 & 12/84/4 & 0/97/2 & 0/100/0\\
+s1\_middle & 42/10/48 & 75/13/12 & 35/48/17 & 18/76/6 & 1/93/6 & 0/100/0\\
+s1\_late & 44/5/50 & 78/10/12 & 25/48/26 & 20/74/6 & 4/90/6 & 0/100/0\\
+s2\_early & 24/4/72 & 72/11/16 & 58/28/14 & 19/70/11 & 2/96/2 & 0/100/0\\
+s2\_middle & 53/5/42 & 75/14/11 & 50/31/19 & 5/82/12 & 0/96/3 & 0/100/0\\
+s2\_late & 76/5/18 & 80/16/5 & 49/34/18 & 18/78/4 & 0/98/2 & 0/100/0\\}
+\newcommand{\TabPerSeedRows}{0 & 1 & 3.9 $\to$ 0.0 & \ensuremath{-3.9} [\ensuremath{-4.7}, \ensuremath{-3.3}] & 2.9 [2.3, 3.5] & 0.0047 [0.0040, 0.0054]\\
+1 & 1 & 8.5 $\to$ 0.2 & \ensuremath{-8.3} [\ensuremath{-9.4}, \ensuremath{-7.4}] & 7.5 [6.5, 8.5] & 0.0252 [0.0228, 0.0276]\\
+2 & 1 & 3.7 $\to$ 0.0 & \ensuremath{-3.7} [\ensuremath{-4.4}, \ensuremath{-3.0}] & 4.0 [3.3, 4.8] & 0.0052 [0.0043, 0.0061]\\
+0 & 2 & 24.5 $\to$ 1.3 & \ensuremath{-23.2} [\ensuremath{-24.7}, \ensuremath{-21.7}] & 6.4 [5.3, 7.5] & 0.0222 [0.0204, 0.0241]\\
+1 & 2 & 14.0 $\to$ 0.5 & \ensuremath{-13.5} [\ensuremath{-14.8}, \ensuremath{-12.3}] & 9.0 [7.8, 10.3] & 0.0201 [0.0182, 0.0219]\\
+2 & 2 & 11.1 $\to$ 0.7 & \ensuremath{-10.5} [\ensuremath{-11.6}, \ensuremath{-9.4}] & 14.0 [12.6, 15.3] & 0.0183 [0.0167, 0.0199]\\
+0 & 3 & 62.4 $\to$ 7.0 & \ensuremath{-55.4} [\ensuremath{-57.2}, \ensuremath{-53.6}] & 7.9 [6.9, 8.9] & 0.0276 [0.0254, 0.0298]\\
+1 & 3 & 51.1 $\to$ 2.5 & \ensuremath{-48.6} [\ensuremath{-50.4}, \ensuremath{-46.8}] & 6.7 [5.6, 7.8] & 0.0261 [0.0239, 0.0283]\\
+2 & 3 & 30.5 $\to$ 2.3 & \ensuremath{-28.3} [\ensuremath{-29.9}, \ensuremath{-26.7}] & 17.1 [15.5, 18.6] & 0.0297 [0.0277, 0.0317]\\}
+\newcommand{\TabStressRows}{4 & filter off & 1{,}800 & 12.1 & 78.7 & 0.0 & 9.3\\
+4 & filter on (alpha = 10) & 1{,}800 & 5.3 & 0.0 & 8.3 & 86.3\\
+4 & B-match (alpha = 10) & 1{,}800 & 4.6 & 0.0 & 0.0 & 95.4\\
+5 & filter off & 1{,}800 & 0.9 & 95.9 & 0.0 & 3.2\\
+5 & filter on (alpha = 10) & 1{,}800 & 0.3 & 0.0 & 7.3 & 92.3\\
+5 & B-match (alpha = 10) & 1{,}800 & 0.2 & 0.0 & 0.0 & 99.8\\
+8 & filter off & 1{,}800 & 0.0 & 100.0 & 0.0 & 0.0\\
+8 & filter on (alpha = 10) & 1{,}800 & 0.0 & 0.0 & 7.1 & 92.9\\
+8 & B-match (alpha = 10) & 1{,}800 & 0.0 & 0.0 & 0.0 & 100.0\\}
+\newcommand{\TabTtgRows}{filter on & 1 & 4{,}472 & 199 & 0.30 & 0.0 & 0.0 & 9.0 & \ensuremath{2.6\times 10^{-57}}\\
+filter on & 2 & 4{,}968 & 406 & 0.68 & 0.0 & 0.0 & 23.9 & \ensuremath{1.9\times 10^{-89}}\\
+filter on & 3 & 1{,}815 & 65 & 2.09 & 0.0 & 0.5 & 41.3 & \ensuremath{5.1\times 10^{-90}}\\
+B-match & 1 & 4{,}385 & 199 & 0.47 & 0.0 & 0.0 & 10.1 & \ensuremath{1.3\times 10^{-59}}\\
+B-match & 2 & 4{,}671 & 370 & \ensuremath{-0.24} & 0.0 & 0.0 & 27.3 & \ensuremath{5.5\times 10^{-92}}\\
+B-match & 3 & 1{,}629 & 53 & 2.62 & 0.0 & 1.0 & 44.3 & \ensuremath{3.6\times 10^{-90}}\\}
+\newcommand{\TabValTestRows}{1 & validation & 1{,}800 & 5.8 $\to$ 0.0 & 51.1 $\to$ 47.7 & 3.4 [2.5, 4.3] & 0.0104 [0.0085, 0.0125]\\
+1 & final test & 9{,}000 & 5.4 $\to$ 0.1 & 54.7 $\to$ 49.9 & 4.8 [4.4, 5.3] & 0.0117 [0.0108, 0.0126]\\
+2 & validation & 1{,}800 & 17.6 $\to$ 1.6 & 65.1 $\to$ 53.3 & 11.8 [10.1, 13.5] & 0.0257 [0.0230, 0.0284]\\
+2 & final test & 9{,}000 & 16.6 $\to$ 0.8 & 66.6 $\to$ 56.8 & 9.8 [9.1, 10.5] & 0.0202 [0.0192, 0.0212]\\
+3 & validation & 1{,}800 & 46.9 $\to$ 5.6 & 31.9 $\to$ 22.5 & 9.4 [7.8, 10.9] & 0.0290 [0.0262, 0.0320]\\
+3 & final test & 9{,}000 & 48.0 $\to$ 3.9 & 32.0 $\to$ 21.5 & 10.6 [9.8, 11.3] & 0.0278 [0.0266, 0.0290]\\}
 \newcommand{\ThrMatchObstFive}{43.1}
 \newcommand{\ThrOffGoal}{51.1}
 \newcommand{\ThrOnGoal}{42.7}
 \newcommand{\ThrRetObstFive}{84.4}
 \newcommand{\TrialsTotal}{27{,}000}
+\newcommand{\TtgEqBmone}{0.47}
+\newcommand{\TtgEqBmthree}{2.62}
+\newcommand{\TtgEqBmtwo}{\ensuremath{-0.24}}
+\newcommand{\TtgEqOnone}{0.30}
+\newcommand{\TtgEqOnthree}{2.09}
+\newcommand{\TtgEqOntwo}{0.68}
+\newcommand{\TtgHlBmone}{0.0}
+\newcommand{\TtgHlBmthree}{1.0}
+\newcommand{\TtgHlBmtwo}{0.0}
+\newcommand{\TtgHlOnone}{0.0}
+\newcommand{\TtgHlOnthree}{0.5}
+\newcommand{\TtgHlOntwo}{0.0}
+\newcommand{\TtgMedBmone}{0.0}
+\newcommand{\TtgMedBmthree}{0.0}
+\newcommand{\TtgMedBmtwo}{0.0}
+\newcommand{\TtgMedOnone}{0.0}
+\newcommand{\TtgMedOnthree}{0.0}
+\newcommand{\TtgMedOntwo}{0.0}
+\newcommand{\TtgMinActorBmone}{199}
+\newcommand{\TtgMinActorBmthree}{53}
+\newcommand{\TtgMinActorBmtwo}{370}
+\newcommand{\TtgMinActorOnone}{199}
+\newcommand{\TtgMinActorOnthree}{65}
+\newcommand{\TtgMinActorOntwo}{406}
+\newcommand{\TtgPBmone}{\ensuremath{1.3\times 10^{-59}}}
+\newcommand{\TtgPBmthree}{\ensuremath{3.6\times 10^{-90}}}
+\newcommand{\TtgPBmtwo}{\ensuremath{5.5\times 10^{-92}}}
+\newcommand{\TtgPOnone}{\ensuremath{2.6\times 10^{-57}}}
+\newcommand{\TtgPOnthree}{\ensuremath{5.1\times 10^{-90}}}
+\newcommand{\TtgPOntwo}{\ensuremath{1.9\times 10^{-89}}}
+\newcommand{\TtgPairsBmone}{4{,}385}
+\newcommand{\TtgPairsBmthree}{1{,}629}
+\newcommand{\TtgPairsBmtwo}{4{,}671}
+\newcommand{\TtgPairsOnone}{4{,}472}
+\newcommand{\TtgPairsOnthree}{1{,}815}
+\newcommand{\TtgPairsOntwo}{4{,}968}
+\newcommand{\TtgSlowerBmone}{10.1}
+\newcommand{\TtgSlowerBmthree}{44.3}
+\newcommand{\TtgSlowerBmtwo}{27.3}
+\newcommand{\TtgSlowerOnone}{9.0}
+\newcommand{\TtgSlowerOnthree}{41.3}
+\newcommand{\TtgSlowerOntwo}{23.9}
 \newcommand{\Verdictone}{not shown useful}
 \newcommand{\Verdictthree}{not shown useful}
 \newcommand{\Verdicttwo}{not shown useful}

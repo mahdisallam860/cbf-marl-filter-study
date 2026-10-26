@@ -102,6 +102,33 @@ def f5():
     fig.tight_layout(); fig.savefig(OUT / "F5_matched_denominator.pdf"); plt.close(fig)
 
 
-for fn in (f1, f2, f3, f4, f5):
+def f0():
+    """Analytic schematic (no data): body disc, axle, offset point, cover disc R + ell, obstacle. Same
+    3 cm physical clearance, two headings: the cover barrier h = |p - c|^2 - (R + ell + R_o)^2 changes sign."""
+    import sys
+    sys.path.insert(0, str(ROOT))
+    from cbf_study.config import StudyConfig
+    cfg = StudyConfig.load()
+    R, Ro, ell = cfg.protocol_config().robot_r, cfg.protocol_config().obst_r, cfg.filter_config(10.0).ell
+    gap = 0.03
+    c = np.array([0.0, 0.0])
+    x = np.array([-(R + Ro + gap), 0.0])
+    fig, axs = plt.subplots(1, 2, figsize=(6.8, 2.6), sharey=True)
+    for ax, th, lab in ((axs[0], 0.0, "heading toward the obstacle"), (axs[1], np.pi, "heading away from the obstacle")):
+        p = x + ell * np.array([np.cos(th), np.sin(th)])
+        h = np.sum((p - c) ** 2) - (R + ell + Ro) ** 2
+        ax.add_patch(plt.Circle(c, Ro, color="0.6"))
+        ax.add_patch(plt.Circle(c, R + ell + Ro, fill=False, ls=":", color="0.4", lw=0.8))
+        ax.add_patch(plt.Circle(x, R, fill=False, color="#4c72b0", lw=1.4))
+        ax.add_patch(plt.Circle(p, R + ell, fill=False, ls="--", color="k", lw=0.9))
+        ax.plot(*x, "o", color="#4c72b0", ms=3); ax.plot(*p, "k.", ms=4)
+        ax.annotate("", xy=x + 0.12 * np.array([np.cos(th), np.sin(th)]), xytext=x, arrowprops=dict(arrowstyle="->", lw=0.8))
+        ax.set_title(f"{lab}: body gap {100 * gap:.0f} cm, h = {h:+.4f} m$^2$", fontsize=7)
+        ax.set_aspect("equal"); ax.set_xlim(-0.65, 0.3); ax.set_ylim(-0.35, 0.35); ax.set_xlabel("x [m]")
+    axs[0].set_ylabel("y [m]")
+    fig.tight_layout(); fig.savefig(OUT / "F0_cover_disc_schematic.pdf"); plt.close(fig)
+
+
+for fn in (f0, f1, f2, f3, f4, f5):
     fn()
 print("figures written:", sorted(p.name for p in OUT.glob("*.pdf")))
