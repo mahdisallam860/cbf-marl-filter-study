@@ -197,7 +197,9 @@ def revision_macros(mac):
         cells_ = []
         for K in Ks:
             r = next(x for x in bl if x["policy_id"] == pid and int(x["density"]) == K)
-            cells_.append(f"{num(100 * float(r['GOAL']), 0)}/{num(100 * float(r['COLLISION']), 0)}/{num(100 * float(r['TIMEOUT']), 0)}")
+            from decimal import Decimal, ROUND_HALF_EVEN
+            pc0 = lambda x: str((Decimal(x) * 100).quantize(Decimal(1), rounding=ROUND_HALF_EVEN))   # exact decimal rounding of the CSV text
+            cells_.append(f"{pc0(r['GOAL'])}/{pc0(r['COLLISION'])}/{pc0(r['TIMEOUT'])}")
         lines.append(pid.replace("_", "\\_") + " & " + " & ".join(cells_) + "\\\\")
     mac["TabBaselineRows"] = "\n".join(lines)
     # (f) example selection
