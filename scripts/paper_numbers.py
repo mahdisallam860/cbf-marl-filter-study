@@ -145,6 +145,7 @@ def main():
     revision_macros(mac)
     old = set(mac)
     bmatch_transition_macros(mac)
+    review_round1_macros(mac)
     assert old <= set(mac)
     # locked statistical settings (protocol constants read from the analysis code, not typed by hand)
     sys.path.insert(0, str(ROOT))
@@ -290,6 +291,55 @@ def bmatch_transition_macros(mac):
                     f"LostRgrYes{kn}": c(cnt("LOST_REACHED_REGION", "on_reached_goal_region_1")),
                     f"LostRgrNoPct{kn}": pct("LOST_REACHED_REGION", "on_reached_goal_region_0"),
                     f"LostRgrYesPct{kn}": pct("LOST_REACHED_REGION", "on_reached_goal_region_1")})
+    clash = set(new) & set(mac)
+    assert not clash, clash
+    mac.update(new)
+
+
+def review_round1_macros(mac):
+    """Macros for the review-round-1 interpretation and definition fixes (2026-10-27). They read only
+    committed files (endpoints.csv, infeasibility/infeasible_robots.csv, mechanism/timeout_classes.csv,
+    design/margin_constants.json, config/study.toml via the cell CSVs). New names only."""
+    new = {}
+    c = lambda x: f"{int(x):,}".replace(",", "{,}")
+    ep = list(csv.DictReader(open(FT / "endpoints.csv")))
+    row = lambda scope, sid, K: next(e for e in ep if e["scope"] == scope and e["scope_id"] == sid and e["density"] == str(K)
+                                     and e["test"] == "on" and e["reference"] == "off")
+    SW = {0: "Zero", 1: "One", 2: "Two"}
+    for K, kn in KN.items():
+        for s, sw in SW.items():
+            r = row("seed", f"seed{s}", K)
+            new[f"GLossSeed{sw}{kn}"] = num(100 * float(r["b_loss"]), 1)
+            new[f"FormSeed{sw}{kn}"] = num(float(r["c_estimate"]), 4)
+        pol = [e for e in ep if e["scope"] == "policy" and e["density"] == str(K) and e["test"] == "on" and e["reference"] == "off"]
+        assert len(pol) == 9
+        new[f"ActorsInMargins{kn}"] = str(sum(float(e["b_ci95_hi"]) <= 0.05 and float(e["c_ci95_hi"]) <= 0.01 for e in pol))
+        p = row("pooled", "all9", K)
+        n = int(p["n_pairs"])
+        new[f"OffStallOfTO{kn}"] = num(100 * int(p["ref_stalled"]) / int(p["ref_TIMEOUT"]), 1)
+        new[f"OnStallOfTO{kn}"] = num(100 * int(p["test_stalled"]) / int(p["test_TIMEOUT"]), 1)
+        new[f"NonGoalOff{kn}"] = num(100 * (n - int(p["ref_GOAL"])) / n, 1)
+        new[f"NonGoalOn{kn}"] = num(100 * (n - int(p["test_GOAL"])) / n, 1)
+        new[f"LMed{kn}"] = num(float(p["L_median"]), 0)
+        new[f"LQlo{kn}"] = num(float(p["L_q25"]), 0)
+        new[f"LQhi{kn}"] = num(float(p["L_q75"]), 0)
+        new[f"BothGoalForm{kn}"] = num(float(p["both_goal_diff_mean"]), 4)
+    # infeasibility audit: sign flips under float32 and number of rows the zero command violates
+    rr = [r for r in csv.DictReader(open(FT / "infeasibility/infeasible_robots.csv")) if r["reproduced"] == "1"]
+    flips = sum((float(r["binding_zero_slack_f64"]) < 0) != (float(r["binding_zero_slack_f32"]) < 0) for r in rr)
+    nrows = sorted(int(r["n_rows_zero_violated"]) for r in rr)
+    new.update(InfFlipFthirtytwo=str(flips), InfRowsMin=str(nrows[0]), InfRowsMax=str(nrows[-1]),
+               InfRowsTwoPlus=str(sum(x >= 2 for x in nrows)))
+    # stall classes not named in the text
+    tc = [r for r in csv.DictReader(open(M / "timeout_classes.csv")) if r["condition"] == "on"]
+    new.update(TOother=c(sum(r["category"] == "other stall" for r in tc)), TOslow=c(sum(r["category"] == "slow progress" for r in tc)))
+    # cover-disc geometry at alpha* (analytic, from the committed margin constants)
+    mc = json.loads((ROOT / "results/design/margin_constants.json").read_text())
+    D_o, hst, ell = mc["D_o"], mc["standoff_hstar_alpha10_obstacle_at_D_o"], mc["ell"]
+    lo = (D_o ** 2 + hst) ** 0.5 - D_o
+    new.update(StandOffObstCm=num(100 * lo, 2), CoverBandLoCm=num(100 * lo, 1), CoverBandHiCm=num(100 * (2 * ell + lo), 1),
+               TwoEllCm=num(100 * 2 * ell, 0),
+               MarginRatioObst=num(mc["obstacle_margin_C_at_D_o"] / mc["obstacle_margin_B_at_D_o"], 0))
     clash = set(new) & set(mac)
     assert not clash, clash
     mac.update(new)

@@ -135,7 +135,7 @@ def f7():
     GAINED (off not GOAL, on GOAL) stacked upward by filter-off outcome; dot = GAINED - LOST = on - off GOAL."""
     rows = [r for r in csv.DictReader(open(ROOT / "results/paper_revision/lost_gained.csv")) if r["scope"] == "actor"]
     actors = [p["policy_id"] for p in __import__("json").loads((ROOT / "results/phase1/checkpoint_selection.json").read_text())["policies"]]
-    lost = (("filter_induced_stall", "filter-induced stall", "#dd8452"), ("other_timeout", "other TIMEOUT", C["TIMEOUT"]),
+    lost = (("filter_induced_stall", "intervention-active stall", "#dd8452"), ("other_timeout", "other TIMEOUT", C["TIMEOUT"]),
             ("infeasible", "INFEASIBLE", C["INFEASIBLE"]), ("collision", "COLLISION", C["COLLISION"]))
     gained = (("from_collision", "gained from COLLISION", "#e8a3a5"), ("from_timeout", "gained from TIMEOUT", "#c9b8a6"))
     fig, axs = plt.subplots(1, 3, figsize=(6.8, 2.7), sharey=True)
