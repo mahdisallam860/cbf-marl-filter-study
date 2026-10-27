@@ -396,10 +396,14 @@ mean common-prefix difference in metres with a 95\% stratified paired bootstrap 
 \toprule
  & $K=1$ & $K=2$ & $K=3$\\
 \midrule
-GOAL [pp] & \OnBmGoalDiffone{} [\OnBmGoalLoone, \OnBmGoalHione] & \OnBmGoalDifftwo{} [\OnBmGoalLotwo, \OnBmGoalHitwo] & \OnBmGoalDiffthree{} [\OnBmGoalLothree, \OnBmGoalHithree]\\
-COLLISION-or-INFEASIBLE [pp] & \OnBmFailDiffone{} [\OnBmFailLoone, \OnBmFailHione] & \OnBmFailDifftwo{} [\OnBmFailLotwo, \OnBmFailHitwo] & \OnBmFailDiffthree{} [\OnBmFailLothree, \OnBmFailHithree]\\
-TIMEOUT [pp] & \OnBmToDiffone{} [\OnBmToLoone, \OnBmToHione] & \OnBmToDifftwo{} [\OnBmToLotwo, \OnBmToHitwo] & \OnBmToDiffthree{} [\OnBmToLothree, \OnBmToHithree]\\
-formation, common prefix [m] & \OnBmFormDiffone{} [\OnBmFormLoone, \OnBmFormHione] & \OnBmFormDifftwo{} [\OnBmFormLotwo, \OnBmFormHitwo] & \OnBmFormDiffthree{} [\OnBmFormLothree, \OnBmFormHithree]\\
+GOAL [pp] & \OnBmGoalDiffone & \OnBmGoalDifftwo & \OnBmGoalDiffthree\\
+\quad 95\% interval & [\OnBmGoalLoone, \OnBmGoalHione] & [\OnBmGoalLotwo, \OnBmGoalHitwo] & [\OnBmGoalLothree, \OnBmGoalHithree]\\
+COLLISION-or-INFEASIBLE [pp] & \OnBmFailDiffone & \OnBmFailDifftwo & \OnBmFailDiffthree\\
+\quad 95\% interval & [\OnBmFailLoone, \OnBmFailHione] & [\OnBmFailLotwo, \OnBmFailHitwo] & [\OnBmFailLothree, \OnBmFailHithree]\\
+TIMEOUT [pp] & \OnBmToDiffone & \OnBmToDifftwo & \OnBmToDiffthree\\
+\quad 95\% interval & [\OnBmToLoone, \OnBmToHione] & [\OnBmToLotwo, \OnBmToHitwo] & [\OnBmToLothree, \OnBmToHithree]\\
+formation, common prefix [m] & \OnBmFormDiffone & \OnBmFormDifftwo & \OnBmFormDiffthree\\
+\quad 95\% interval & [\OnBmFormLoone, \OnBmFormHione] & [\OnBmFormLotwo, \OnBmFormHitwo] & [\OnBmFormLothree, \OnBmFormHithree]\\
 \bottomrule
 \end{tabular}
 \end{table*}
@@ -519,7 +523,7 @@ also timed out.
 \paragraph{Lost and gained completions.} Per pair, a completion is \emph{lost} when the unfiltered run
 reached GOAL and the filtered run did not, and \emph{gained} in the reverse case
 (Table~\ref{tab:lostgained}, Fig.~\ref{fig:f7}; all 16 off-by-on outcome transition counts per density
-are in \texttt{results/paper\_revision/transitions\_4x4.csv}). Pooled over $K=1$--3, \LostTotalAll{}
+are in \url{results/paper_revision/transitions_4x4.csv}). Pooled over $K=1$--3, \LostTotalAll{}
 completions were lost and \GainTotalAll{} gained, a net GOAL loss of \NetLossAll{} pairs; at each
 density the net loss divided by the number of pairs equals the criterion (b) estimate. Of the lost
 completions, \LostFIAll{} ended in a filter-induced stall, \LostOtherTOAll{} in another TIMEOUT class
