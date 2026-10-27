@@ -355,16 +355,54 @@ and \InfBmone, \InfBmtwo{} and \InfBmthree{} INFEASIBLE outcomes, and reached GO
 \GoalBmtwo\% and \GoalBmthree\% of trials; the filter reached GOAL \OnMinusBmGoalone,
 \OnMinusBmGoaltwo{} and \OnMinusBmGoalthree{} percentage points more often (descriptive).
 
+\paragraph{Filter on versus B-match (pre-declared secondary, descriptive).} The locked protocol
+pre-declared a comparison of the filter with B-match at $\alpha^\star$ on the same pairs and
+endpoints, with intervals, and states that nothing confirmatory follows from it.
+Table~\ref{tab:onbm} gives the paired differences, always filter on minus B-match, on all
+\PairsPerDensity{} pairs per density. The intervals are two-sided 95\% Newcombe method~10
+intervals: Wilson score limits for each arm, combined through the continuity-corrected correlation
+$\hat\phi$, whose numerator $ad-bc$ is replaced by $\max(ad-bc-n/2,0)$ when $ad-bc>0$ ($a$: event
+in both arms, $b$: filter on only, $c$: B-match only, $d$: neither). They were computed with a new
+implementation after the method~8/method~10 discrepancy described in Section~\ref{sec:design} was
+found; the historical confirmatory intervals and \texttt{cbf\_study/stats.py} are unchanged.
+B-match had no COLLISION or INFEASIBLE outcome, so for that endpoint one marginal variance is zero,
+the correlation is undefined, and $\hat\phi=0$ is used. The formation row is the equal-actor mean
+over pairs of $\frac{1}{L}\sum_{t=1}^{L}[e_{\text{on}}(t)-e_{\text{B-match}}(t)]$, with
+$L=\min(T_{\text{on}},T_{\text{B-match}})$ and $e(t)$ recomputed from the saved poses, with a 95\%
+stratified paired percentile bootstrap within actor (the locked settings: \BootReps{} resamples,
+seed \BootSeed); \OnBmFormExclone, \OnBmFormExcltwo{} and \OnBmFormExclthree{} pairs had $L=0$
+and were excluded. The filter reached GOAL more often than B-match and timed out less often at every
+density, and had more COLLISION-or-INFEASIBLE outcomes, since B-match had none. No test or verdict is
+attached to these differences.
+
+\begin{table}[t]
+\centering\small
+\caption{Filter on versus B-match at $\alpha^\star$ (pre-declared secondary, descriptive; nothing
+confirmatory follows). Paired differences, filter on minus B-match, on all \PairsPerDensity{} pairs per
+density: percentage points with two-sided 95\% Newcombe method-10 intervals; formation: equal-actor
+mean common-prefix difference in metres with a 95\% stratified paired bootstrap interval.}
+\label{tab:onbm}
+\begin{tabular}{lccc}
+\toprule
+ & $K=1$ & $K=2$ & $K=3$\\
+\midrule
+GOAL [pp] & \OnBmGoalDiffone{} [\OnBmGoalLoone, \OnBmGoalHione] & \OnBmGoalDifftwo{} [\OnBmGoalLotwo, \OnBmGoalHitwo] & \OnBmGoalDiffthree{} [\OnBmGoalLothree, \OnBmGoalHithree]\\
+COLLISION-or-INFEASIBLE [pp] & \OnBmFailDiffone{} [\OnBmFailLoone, \OnBmFailHione] & \OnBmFailDifftwo{} [\OnBmFailLotwo, \OnBmFailHitwo] & \OnBmFailDiffthree{} [\OnBmFailLothree, \OnBmFailHithree]\\
+TIMEOUT [pp] & \OnBmToDiffone{} [\OnBmToLoone, \OnBmToHione] & \OnBmToDifftwo{} [\OnBmToLotwo, \OnBmToHitwo] & \OnBmToDiffthree{} [\OnBmToLothree, \OnBmToHithree]\\
+formation, common prefix [m] & \OnBmFormDiffone{} [\OnBmFormLoone, \OnBmFormHione] & \OnBmFormDifftwo{} [\OnBmFormLotwo, \OnBmFormHitwo] & \OnBmFormDiffthree{} [\OnBmFormLothree, \OnBmFormHithree]\\
+\bottomrule
+\end{tabular}
+\end{table}
+
 \paragraph{Reached goal region (pre-declared secondary, descriptive).} The share of trials whose
 centroid came within 0.30\,m of the goal before any collision or infeasibility fell from
 \RgrOffone\% to \RgrOnone\%, \RgrOfftwo\% to \RgrOntwo\% and \RgrOffthree\% to \RgrOnthree\% at
 $K=1,2,3$ (paired differences \RgrDiffone{} [\RgrLoone, \RgrHione], \RgrDifftwo{} [\RgrLotwo,
-\RgrHitwo] and \RgrDiffthree{} [\RgrLothree, \RgrHithree] percentage points, 95\% intervals). These
-losses are at least as large as the GOAL losses, so the lost completions were mostly runs that never
-approached the goal, not runs that approached it and missed the strict 0.10\,m parking tolerance
-(descriptive comparison of point estimates). The remaining pre-declared secondary results (final
+\RgrHitwo] and \RgrDiffthree{} [\RgrLothree, \RgrHithree] percentage points, 95\% intervals). Which pairs
+lost a completion, and whether their filtered runs approached the goal, is counted per pair in
+Section~\ref{sec:mechanism} (exploratory). The remaining pre-declared secondary results (final
 centroid-to-goal distance, formation error over the full trajectory in pairs where both arms reached
-GOAL, intervention and brake rates, sampled barrier minima, and filter-on versus B-match comparisons)
+GOAL, intervention and brake rates, sampled barrier minima, and the remaining filter-on versus B-match comparisons)
 are listed in \texttt{results/final\_test/FINAL\_TEST.md} and \texttt{endpoints.csv}.
 
 \paragraph{Per seed and per actor (pre-declared secondary, descriptive).} Table~\ref{tab:perseed}
@@ -470,6 +508,66 @@ half of the last 50 periods), \TOfiObst{} of them involving obstacle rows; on th
 unfiltered run collided in \TOfiOffColl{} and reached GOAL in \TOfiOffGoal{} cases. Another \TOng{}
 (\TOngPct\%) were near-goal parking stalls, \TOngOffTO{} of them on layouts where the unfiltered run
 also timed out.
+
+\paragraph{Lost and gained completions.} Per pair, a completion is \emph{lost} when the unfiltered run
+reached GOAL and the filtered run did not, and \emph{gained} in the reverse case
+(Table~\ref{tab:lostgained}, Fig.~\ref{fig:f7}; all 16 off-by-on outcome transition counts per density
+are in \texttt{results/paper\_revision/transitions\_4x4.csv}). Pooled over $K=1$--3, \LostTotalAll{}
+completions were lost and \GainTotalAll{} gained, a net GOAL loss of \NetLossAll{} pairs; at each
+density the net loss divided by the number of pairs equals the criterion (b) estimate. Of the lost
+completions, \LostFIAll{} ended in a filter-induced stall, \LostOtherTOAll{} in another TIMEOUT class
+(\LostNgAll{} of them near-goal parking stalls), \LostInfAll{} as INFEASIBLE and \LostCollAll{} as
+COLLISION. The gained completions were unfiltered COLLISION (\GainCollAll) and TIMEOUT (\GainTOAll)
+runs; \GainInfAll{} came from INFEASIBLE, which the unfiltered arm never produced.
+
+In \LostRgrNoAll{} of the \LostTotalAll{} lost pairs (\LostRgrNoPctAll\%; \LostRgrNoPctone\%,
+\LostRgrNoPcttwo\% and \LostRgrNoPctthree\% at $K=1,2,3$) the filtered run never brought its
+centroid within 0.30\,m of the goal before any failure; in \LostRgrYesAll{} (\LostRgrYesPctAll\%) it
+did. An earlier version of this draft inferred from the marginal reached-goal-region rates that the
+lost completions were mostly runs that never approached the goal; marginal rates cannot identify
+the pairs involved, and this paired count replaces that inference. It aggregates the saved
+reached-goal-region flags. Entering the goal region does not by itself establish a parking stall,
+and the TIMEOUT classes are exploratory labels assigned from saved logs, not identified causes.
+
+\begin{table}[t]
+\centering\small
+\caption{Lost and gained completions, filter off $\to$ filter on (exploratory, post hoc), in pairs
+out of \PairsPerDensity{} per density. Lost: off GOAL and on not GOAL, split by the filter-on outcome
+(TIMEOUT classes as in the stall-class paragraph); gained: off not GOAL and on GOAL, split by the
+filter-off outcome. Net GOAL loss = lost $-$ gained = off GOAL count $-$ on GOAL count. Last rows:
+whether the filtered run of a lost pair reached the goal region (saved flag).}
+\label{tab:lostgained}
+\begin{tabular}{lcccc}
+\toprule
+ & $K=1$ & $K=2$ & $K=3$ & $K=1$--3\\
+\midrule
+Lost: filter-induced stall & \LostFIone & \LostFItwo & \LostFIthree & \LostFIAll\\
+\quad other TIMEOUT class & \LostOtherTOone & \LostOtherTOtwo & \LostOtherTOthree & \LostOtherTOAll\\
+\quad INFEASIBLE & \LostInfone & \LostInftwo & \LostInfthree & \LostInfAll\\
+\quad COLLISION & \LostCollone & \LostColltwo & \LostCollthree & \LostCollAll\\
+\quad total (\% of pairs) & \LostTotalone{} (\LostTotalPctone) & \LostTotaltwo{} (\LostTotalPcttwo) & \LostTotalthree{} (\LostTotalPctthree) & \LostTotalAll{} (\LostTotalPctAll)\\
+\midrule
+Gained: from COLLISION & \GainCollone & \GainColltwo & \GainCollthree & \GainCollAll\\
+\quad from TIMEOUT & \GainTOone & \GainTOtwo & \GainTOthree & \GainTOAll\\
+\quad from INFEASIBLE & \GainInfone & \GainInftwo & \GainInfthree & \GainInfAll\\
+\quad total (\% of pairs) & \GainTotalone{} (\GainTotalPctone) & \GainTotaltwo{} (\GainTotalPcttwo) & \GainTotalthree{} (\GainTotalPctthree) & \GainTotalAll{} (\GainTotalPctAll)\\
+\midrule
+Net GOAL loss off$-$on, pairs (pp) & \NetLossone{} (\NetLossPctone) & \NetLosstwo{} (\NetLossPcttwo) & \NetLossthree{} (\NetLossPctthree) & \NetLossAll{} (\NetLossPctAll)\\
+\midrule
+Lost, filtered run reached goal region: & & & & \\
+\quad no (\% of lost) & \LostRgrNoone{} (\LostRgrNoPctone) & \LostRgrNotwo{} (\LostRgrNoPcttwo) & \LostRgrNothree{} (\LostRgrNoPctthree) & \LostRgrNoAll{} (\LostRgrNoPctAll)\\
+\quad yes (\% of lost) & \LostRgrYesone{} (\LostRgrYesPctone) & \LostRgrYestwo{} (\LostRgrYesPcttwo) & \LostRgrYesthree{} (\LostRgrYesPctthree) & \LostRgrYesAll{} (\LostRgrYesPctAll)\\
+\bottomrule
+\end{tabular}
+\end{table}
+\begin{figure}[t]\centering
+\includegraphics[width=0.95\linewidth]{figures/F7_lost_gained.pdf}
+\caption{Lost and gained completions per actor (exploratory, post hoc), as \% of each actor's 1{,}000
+pairs, grouped by training seed. Below zero: lost completions stacked by filter-on outcome; above zero:
+gained completions stacked by filter-off outcome. The dot is gained minus lost, the signed change in
+GOAL (on minus off); Table~\ref{tab:lostgained} reports the net GOAL loss with the opposite sign (off
+minus on). No lost completion ended in COLLISION (\LostCollAll{} pairs).}\label{fig:f7}
+\end{figure}
 
 \paragraph{Groups A and B.} Group A (\GroupA{} pairs: unfiltered GOAL, filtered filter-induced
 stall; \GroupAobst{} obstacle-labelled, \GroupAnb{} neighbour-only) and group B (\GroupB{} pairs:
@@ -626,7 +724,7 @@ re-running trials.\par}
 \item The methodology report was committed after the final test.
 \item The mechanism categories were chosen after the confirmatory results were known.
 \item The post-test decision rule was not committed before the mechanism results were read.
-\item The locked protocol names the paired interval for criteria (a) and (b) ``Newcombe method~10'', but the analysis code implements method~8 (uncorrected correlation); with method~10 every bound changes by less than 0.001 percentage points and no criterion changes (found after the final test).
+\item The locked protocol names the paired interval for criteria (a) and (b) ``Newcombe method~10'', but the analysis code implements method~8 (uncorrected correlation); with method~10 every bound changes by less than 0.001 percentage points and no criterion changes (found after the final test). The filter-on versus B-match intervals in Table~\ref{tab:onbm}, computed after this was found, use method~10 itself.
 \item The example in Fig.~\ref{fig:f6} was first recorded as the unique nearest candidate; exact decimal comparison shows two equally close candidates, and the stated actor-index tie-break selects the same pair (regenerated metadata in \texttt{results/paper\_revision/example\_selection.json}).
 \item One of the \TrialsTotal{} final-test trials (s2\_early, $K=3$, trial 646) started with a negative obstacle cover barrier ($h=\AfiveH$\,m$^2$, body clearance \AfiveGap\,m), an exception to assumption A5; it is kept in all confirmatory numbers.
 \item Training seed~1 crashed at iteration 565 and was resumed from its saved iteration-546 state without restoring the environments or the global random-number state; iterations 547--565 were discarded. Actors s1\_middle and s1\_late come from the resumed run (Section~\ref{sec:policy}).

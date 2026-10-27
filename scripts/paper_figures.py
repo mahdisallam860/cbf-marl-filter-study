@@ -5,7 +5,8 @@ F2 final test: outcome shares per density for filter off / filter on / B-match (
 F3 final test: per-actor GOAL loss (off - on) with 95% Newcombe intervals, grouped by seed (endpoints.csv)
 F4 exploratory: filter-off minimum obstacle clearance, group A vs group B (mechanism/clearance_trajectories.csv)
 F5 exploratory: matched-denominator rate vs clearance threshold, with the filter-on GOAL rate (mechanism/clearance_thresholds.csv)
-Writes paper/figures/F*.pdf."""
+F7 exploratory: per-actor lost and gained completions, off -> on (results/paper_revision/lost_gained.csv)
+Writes paper/figures/F*.pdf. `--only F7` (or any list of names) regenerates only those figures."""
 import csv
 from pathlib import Path
 
@@ -129,6 +130,42 @@ def f0():
     fig.tight_layout(); fig.savefig(OUT / "F0_cover_disc_schematic.pdf"); plt.close(fig)
 
 
-for fn in (f0, f1, f2, f3, f4, f5):
-    fn()
-print("figures written:", sorted(p.name for p in OUT.glob("*.pdf")))
+def f7():
+    """Per actor, % of the 1,000 pairs: LOST (off GOAL, on not GOAL) stacked downward by filter-on outcome,
+    GAINED (off not GOAL, on GOAL) stacked upward by filter-off outcome; dot = GAINED - LOST = on - off GOAL."""
+    rows = [r for r in csv.DictReader(open(ROOT / "results/paper_revision/lost_gained.csv")) if r["scope"] == "actor"]
+    actors = [p["policy_id"] for p in __import__("json").loads((ROOT / "results/phase1/checkpoint_selection.json").read_text())["policies"]]
+    lost = (("filter_induced_stall", "filter-induced stall", "#dd8452"), ("other_timeout", "other TIMEOUT", C["TIMEOUT"]),
+            ("infeasible", "INFEASIBLE", C["INFEASIBLE"]), ("collision", "COLLISION", C["COLLISION"]))
+    gained = (("from_collision", "gained from COLLISION", "#e8a3a5"), ("from_timeout", "gained from TIMEOUT", "#c9b8a6"))
+    fig, axs = plt.subplots(1, 3, figsize=(6.8, 2.7), sharey=True)
+    x = np.array([i + int(a[1]) for i, a in enumerate(actors)], float)
+    for ax, K in zip(axs, (1, 2, 3)):
+        get = lambda a, d, cat: 100 * int(next(r for r in rows if r["density"] == str(K) and r["scope_id"] == a
+                                                and r["direction"] == d and r["category"] == cat)["count"]) / 1000
+        base = np.zeros(len(actors))
+        for cat, lab, col in lost:
+            v = np.array([get(a, "LOST", cat) for a in actors])
+            ax.bar(x, -v, 0.8, bottom=-base, color=col, label=lab if K == 1 else None); base += v
+        top = np.zeros(len(actors))
+        for cat, lab, col in gained:
+            v = np.array([get(a, "GAINED", cat) for a in actors])
+            ax.bar(x, v, 0.8, bottom=top, color=col, label=lab if K == 1 else None); top += v
+        ax.plot(x, top - base, "o", ms=3, color="k", label="net (on $-$ off GOAL)" if K == 1 else None)
+        ax.axhline(0, lw=0.6, color="k")
+        ax.set_xticks(x, [a.replace("_", " ") for a in actors], rotation=60, fontsize=6)
+        ax.set_title(f"K = {K}", fontsize=8)
+    axs[0].set_ylabel("% of the actor's 1,000 pairs")
+    fig.legend(ncol=4, frameon=False, fontsize=6.5, loc="lower center", bbox_to_anchor=(0.5, 0.0))
+    fig.tight_layout(rect=(0, 0.12, 1, 1)); fig.savefig(OUT / "F7_lost_gained.pdf"); plt.close(fig)
+
+
+if __name__ == "__main__":
+    import argparse
+    ap = argparse.ArgumentParser()
+    ap.add_argument("--only", nargs="+", help="figure names to regenerate, e.g. F7")
+    FIGS = {"F0": f0, "F1": f1, "F2": f2, "F3": f3, "F4": f4, "F5": f5, "F7": f7}
+    for name, fn in FIGS.items():
+        if not ap.parse_args().only or name in [o.upper() for o in ap.parse_args().only]:
+            fn()
+    print("figures written:", sorted(p.name for p in OUT.glob("*.pdf")))

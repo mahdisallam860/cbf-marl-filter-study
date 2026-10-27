@@ -143,6 +143,9 @@ def main():
                AfiveCount=str(len(init)), AfiveH=num(float(init[0]["min_h_obst"]), 5) if init else "-",
                AfiveGap=num(float(init[0]["min_body_gap_obst"]), 3) if init else "-")
     revision_macros(mac)
+    old = set(mac)
+    bmatch_transition_macros(mac)
+    assert old <= set(mac)
     # locked statistical settings (protocol constants read from the analysis code, not typed by hand)
     sys.path.insert(0, str(ROOT))
     from cbf_study import locked_stats as LS
@@ -253,6 +256,43 @@ def revision_macros(mac):
                     f"HthreeMoving{kn}": c(d["to_mv"]), f"HthreeShare{kn}": num(100 * (d["inf"] + d["to_st"]) / d["nongoal"], 1)})
     mac.update(HthreeNongoalAll=c(tot["nongoal"]), HthreeShareAll=num(100 * (tot["inf"] + tot["to_st"]) / tot["nongoal"], 1),
                HthreeMovingAll=c(tot["to_mv"]))
+
+
+def bmatch_transition_macros(mac):
+    """Macros for results/paper_revision/{on_vs_bmatch.csv, lost_gained.csv} (scripts/paper_bmatch_transitions.py).
+    New names only; an existing macro is never overwritten."""
+    R = ROOT / "results" / "paper_revision"
+    new = {}
+    c = lambda x: f"{int(x):,}".replace(",", "{,}")
+    ob = [r for r in csv.DictReader(open(R / "on_vs_bmatch.csv")) if r["scope"] == "pooled"]
+    for K, kn in KN.items():
+        for ep, nm in (("GOAL", "Goal"), ("FAIL", "Fail"), ("TIMEOUT", "To")):
+            r = next(x for x in ob if x["density"] == str(K) and x["endpoint"] == ep)
+            new.update({f"OnBm{nm}Diff{kn}": num(100 * float(r["estimate"]), 2), f"OnBm{nm}Lo{kn}": num(100 * float(r["m10_lo"]), 2),
+                        f"OnBm{nm}Hi{kn}": num(100 * float(r["m10_hi"]), 2)})
+        r = next(x for x in ob if x["density"] == str(K) and x["endpoint"] == "FORMATION_M")
+        new.update({f"OnBmFormDiff{kn}": num(float(r["estimate"]), 4), f"OnBmFormLo{kn}": num(float(r["boot_lo"]), 4),
+                    f"OnBmFormHi{kn}": num(float(r["boot_hi"]), 4), f"OnBmFormExcl{kn}": str(int(r["excluded"]))})
+    lg = [r for r in csv.DictReader(open(R / "lost_gained.csv")) if r["scope"] == "pooled"]
+    for dens, kn in [(str(K), kn) for K, kn in KN.items()] + [("all", "All")]:
+        g = lambda d, cat: next(x for x in lg if x["density"] == dens and x["direction"] == d and x["category"] == cat)
+        cnt = lambda d, cat: int(g(d, cat)["count"])
+        pct = lambda d, cat: num(100 * float(g(d, cat)["share"]), 1)
+        new.update({f"LostFI{kn}": c(cnt("LOST", "filter_induced_stall")), f"LostOtherTO{kn}": c(cnt("LOST", "other_timeout")),
+                    f"LostNg{kn}": c(cnt("LOST", "other_timeout:near_goal_parking_stall")),
+                    f"LostInf{kn}": c(cnt("LOST", "infeasible")), f"LostColl{kn}": c(cnt("LOST", "collision")),
+                    f"LostTotal{kn}": c(cnt("LOST", "total")), f"LostTotalPct{kn}": pct("LOST", "total"),
+                    f"GainColl{kn}": c(cnt("GAINED", "from_collision")), f"GainTO{kn}": c(cnt("GAINED", "from_timeout")),
+                    f"GainInf{kn}": c(cnt("GAINED", "from_infeasible")), f"GainTotal{kn}": c(cnt("GAINED", "total")),
+                    f"GainTotalPct{kn}": pct("GAINED", "total"),
+                    f"NetLoss{kn}": c(cnt("NET", "lost_minus_gained")), f"NetLossPct{kn}": num(100 * float(g("NET", "lost_minus_gained")["share"]), 2),
+                    f"LostRgrNo{kn}": c(cnt("LOST_REACHED_REGION", "on_reached_goal_region_0")),
+                    f"LostRgrYes{kn}": c(cnt("LOST_REACHED_REGION", "on_reached_goal_region_1")),
+                    f"LostRgrNoPct{kn}": pct("LOST_REACHED_REGION", "on_reached_goal_region_0"),
+                    f"LostRgrYesPct{kn}": pct("LOST_REACHED_REGION", "on_reached_goal_region_1")})
+    clash = set(new) & set(mac)
+    assert not clash, clash
+    mac.update(new)
 
 
 if __name__ == "__main__":
