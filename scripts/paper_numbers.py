@@ -10,7 +10,7 @@ results/final_test/mechanism/{timeout_classes.csv, clearance_summary.csv, cleara
 clearance_thresholds.csv, clearance_thresholds_auc.csv, closing_speed_vs_cap.csv},
 results/final_test/infeasibility/{summary.json, infeasible_robots.csv, initial_state_negative_barriers.csv},
 results/design/margin_constants.json, results/phase1/checkpoint_selection.json."""
-import csv, json, sys
+import csv, json, math, sys
 from collections import Counter
 from pathlib import Path
 
@@ -146,6 +146,8 @@ def main():
     old = set(mac)
     bmatch_transition_macros(mac)
     review_round1_macros(mac)
+    conflict_macros(mac)
+    comm_macros(mac)
     assert old <= set(mac)
     # locked statistical settings (protocol constants read from the analysis code, not typed by hand)
     sys.path.insert(0, str(ROOT))
@@ -340,6 +342,38 @@ def review_round1_macros(mac):
     new.update(StandOffObstCm=num(100 * lo, 2), CoverBandLoCm=num(100 * lo, 1), CoverBandHiCm=num(100 * (2 * ell + lo), 1),
                TwoEllCm=num(100 * 2 * ell, 0),
                MarginRatioObst=num(mc["obstacle_margin_C_at_D_o"] / mc["obstacle_margin_B_at_D_o"], 0))
+    clash = set(new) & set(mac)
+    assert not clash, clash
+    mac.update(new)
+
+
+def conflict_macros(mac):
+    """Macros for results/paper_revision/infeasibility_conflicts_summary.json
+    (scripts/infeasibility_conflicts.py; exploratory, post hoc). New names only."""
+    s = json.loads((ROOT / "results/paper_revision/infeasibility_conflicts_summary.json").read_text())
+    k = s["smallest_set_kinds"]
+    new = dict(ConfRobots=str(s["robots"]), ConfThree=str(s["smallest_set_size_counts"]["3"]),
+               ConfNNO=str(k.get("n+n+o", 0)), ConfNOO=str(k.get("n+o+o", 0)), ConfBoxNeeded=str(s["box_needed"]),
+               ConfWithinTol=str(s["robots"] - s["t_star_below_solver_tol"]),
+               ConfTstarMin=sci(s["t_star_quantiles"][0]), ConfTstarMax=sci(s["t_star_quantiles"][4]),
+               ConfTstarMed=sci(s["t_star_quantiles"][2]))
+    clash = set(new) & set(mac)
+    assert not clash, clash
+    mac.update(new)
+
+
+def comm_macros(mac):
+    """Macros for results/paper_revision/comm_range_coverage.json (scripts/comm_range_coverage.py). New names only."""
+    s = json.loads((ROOT / "results/paper_revision/comm_range_coverage.json").read_text())
+    c = lambda x: f"{int(x):,}".replace(",", "{,}")
+    gap_rr = s["comm_range"] - s["d_rr"]
+    new = dict(CommPairPeriods=c(s["pair_periods"]), CommBeyond=c(s["pair_periods_beyond_comm_range"]),
+               CommBeyondPct=num(100 * s["pair_periods_beyond_comm_range"] / s["pair_periods"], 3),
+               CommMaxPair=num(s["max_pair_distance"], 2), CommClosePair=num(s["closing_per_period_pair"], 2),
+               CommCloseObst=num(s["closing_per_period_obstacle"], 2), CommGapPair=num(gap_rr, 2),
+               CommGapObst=num(s["sensing_range"] - s["d_obst"], 2),
+               CommPeriodsPair=str(math.ceil(gap_rr / s["closing_per_period_pair"])),
+               CommPeriodsObst=str(math.ceil((s["sensing_range"] - s["d_obst"]) / s["closing_per_period_obstacle"])))
     clash = set(new) & set(mac)
     assert not clash, clash
     mac.update(new)

@@ -1,0 +1,28 @@
+{
+ "label": "exploratory, post hoc",
+ "robots": 433,
+ "t_star_negative": 433,
+ "t_star_below_solver_tol": 426,
+ "t_star_quantiles": [
+  -6.661649739108447e-07,
+  -5.9548501620715626e-08,
+  -2.5793955358886872e-08,
+  -9.890173596011024e-09,
+  -5.587390047001104e-10
+ ],
+ "with_minimal_set": 433,
+ "smallest_set_size_counts": {
+  "1": 0,
+  "2": 0,
+  "3": 433,
+  "4": 0,
+  "5": 0
+ },
+ "smallest_set_kinds": {
+  "n+n+o": 407,
+  "n+o+o": 26
+ },
+ "box_needed": 0,
+ "pair_angle_deg_quantiles": [],
+ "pair_conflicts": 0
+}

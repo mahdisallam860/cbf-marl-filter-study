@@ -1,0 +1,12 @@
+{
+ "label": "descriptive",
+ "comm_range": 1.5,
+ "sensing_range": 1.0,
+ "pair_periods": 21074097,
+ "pair_periods_beyond_comm_range": 1664,
+ "max_pair_distance": 1.7841057479324471,
+ "closing_per_period_pair": 0.1004987562112089,
+ "closing_per_period_obstacle": 0.05024937810560445,
+ "d_rr": 0.30000000000000004,
+ "d_obst": 0.35000000000000003
+}

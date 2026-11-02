@@ -1,0 +1,83 @@
+\documentclass[10pt]{article}
+\usepackage[margin=0.85in]{geometry}
+\usepackage{amsmath,amssymb,booktabs,array,url,enumitem}
+\usepackage[hidelinks]{hyperref}
+\setlist{nosep,leftmargin=1.4em}
+\title{Expansion protocol (DRAFT, not locked)\\ What makes an execution-time CBF-QP filter costly for frozen MAPPO formation policies?}
+\author{Al Mahdi Sallam --- for review by Dr.~Mohandes and Dr.~Brahmi}
+\date{Draft of 2 November 2026. Nothing in this document has been run. It becomes binding only when committed with advisor approval recorded.}
+\begin{document}
+\maketitle
+
+\section*{0. Status and rules}
+\begin{itemize}
+\item Study~1 (final test of 25--26 October 2026, protocol commit \texttt{9baf6d7}) stays exactly as reported; its verdict is not revisited.
+\item The studies below use only the reserved layout block $5{,}000{,}000$--$5{,}999{,}999$, unused so far. Development work (gain selection, debugging) uses the validation layouts ($2{,}000{,}000+K$) only.
+\item Before any trial: code for each variant is written and unit-tested, both advisors approve margins, variants, decision rules and seeds, and the protocol is committed. Findings from Study~1 that informed this design are listed in Section~7.
+\end{itemize}
+
+\section*{1. Questions}
+\begin{enumerate}[label=Q\arabic*.]
+\item Which design elements of the filter account for its cost in completion and formation, with the same frozen actors and matched layouts? (Study~2)
+\item Does the cost shrink for a policy family that passes a competence gate and was trained on the test densities? (Study~3)
+\item How do limited communication range, message dropouts and delays affect collisions and completion, and when does the guarantee stop applying? (Study~4)
+\end{enumerate}
+
+\section*{2. Study 2: filter-design comparison (frozen Study-1 actors)}
+\textbf{Arms} (each on the same layouts, filter off as reference):
+\begin{center}
+\begin{tabular}{>{\raggedright}p{0.07\linewidth}>{\raggedright}p{0.5\linewidth}>{\raggedright\arraybackslash}p{0.33\linewidth}}
+\toprule
+Arm & Change from Study~1 filter & Purpose \\ \midrule
+V0 & none (two-sided margins, $\ell=5$\,cm, equal split, no fallback) & replication on new layouts \\
+V1 & tight one-sided state-only margin (lower bound on $\ddot h$ only) & margin conservatism \\
+V2 & zero-command-admissible rows ($\delta$ evaluated at the held command, $\propto|\omega|$) & stopping admissible at $h\ge0$ \\
+V3 & V0 + brake fallback on infeasibility + nonprogress-recovery rule (fixed below) & missing fallback / recovery \\
+V4 & V0 with $\ell=2$\,cm in the filter only & cover-disc geometry \\
+V5 & V1 + V3 & combined \\
+B  & B-match on V0 rows & brake comparator \\
+\bottomrule
+\end{tabular}
+\end{center}
+\textbf{Recovery rule (V3, V5)}, fixed in advance: when the centroid-to-goal distance has fallen by less than 0.05\,m over 30 periods and some barrier row is active, each robot with an active obstacle row adds a tangential command component of fixed magnitude for 10 periods in the direction that increases $\|p-c\|$ fastest among the two tangents, then resumes. (Advisors: approve or replace.)\\
+\textbf{Gain}: re-selected per arm on validation layouts from $\{2,5,10\}$\,s$^{-1}$ by the Study-1 rule; V2 requires its own proof check (Section~6).\\
+\textbf{Layouts}: $5{,}000{,}000+1{,}000p+K$, $p=0,\dots,8$, $K=1,2,3$; 1{,}000 per actor and density; all arms on identical layouts.\\
+\textbf{Confirmatory criteria}: per arm and density, (a)--(c) of Study~1 against filter off, same margins (unless advisors change them now). Family: 6 filter arms $\times$ 3 densities $=18$ usefulness claims; each component one-sided at $0.05/18$ (Bonferroni over claims, intersection--union within a claim). Newcombe method~10 with the continuity correction, correctly labelled.\\
+\textbf{Secondary (pre-declared, descriptive)}: each arm minus V0 for GOAL, collision-or-infeasible, TIMEOUT and sustained nonprogress, with 95\% intervals; lost/gained transitions; infeasible states' conflicting row sets.
+
+\section*{3. Study 3: competent policy family}
+\textbf{Training}: same MAPPO recipe, curriculum whose final stage trains on $K=1,2,3$ (plus 5, 8 if advisors wish), 5 training seeds, budget fixed in advance. Filter never used in training (a filter-aware variant is optional, see Section~8).\\
+\textbf{Competence gate} (fixed before training): pooled filter-off GOAL $\ge60\%$ over $K=1,2,3$ on validation layouts for the final checkpoint of each seed; seeds failing the gate are reported, not replaced. If fewer than 3 seeds pass, Study~3 is reported as not completed.\\
+\textbf{Actors}: early, middle and late checkpoints by the Study-1 iteration rule.\\
+\textbf{Arms}: off, V0, and the single Study-2 arm with the highest pooled filter-on GOAL count among arms that met (a) at all densities (rule fixed now, applied after Study~2).\\
+\textbf{Layouts}: $5{,}100{,}000+1{,}000p+K$.\\
+\textbf{Analysis}: Study-1 criteria per arm and density; plus a between-run summary over the 5 seeds (interquartile mean and a bootstrap over seeds), so variation across training runs is reported, not only layout sampling.
+
+\section*{4. Study 4: communication and sensing}
+\textbf{Conditions} (V0 and the Study-3 arm, Study-1 actors): communication range 1.5\,m (reference), 0.6\,m and 0.45\,m (the range rule requires $\ge0.40$\,m); dropout probability 0.1 and 0.3 per pair and period (missing neighbour replaced by its last received state); one-period delay of neighbour states. Dropouts and delay violate A3, so no guarantee is claimed for them.\\
+\textbf{Primary endpoint}: collision rate per condition with 95\% Wilson interval (descriptive; the question is whether collisions reappear), plus GOAL and sustained nonprogress.\\
+\textbf{Layouts}: $5{,}200{,}000+1{,}000p+K$; 500 per actor and density per condition.
+
+\section*{5. Compute estimate}
+Study~1 ran 27{,}000 paired trials in three arms in about 13 minutes (about 50\,s per 1{,}000 filter-on trials). Study~2: 7 arms $\times$ 27{,}000 trials $\approx$ 3\,h, plus gain sweeps $\approx$ 1\,h. Study~3: training $\approx$ 2.7\,h per seed (Study-1 seed~0) $\times$ 5 seeds $\approx$ 14\,h, evaluation $\approx$ 1\,h. Study~4: 5 conditions $\times$ 2 arms $\times$ 13{,}500 trials $\approx$ 2\,h. Code and tests for the variants: about 1--2 weeks.
+
+\section*{6. Code to write and verify before locking}
+\begin{itemize}
+\item One-sided margin (V1) and ZR rows (V2), with unit tests that the zero command is admissible where claimed and a written proof for V2 for advisor check.
+\item Fallback and recovery rule (V3); filter-only $\ell$ separated from the layout sampler and environment fingerprint (V4), with a test that layouts are byte-identical to the Study-1 sampler.
+\item Range, dropout and delay models (Study~4); confirm the Study-1 configuration reproduces the Study-1 trial records exactly when all new options are off.
+\end{itemize}
+
+\section*{7. Study-1 findings that informed this design (to be disclosed)}
+Lost completions were mostly intervention-active nonprogress near obstacles; every infeasible QP was a three-row conflict at the stand-off; the methodology report estimated the obstacle margin at about $13\times$ a tight one-sided margin; the actors failed the competence gate; neighbour pairs were almost always within the 1.5\,m range.
+
+\section*{8. Decisions requested from the advisors}
+\begin{enumerate}
+\item Keep the Study-1 margins (5\,pp GOAL, 0.01\,m formation) or set new ones, with a rationale.
+\item Approve the arms V1--V5, the recovery rule and the Study-3 selection rule; add or drop arms.
+\item Competence gate threshold and training budget for Study~3; whether to add a filter-aware training arm.
+\item Whether Study~4 is in scope for the target venue, and whether $N=5$ robots should be added.
+\item Target venue (T-RO, RA-L or IEEE Access), which fixes the page budget and so how many studies the paper can report.
+\item Authorship and publication fee.
+\end{enumerate}
+\end{document}

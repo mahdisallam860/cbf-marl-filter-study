@@ -1,0 +1,132 @@
+\documentclass[10pt]{article}
+\usepackage[margin=0.8in]{geometry}
+\usepackage{amsmath,amssymb,booktabs,array,url}
+\usepackage[hidelinks]{hyperref}
+\newcommand{\confirm}[1]{\par\smallskip\noindent\fbox{\parbox{0.97\linewidth}{\textbf{Please confirm:} #1}}\par\medskip}
+\title{Advisor verification packet:\\ equations and statistics of the CBF-QP filter study}
+\author{Al Mahdi Sallam (prepared for Dr.~Mohandes and Dr.~Brahmi)}
+\date{Draft, 2 November 2026. Repository \texttt{mahdisallam860/cbf-marl-filter-study}, branch \texttt{claude/elegant-hopper-v8jxlv}}
+\begin{document}
+\maketitle
+\noindent This packet lists the six items whose correctness the manuscript relies on. Each gives the
+statement, a derivation, the code that implements it and what to confirm. Item numbers match the
+sign-off table at the end. The final test was run on 25--26 October 2026 under a protocol the author
+locked without advisor review (commit \texttt{9baf6d7}); nothing below changes a reported number.
+
+\section*{Setting}
+Unicycle robots, pose $(x,y,\theta)$, command $u=(v,\omega)\in\mathcal U=[-0.5,0.5]\,\text{m/s}\times[-1,1]\,\text{rad/s}$,
+held for $\Delta=0.1$\,s. Offset point $p=(x+\ell\cos\theta,\,y+\ell\sin\theta)$, $\ell=0.05$\,m, so
+$\dot p=J(\theta)u$ with $J=\begin{bmatrix}\cos\theta&-\ell\sin\theta\\ \sin\theta&\ell\cos\theta\end{bmatrix}$, $\det J=\ell$.
+Barriers $h_o=\|p-c\|^2-D_o^2$, $D_o=R+\ell+R_o=0.35$\,m; $h_{ij}=\|p_i-p_j\|^2-D_{rr}^2$, $D_{rr}=2(R+\ell)=0.30$\,m.
+Since $\|x-p\|=\ell$, $h\ge0$ implies the body discs (radius $R=0.10$\,m) do not overlap.
+
+\section*{C1. Lemma 1 (one-sided sampled-data condition)}
+\textbf{Statement.} Let $u$ be constant on $[t_k,t_k+\Delta]$, $\ddot h\ge-M$ there ($M\ge0$),
+$\alpha\Delta\le1$, $h(t_k)\ge0$. If $\dot h(t_k)+\alpha h(t_k)\ge\delta:=M\Delta/2$, then
+$h(t_k+s)\ge(1-\alpha s)h(t_k)\ge0$ for all $s\in[0,\Delta]$.
+
+\textbf{Proof.} By Taylor's theorem with the lower bound on $\ddot h$,
+$h(t_k+s)\ge h+\dot h\,s-\tfrac M2 s^2$ (values at $t_k$). Using $\dot h\ge-\alpha h+M\Delta/2$,
+\[
+h(t_k+s)\ \ge\ (1-\alpha s)h+\tfrac{M s}{2}(\Delta-s)\ \ge\ (1-\alpha s)h\ \ge\ 0,
+\]
+since $s\le\Delta$ and $\alpha s\le\alpha\Delta\le1$. $\square$
+Induction over periods gives $h\ge0$ for all $t$ provided every QP is feasible (assumption A9) and
+$h(0)\ge0$ (A5). This is Theorem~3 of Breeden, Garg and Panagou, IEEE L-CSS 6:367--372 (2022), there
+with safe set $\{h\le0\}$ and $\gamma\in(0,1]$, which corresponds to $\alpha\Delta\le1$.
+At $\alpha\Delta=1$ the endpoint bound is $h(t_k+\Delta)\ge0$, not strictly positive.
+
+\noindent Code: \texttt{cbf\_study/cbf\_qp.py} (module docstring, \texttt{FilterConfig.validate} enforces $\alpha\Delta\le1$).
+\confirm{the Taylor step, the use of a one-sided bound, the induction under A5 and A9, and the mapping to Breeden et al.\ Thm.~3.}
+
+\section*{C2. The margins $\delta_o(d)$ and $\delta_{ij}(d)$ (eq.~4)}
+Under a held command, $\|\dot p\|^2=v^2+\ell^2\omega^2\le V_p^2$ with $V_p=\sqrt{0.5^2+0.05^2}\approx0.5025$\,m/s.
+Since $\dot\theta=\omega$ is constant, $\ddot p=\omega\,J'(\theta)u$ and $\|J'(\theta)u\|=\|\dot p\|$,
+so $\|\ddot p\|\le\bar\omega V_p=:A_p$. Within the period $\|p(t)-c\|\le d+V_p\Delta$, with $d=\|p(t_k)-c\|$.
+\[
+\ddot h_o=2\|\dot p\|^2+2(p-c)^\top\ddot p\ \ \Rightarrow\ \ |\ddot h_o|\le 2V_p^2+2(d+V_p\Delta)A_p=:M_o(d).
+\]
+For a pair, relative speed $\le2V_p$, relative acceleration $\le2A_p$, $\|p_i-p_j\|\le d+2V_p\Delta$:
+$|\ddot h_{ij}|\le 8V_p^2+4(d+2V_p\Delta)A_p=:M_{ij}(d)$. The implementation uses
+$\delta=M\Delta/2$ with these two-sided $M$; Lemma~1 needs only $\ddot h\ge-M$, for which
+$2(d+V_p\Delta)A_p$ (obstacles) suffices, so the $2V_p^2$ and $8V_p^2$ terms are extra conservatism
+(about $13\times$ the tight one-sided obstacle margin at $d=D_o$; \texttt{results/design/margin\_constants.json}).
+The row is $\dot h_o=g_o^\top u$ with $g_o=2J^\top(p-c)$, i.e.\ $g_o^\top u\ge-\alpha h_o+\delta_o(d)$.
+
+\noindent Code: \texttt{cbf\_qp.margin\_obstacle}, \texttt{cbf\_qp.margin\_robot}, \texttt{bmatch.barrier\_rows}.
+\confirm{$\|\ddot p\|\le A_p$ under a held command; both bounds on $|\ddot h|$; that two-sided bounds are valid (if conservative) for the lemma.}
+
+\section*{C3. Equal split between robots}
+Robot $i$ imposes $g_{ij}^\top u_i\ge-\tfrac\alpha2 h_{ij}+\tfrac12\delta_{ij}(d)$ with $g_{ij}=2J_i^\top(p_i-p_j)$;
+robot $j$ imposes the same with $i\leftrightarrow j$. Since $h_{ij}=h_{ji}$, $d$ is symmetric, and
+$\dot h_{ij}=2(p_i-p_j)^\top(\dot p_i-\dot p_j)=g_{ij}^\top u_i+g_{ji}^\top u_j$, adding the two rows gives
+$\dot h_{ij}\ge-\alpha h_{ij}+\delta_{ij}(d)$, the pair condition of Lemma~1. Required: both robots use
+the same state (A2--A3), apply commands over the same period (A4), the row is enabled for both (the range
+test is symmetric), and both QPs are feasible. In simulation the first two hold by construction (one
+call on the joint state), so ``decentralised'' refers to how the computation is split. Out-of-range
+pairs: a neighbour beyond 1.5\,m needs at least 12 periods at $\le2V_p\Delta\approx0.10$\,m per period to
+reach $D_{rr}$, and rows are rebuilt each period. In the final test 0.008\% of robot-pair periods
+were beyond 1.5\,m, so limited communication was not tested.
+\confirm{the summation argument and its conditions, and the out-of-range argument.}
+
+\section*{C4. Criterion (a) and the error-rate structure}
+Usefulness at density $K$ requires (a), (b) and (c) (intersection--union test, so no split across
+components). Each component is tested one-sided at $\alpha_K=0.05/3$, a Bonferroni split over the three
+density claims, giving familywise error $\le0.05$ over the three usefulness claims.
+(a) is decided by the exact one-sided McNemar test: with $n_{10}$ pairs failing off only and $n_{01}$
+failing on only, $p=P(X\ge n_{10})$, $X\sim\mathrm{Bin}(n_{10}+n_{01},\tfrac12)$
+(\texttt{locked\_stats.mcnemar\_one\_sided\_p}). (b) is decided by the Newcombe bound (C5) against the
+5\,pp margin; (c) by the bootstrap bound (C6) against 0.01\,m.
+\confirm{the IUT logic, the Bonferroni denominator 3 (densities, not components), and the McNemar direction.}
+
+\section*{C5. Newcombe paired interval: method 8 versus method 10}
+With $a,b,c,d$ the paired $2\times2$ counts, $p_1=(a+b)/n$, $p_2=(a+c)/n$, Wilson limits $(l_i,u_i)$ and
+\[
+\hat\phi=\frac{ad-bc}{\sqrt{(a+b)(c+d)(a+c)(b+d)}},\qquad
+\theta-\sqrt{(p_1-l_1)^2-2\hat\phi(p_1-l_1)(u_2-p_2)+(u_2-p_2)^2}
+\]
+is the lower limit (upper symmetric). This is Newcombe's method 8. Method 10 replaces $ad-bc$ by
+$\max(ad-bc-n/2,0)$ when $ad-bc>0$. The locked protocol labels its interval ``method 10'' but describes
+it as ``without continuity correction'', i.e.\ method 8; the code
+(function \texttt{newcombe\_paired\_ci} in \url{cbf_study/stats.py}, whose docstring also says ``method 10'') implements method 8.
+Recomputing every bound with method 10 changes it by $<0.001$\,pp and no criterion
+(\url{scripts/newcombe_method10_check.py}). The B-match comparison (Table 4) uses method 10.
+When a marginal variance is zero (B-match never fails), $\hat\phi$ is set to 0.
+\confirm{the method numbering against Newcombe (1998), the treatment of the inconsistency, and $\hat\phi=0$ in the degenerate case.}
+
+\section*{C6. Criterion (c): formation estimand and bootstrap}
+For a pair with executed periods $T_{\rm off},T_{\rm on}$, $L=\min(T_{\rm off},T_{\rm on})$ and
+$\Delta e=\frac1L\sum_{t=1}^{L}[e_{\rm on}(t)-e_{\rm off}(t)]$, $e(t)=\tfrac13\sum_r\|x_r(t)-\bar x(t)-s_r\|$;
+pairs with $L=0$ are excluded (none occurred). Estimand: $\overline{\Delta e}=\frac19\sum_p\mathrm{mean}_{i\in\mathcal E_p}\Delta e_i$.
+Bound: resample pairs with replacement within each actor, recompute the equal-actor mean, $B=20{,}000$,
+seed 20261026 (\url{numpy.random.default_rng}), upper bound = $1-0.05/3$ quantile (\texttt{method='linear'});
+a normal bound from per-actor variances is a cross-check (function \texttt{formation\_noninferiority} in \url{cbf_study/locked_stats.py}).
+Intervals reflect layout sampling for nine fixed actors from three training runs, not variation
+across training runs.
+\confirm{the estimand, the stratified resampling and the interpretation of the interval.}
+
+\section*{Additional: infeasibility (exploratory, for information)}
+At all 433 infeasible robot states, the binding row sat at its stand-off $h^\star=\delta/\alpha$
+($|h-h^\star|\le4.3\times10^{-8}$\,m$^2$). An exact vertex enumeration of
+$t^\star=\max_{u\in\mathcal U}\min_r(n_r^\top u-c_r)$ gives $t^\star\in[-6.7\times10^{-7},-5.6\times10^{-10}]$; every
+minimal conflicting set has three rows (407: two neighbour + one obstacle; 26: one neighbour + two
+obstacles), never the command box; 7 cases lie within the solver tolerance $10^{-9}$.
+(\texttt{scripts/infeasibility\_conflicts.py}.) A comment on whether this ``three-sided pinch at the
+stand-off'' reading is sound would help.
+
+\section*{Sign-off}
+\begin{tabular}{>{\raggedright}p{0.36\linewidth}p{0.12\linewidth}p{0.42\linewidth}}
+\toprule
+Item & Confirmed (Y/N) & Comments \\ \midrule
+C1 Lemma 1 and induction & & \\[6pt]
+C2 Margins $\delta_o,\delta_{ij}$ & & \\[6pt]
+C3 Equal split and ranges & & \\[6pt]
+C4 IUT, Bonferroni, McNemar & & \\[6pt]
+C5 Newcombe method 8 / 10 & & \\[6pt]
+C6 Formation estimand, bootstrap & & \\[6pt]
+Margins 5\,pp and 0.01\,m acceptable? & & \\[6pt]
+\bottomrule
+\end{tabular}
+
+\medskip\noindent Reviewer: \rule{5cm}{0.4pt}\qquad Date: \rule{3cm}{0.4pt}
+\end{document}

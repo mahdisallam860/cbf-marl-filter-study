@@ -81,17 +81,25 @@ obstacles) and of the infeasible states (each with a constraint at its stand-off
 so the analyses can be repeated without re-running trials.
 
 \paragraph{Research question.} Does this execution-time CBF-QP filter, applied to frozen MAPPO
-formation policies trained without it, reduce collisions, and at what cost in formation error,
-goal completion and deadlock?
+formation policies trained without it, reduce collisions, and how does it change formation error,
+goal completion and sustained nonprogress? Each of these could worsen, stay the same or improve; the
+non-inferiority criteria of Section~\ref{sec:design} would accept preservation or improvement.
 
 \paragraph{Motivating hypotheses.} The study was motivated by three hypotheses stated
 in the study's earlier research proposal, quoted here: ``H1: collisions fall. H2: formation error and
 completion time rise, more so in denser layouts. H3: most failures under filtering come from
 deadlock or infeasible steps rather than slower progress.'' The proposal defined deadlock as ``centroid
-progress below a set distance over a set window''; the protocol's stalled flag implements this as a
-TIMEOUT whose centroid-to-goal distance fell by less than 0.05\,m over the last 50 executed periods. The
-flag measures progress toward the goal, not distance travelled or stationarity: a team moving sideways,
-circling or moving away also satisfies it. These hypotheses
+progress below a set distance over a set window''. The protocol implements this as a flag (named
+\texttt{stalled} in the saved files) set on a TIMEOUT whose centroid-to-goal distance fell by less than
+0.05\,m over the last 50 executed periods. Because the flag measures progress toward the goal, not
+distance travelled or stationarity, and a team moving sideways, circling, moving away or rearranging its
+formation also sets it, we call it \emph{sustained nonprogress} and reserve ``deadlock'' for the quoted
+hypothesis. The expectation behind H3 had three grounds: CBF-QP filters can introduce undesirable
+stable equilibria \cite{reis2021,grover2023}; with the margin $\delta>0$ used here, stopping is
+inadmissible just below the stand-off defined in Section~\ref{sec:system}; and the locked protocol
+predicted analytically that small gains would conflict with holding the formation
+(Section~\ref{sec:discussion}). Only targeted comparisons that vary these design elements could separate
+these causes; the analyses of Section~\ref{sec:mechanism} can suggest explanations but do not. These hypotheses
 motivate the design; they do not extend the locked confirmatory claims, which are the three
 criteria of Section~\ref{sec:design}. Section~\ref{sec:discussion} maps each hypothesis to the
 evidence and states which evidence is confirmatory and which is exploratory.
@@ -124,6 +132,18 @@ is used in \cite{emam2019}. Hidden assumptions in CBF safety claims are discusse
 \cite{yang2019}. Interval estimates and per-seed reporting for RL evaluation are argued for in
 \cite{agarwal2021}.
 
+Outside the multi-agent setting, execution-time correction of a learned policy has two main forms:
+shields that override unsafe actions of a reinforcement-learning agent against a formal specification
+\cite{alshiekh2018}, and CBF-based safety layers that minimally modify the policy's action, used during
+learning in \cite{cheng2019}; \cite{hsu2024} review safety filters as a common framework. These works
+mainly ask whether the filter keeps the system safe and how it affects learning; the cost of adding a
+filter at execution to a policy that never saw it, measured on matched trials with criteria fixed in
+advance, is the question studied here. For multi-robot CBF controllers, \cite{grover2023} show that
+symmetric configurations produce deadlocks, characterise them with KKT conditions and propose a
+decentralised resolution, and \cite{reis2021} show that CBF-QPs can introduce undesirable asymptotically
+stable equilibria. The present filter has no such resolution step, so its nonprogress behaviour is part
+of what is measured.
+
 \begin{table*}[t]
 \centering\footnotesize
 \caption{Related multi-agent studies. ``Paired on/off'' = the same frozen policy evaluated with and
@@ -143,7 +163,7 @@ Choi et al. \cite{choi2025} & CBVF filter in the second half of training and at 
 Deng et al. \cite{deng2026} & learned correction added to a frozen MAPPO policy & base policy reported; pairing not stated & return, arrival rate, violation rate & F\\
 Dawood et al. \cite{dawood2025} & MPC filter in training and execution & Yes, for a policy trained with the filter & goals, timeouts, collisions, time, formation error & F\\
 Vinod et al. \cite{vinod2022} & centralised QP filter at execution on a separately obtained RL planner (filter use in training not stated) & same policy and start states, reported mainly qualitatively & completion, deadlock, loitering & F\\
-This study & decentralised CBF-QP at execution; policies trained without it & Yes: 9{,}000 matched layouts per density & collisions, infeasibility, completion, formation, stalls & --\\
+This study & decentralised CBF-QP at execution; policies trained without it & Yes: 9{,}000 matched layouts per density & collisions, infeasibility, completion, formation, nonprogress & --\\
 \bottomrule
 \end{tabular}
 \end{table*}
@@ -232,8 +252,15 @@ $g_{ij}=2J(\theta_i)^\top(p_i-p_j)$, robot $i$ solves at every period
 with one obstacle row for every obstacle whose barrier-point distance is $d\le 1.0$\,m and one
 neighbour row for every neighbour with $d\le 1.5$\,m, where $u_{\rm nom}$ is the frozen actor's deterministic command. The sensing ranges exceed
 $D_o+V_p\Delta$ and $D_{rr}+2V_p\Delta$ (both about 0.40\,m), so an omitted barrier cannot reach zero
-within the period; within range the filter uses exact obstacle centres and exact, undelayed neighbour
-poses. Each robot takes half of every pair condition (equal split); the two halves sum to the pair
+within the period. An object outside range does not disappear from the safety assessment: rows are
+rebuilt at every period, and a neighbour beyond 1.5\,m must close \CommGapPair\,m of barrier-point
+distance to reach $D_{rr}$ at no more than $2V_p\Delta\approx\CommClosePair$\,m per period (at least
+\CommPeriodsPair{} periods), and an obstacle beyond 1.0\,m must close \CommGapObst\,m at no more than
+$V_p\Delta\approx\CommCloseObst$\,m per period (at least \CommPeriodsObst{} periods), so it re-enters the
+constraint set long before it could matter. This relies on A2--A3 below: within range the filter uses
+exact obstacle centres and exact, undelayed neighbour poses. In the final test, \CommBeyond{} of
+\CommPairPeriods{} robot-pair periods (\CommBeyondPct\%) had a pair beyond 1.5\,m (largest
+\CommMaxPair\,m), so limited communication was in effect not tested. Each robot takes half of every pair condition (equal split); the two halves sum to the pair
 condition of Lemma~1 when both robots compute their rows from the same state, apply their commands over
 the same period and both QPs are feasible. In this simulation the first two hold by construction (every
 robot reads the exact, synchronous joint state), so ``decentralised'' refers to how the computation is
@@ -294,7 +321,7 @@ of the final curriculum stage of each seed, fixed by an iteration rule (first sa
 $r\ge\lceil n/3\rceil$, $r\ge\lceil 2n/3\rceil$, and $r=n$, where $r$ is the iteration counted within the
 final stage and $n=326$ is its length). The three checkpoints of one seed come from the same training
 run and are not independent policies.
-Seed~1 crashed at global iteration 565 (a layout-sampler stall) and was resumed from the state it had
+Seed~1 crashed at global iteration 565 (a layout-sampler hang) and was resumed from the state it had
 saved at iteration 546: actor, critic, optimiser states, value normaliser and action-sampling
 generator were restored bit for bit, but the environments, the position in the training-layout chunk
 and the global random-number state were not, and iterations 547--565 (466{,}944 environment steps) were
@@ -363,7 +390,7 @@ reported numbers are those of the locked code. The margins are the author's judg
 without advisor review or external calibration; for any other margin, the 98.33\% bounds in
 Table~\ref{tab:conf} give the smallest margin each criterion would have met. Per-seed and per-actor results, episode length,
 reached-goal-region (centroid within 0.30\,m of the goal before any collision or infeasibility),
-final centroid-to-goal distance, TIMEOUT and the stalled flag were pre-declared as secondary and
+final centroid-to-goal distance, TIMEOUT and the sustained-nonprogress flag were pre-declared as secondary and
 descriptive.
 
 \paragraph{Formation endpoint (criterion (c)).} For a trial, let $T$ be the number of control
@@ -610,22 +637,24 @@ example were chosen after the confirmatory results were known, the analyses read
 and they support no causal or confirmatory claim.}
 
 \paragraph{Definitions.} TIMEOUTs are classified from the saved logs in this order, over the last 50
-executed periods (the window): \emph{slow progress} (stalled flag off: the centroid-to-goal distance fell
-by at least 0.05\,m over the window); \emph{intervention-active stall} (stalled, and the clipped nominal command
+executed periods (the window): \emph{slow progress} (flag off: the centroid-to-goal distance fell
+by at least 0.05\,m over the window); \emph{intervention-active nonprogress} (flag on, and the clipped nominal command
 violated an enabled barrier row in at least half of the window; split by obstacle and neighbour rows);
-\emph{near-goal parking stall} (stalled, not the previous class, final centroid within 0.30\,m of the
-goal); \emph{other stall}. The repository files call the second class ``filter-induced stall''; the
-name used here records only that the filter was overriding the command, not that it caused the stall.
-Throughout, ``stall'' means little terminal progress toward the goal, not that the robots stopped; the
-classes are operational labels, not identified causes.
+\emph{near-goal nonprogress} (flag on, not the previous class, final centroid within 0.30\,m of the
+goal); \emph{other nonprogress}. The repository files call these classes ``slow progress'',
+``filter-induced stall'', ``near-goal parking stall'' and ``other stall''; the names used here record only
+that the team made little terminal progress toward the goal (and, for the second, that the filter was
+overriding the command), not that the robots stopped or that the filter caused it. The classes are
+operational labels, not identified causes.
 ``Reached goal region'' uses the minimum centroid distance over the trial, the parking class the final
 one.
 
-\paragraph{Stall classes.} Of \TOonTotal{} filter-on TIMEOUTs, \TOfi{} (\TOfiPct\%) were
-intervention-active stalls, \TOfiObst{} of them involving obstacle rows; on the same layouts the
-unfiltered run collided in \TOfiOffColl{} cases, where a stall replaced a collision, and reached GOAL in
-\TOfiOffGoal. Another \TOng{} (\TOngPct\%) were near-goal parking stalls, \TOngOffTO{} of them on layouts
-where the unfiltered run also timed out; \TOother{} were other stalls and \TOslow{} slow progress.
+\paragraph{Nonprogress classes.} Of \TOonTotal{} filter-on TIMEOUTs, \TOfi{} (\TOfiPct\%) were
+intervention-active nonprogress, \TOfiObst{} of them involving obstacle rows; on the same layouts the
+unfiltered run collided in \TOfiOffColl{} cases, where sustained nonprogress replaced a collision, and
+reached GOAL in \TOfiOffGoal. Another \TOng{} (\TOngPct\%) were near-goal nonprogress, \TOngOffTO{} of
+them on layouts where the unfiltered run also timed out; \TOother{} were other nonprogress and \TOslow{}
+slow progress.
 
 \paragraph{Lost and gained completions.} Per pair, a completion is \emph{lost} when the unfiltered run
 reached GOAL and the filtered run did not, and \emph{gained} in the reverse case
@@ -633,8 +662,8 @@ reached GOAL and the filtered run did not, and \emph{gained} in the reverse case
 are in \url{results/paper_revision/transitions_4x4.csv}). Pooled over $K=1$--3, \LostTotalAll{}
 completions were lost and \GainTotalAll{} gained, a net GOAL loss of \NetLossAll{} pairs; at each
 density the net loss divided by the number of pairs equals the criterion (b) estimate. Of the lost
-completions, \LostFIAll{} ended in an intervention-active stall, \LostOtherTOAll{} in another TIMEOUT class
-(\LostNgAll{} of them near-goal parking stalls), \LostInfAll{} as INFEASIBLE and \LostCollAll{} as
+completions, \LostFIAll{} ended in intervention-active nonprogress, \LostOtherTOAll{} in another TIMEOUT class
+(\LostNgAll{} of them near-goal nonprogress), \LostInfAll{} as INFEASIBLE and \LostCollAll{} as
 COLLISION. The gained completions were unfiltered COLLISION (\GainCollAll) and TIMEOUT (\GainTOAll)
 runs; \GainInfAll{} came from INFEASIBLE, which the unfiltered arm never produced.
 
@@ -644,14 +673,14 @@ centroid within 0.30\,m of the goal before any failure; in \LostRgrYesAll{} (\Lo
 did. An earlier version of this draft inferred from the marginal reached-goal-region rates that the
 lost completions were mostly runs that never approached the goal; marginal rates cannot identify
 the pairs involved, and this paired count replaces that inference. It aggregates the saved
-reached-goal-region flags. Entering the goal region does not by itself establish a parking stall,
+reached-goal-region flags. Entering the goal region does not by itself establish near-goal nonprogress,
 and the TIMEOUT classes are exploratory labels assigned from saved logs, not identified causes.
 
 \begin{table*}[t]
 \centering\footnotesize
 \caption{Lost and gained completions, filter off $\to$ filter on (exploratory, post hoc), in pairs
 out of \PairsPerDensity{} per density. Lost: off GOAL and on not GOAL, split by the filter-on outcome
-(TIMEOUT classes as in the stall-class paragraph); gained: off not GOAL and on GOAL, split by the
+(TIMEOUT classes as in the nonprogress-class paragraph); gained: off not GOAL and on GOAL, split by the
 filter-off outcome. Net GOAL loss = lost $-$ gained = off GOAL count $-$ on GOAL count. Last rows:
 whether the filtered run of a lost pair reached the goal region (saved flag).}
 \label{tab:lostgained}
@@ -659,7 +688,7 @@ whether the filtered run of a lost pair reached the goal region (saved flag).}
 \toprule
  & $K=1$ & $K=2$ & $K=3$ & $K=1$--3\\
 \midrule
-Lost: intervention-active stall & \LostFIone & \LostFItwo & \LostFIthree & \LostFIAll\\
+Lost: intervention-active nonprogress & \LostFIone & \LostFItwo & \LostFIthree & \LostFIAll\\
 \quad other TIMEOUT class & \LostOtherTOone & \LostOtherTOtwo & \LostOtherTOthree & \LostOtherTOAll\\
 \quad INFEASIBLE & \LostInfone & \LostInftwo & \LostInfthree & \LostInfAll\\
 \quad COLLISION & \LostCollone & \LostColltwo & \LostCollthree & \LostCollAll\\
@@ -688,7 +717,7 @@ minus on). No lost completion ended in COLLISION (\LostCollAll{} pairs).}\label{
 \end{figure*}
 
 \paragraph{Groups A and B.} Group A (\GroupA{} pairs: unfiltered GOAL, filtered
-intervention-active stall; \GroupAobst{} obstacle-labelled, \GroupAnb{} neighbour-only) and group B (\GroupB{} pairs:
+intervention-active nonprogress; \GroupAobst{} obstacle-labelled, \GroupAnb{} neighbour-only) and group B (\GroupB{} pairs:
 both GOAL) were selected by observed outcome. The unfiltered runs of group A came closer to
 obstacles (median sampled minimum surface clearance \GapAmedCm\,cm, group A only) than those of
 group B (\GapBmedCm\,cm; Fig.~\ref{fig:f4}). Their applied commands violated at least one filter
@@ -701,10 +730,10 @@ the unrounded group-A median (\ExMedCm\,cm), ties by actor index, density and tr
 comparison \ExNtied{} candidates were equally close; the actor-index tie-break selected actor \ExActor,
 $K=\ExK$, trial \ExTrial{} (clearance \ExGapCm\,cm). The unfiltered run reached GOAL
 after \ExOffT{} periods with its closest approach at period \ExCaState; the filtered run's centroid
-stalled from period \ExStallState. At that instant, robot \ExRobot{} (the robot with the smallest
+made no further progress from period \ExStallState. At that instant, robot \ExRobot{} (the robot with the smallest
 obstacle cover barrier, $h=\ExCoverH$\,m$^2$, body clearance \ExCoverGapCm\,cm) is shown with its
 cover disc. This is a geometric selection: it does not show that this robot or constraint caused the
-stall, and a centroid stall does not mean that every robot stopped.
+nonprogress, and sustained nonprogress of the centroid does not mean that every robot stopped.
 
 \paragraph{Clearance thresholds.} Of all trials, \ThrOffGoal\% reached GOAL unfiltered, and
 \ThrMatchObstFive\% did so while keeping a sampled minimum obstacle clearance of at least 5\,cm (a
@@ -727,10 +756,21 @@ enabled rows (two or more for \InfRowsTwoPlus{} of \InfRobots{} robots), and rec
 slack in float32 changed its sign for \InfFlipFthirtytwo{} of them. \InfNear{} of \InfRobots{} met a
 near-boundary diagnostic fixed before the (post hoc) audit computation ($|\text{slack}|\le10^{-6}$ and
 $|h-h^\star|\le10^{-3}$\,m$^2$). The infeasible states thus sat where stopping is only marginally
-inadmissible, and the evaluation of that row is sensitive to rounding. This does not show that the full
+inadmissible, and the evaluation of that row is sensitive to rounding. This alone does not show that the full
 QP would become feasible, that the zero command would satisfy every other row, or that the trial would
-end differently: the audit did not identify which rows and box limits jointly conflicted, and the effect
-on whole-QP feasibility and on subsequent outcomes is unresolved. The stand-off exists
+end differently. A follow-up analysis of the same saved states (exploratory, post hoc; the filter's row
+construction evaluated at each state, no solver call) computed, for each of the \ConfRobots{} infeasible
+robots, the largest uniform normalised slack $t^\star$ any command in the box achieves, exactly by
+vertex enumeration, and all minimal conflicting row sets. In every case $t^\star<0$ (between
+\ConfTstarMin{} and \ConfTstarMax, median \ConfTstarMed), and the smallest conflicting set had exactly
+three rows: two neighbour rows and one obstacle row in \ConfNNO{} cases and one neighbour and two
+obstacle rows in \ConfNOO; the command box was not part of any minimal conflict (\ConfBoxNeeded{}
+cases). The infeasible robots were thus constrained from three sides, with the three gradients
+positively spanning the command plane, and the resulting empty set was very thin. For \ConfWithinTol{}
+robots $t^\star$ was above $-10^{-9}$, within the solver tolerance; the enumeration solver tests only the
+unconstrained optimum, projections and pairwise vertices, so whether a tolerance-accepted command exists
+among its candidates there was not checked. The effect of these marginal conflicts on later outcomes
+remains unresolved. The stand-off exists
 at every gain, and the development sweep had INFEASIBLE outcomes at every gain, most at $\alpha=0.5$
 (\SelInfhalf), so these events are not specific to $\alpha\Delta=1$.
 
@@ -753,7 +793,7 @@ $x$, per density, with the filter-on GOAL rate (dashed).}\label{fig:f4}\label{fi
 \caption{Exploratory, post hoc example. Selection rule (fixed before plotting): among group-A pairs, the pair
 whose filter-off minimum sampled obstacle clearance is closest to the unrounded group-A median; ties by actor
 index, density, then trial. Left: filter off, bodies at the closest-approach instant. Right: filter on,
-bodies at stall onset (first state from which the centroid stays within 0.05\,m of its final position), with
+bodies at nonprogress onset (first state from which the centroid stays within 0.05\,m of its final position), with
 the cover disc (dashed, radius $R+\ell$) of the robot with the smallest obstacle barrier at that instant (ties by
 robot index). Star: goal. Geometric selection only; not evidence of cause.}\label{fig:f6}
 \end{figure*}
@@ -786,22 +826,22 @@ pairs the time to goal changed little (equal-actor mean \TtgEqOnone, \TtgEqOntwo
 Table~\ref{tab:ttg}), and this conditional analysis does not estimate the completion-time cost.
 \emph{H3 (failures under filtering come from deadlock or infeasible steps rather than slower
 progress).} Of the \HthreeNongoalAll{} filter-on trials that did not reach GOAL, \HthreeShareAll\%
-ended INFEASIBLE or as TIMEOUT with the protocol's stalled flag, and \HthreeMovingAll{} were TIMEOUTs
-still closing on the goal at the horizon (stalled flag pre-declared as secondary, descriptive). The flag,
+ended INFEASIBLE or as TIMEOUT with the protocol's sustained-nonprogress flag, and \HthreeMovingAll{} were TIMEOUTs
+still closing on the goal at the horizon (flag pre-declared as secondary, descriptive). The flag,
 however, accompanied \OffStallOfTOone, \OffStallOfTOtwo{} and \OffStallOfTOthree\% of TIMEOUTs with the
 filter off as well (\OnStallOfTOone, \OnStallOfTOtwo{} and \OnStallOfTOthree\% with it on): at this
 horizon almost every TIMEOUT ends with little progress toward the goal in its last 50 periods. The flag
 describes that low terminal progress; it cannot distinguish a team parked near the goal from one held
 by obstacles or by the filter, and its high prevalence in both arms does not identify filter-specific
 deadlock, so it does not test H3. In the exploratory classes of Section~\ref{sec:mechanism}, \TOfiPct\% of
-filter-on TIMEOUTs were intervention-active stalls and \TOngPct\% near-goal parking stalls, \TOngOffTO{}
+filter-on TIMEOUTs were intervention-active nonprogress and \TOngPct\% near-goal nonprogress, \TOngOffTO{}
 of the latter on layouts where the unfiltered run also timed out.
 
-\paragraph{Collisions versus stalls.} With the filter on there were no collisions (\CollOnone,
+\paragraph{Collisions versus sustained nonprogress.} With the filter on there were no collisions (\CollOnone,
 \CollOntwo{} and \CollOnthree{} at $K=1,2,3$; the remaining failures were INFEASIBLE;
 Table~\ref{tab:conf}); in the exploratory classification most filtered timeouts were
-intervention-active stalls, mostly on layouts where the unfiltered run collided or reached GOAL. We read
-this as a description of where the lost completions occurred, not as a causal attribution; stalls of
+intervention-active nonprogress, mostly on layouts where the unfiltered run collided or reached GOAL. We read
+this as a description of where the lost completions occurred, not as a causal attribution; nonprogress of
 this kind may reflect the undesirable equilibria that CBF-QP filters can introduce \cite{reis2021}, which
 these logs do not establish. The completions lost in group A involved unfiltered runs that passed close to obstacles
 (median \GapAmedCm\,cm, group A only; Fig.~\ref{fig:f4}), inside the \CoverBandLoCm--\CoverBandHiCm\,cm
@@ -838,8 +878,9 @@ are existing ideas \cite{breeden2022,vandenberg2011,chen2021}. It would move the
 stand-off to $h=0$ but not remove sensitivity to rounding, and it was not implemented or evaluated here.
 
 \paragraph{Practical implications (suggestions, each tied to a result; not findings).}
-(i) Pair the filter with an infeasibility fallback and a deadlock-recovery rule: with neither,
-\LostFIAll{} of the \LostTotalAll{} lost completions ended in intervention-active stalls and \InfTotal{}
+(i) Pair the filter with an infeasibility fallback and a rule that resolves sustained nonprogress:
+with neither, \LostFIAll{} of the \LostTotalAll{} lost completions ended in intervention-active
+nonprogress and \InfTotal{}
 trials ended INFEASIBLE. This study does not evaluate either remedy.
 (ii) Treat the stand-off with an explicit tolerance rule or zero-command-admissible rows, in a
 separately designed follow-up (infeasibility audit). In the development sweep GOAL increased across the
@@ -869,13 +910,15 @@ criterion covers the common executed prefix only. Time to goal is analysed only 
 The safety guarantee is analytic but conditional on A1--A9; A1 holds in simulation only to float32
 accuracy, which the zero-collision count checks numerically. The exploratory analyses are selected by
 observed outcome and descriptive.
-Three related-work classifications rest on abstracts only (Table~\ref{tab:related}).
+Neighbour pairs were almost always within communication range, so limited communication was not
+tested. Three related-work classifications rest on abstracts only (Table~\ref{tab:related}).
 
 \section{Future work}
-Sensing noise or delay would test whether the unfiltered small-clearance passes stay collision-free.
-An infeasibility fallback and deadlock recovery, zero-command-admissible rows or an explicit tolerance
-rule at the stand-off, less conservative barrier geometry, and clearance-aware or filter-aware
-retraining are candidate follow-ups, as is a policy family that passes the competence gate. Any such study would use the reserved, unused
+Separating the causes of the lost completions needs targeted comparisons on the same actors and
+layouts: the tight one-sided margin against the present two-sided one, a smaller offset $\ell$,
+zero-command-admissible rows, and an infeasibility fallback with a rule that resolves sustained
+nonprogress. A policy family that passes the competence gate, communication ranges shorter than the
+formation with dropouts or delays, and sensing noise would test how far the results carry over. Any such study would use the reserved, unused
 5{,}000{,}000--5{,}999{,}999 layout block under its own locked protocol and disclose which of the
 present post-test findings informed it.
 
@@ -951,6 +994,10 @@ Every number in the text is generated by committed scripts from committed result
 \bibitem{yu2022mappo} C.~Yu, A.~Velu, E.~Vinitsky, J.~Gao, Y.~Wang, A.~Bayen, Y.~Wu, ``The surprising effectiveness of PPO in cooperative multi-agent games,'' NeurIPS Datasets and Benchmarks Track, 2022; arXiv:2103.01955.
 \bibitem{bettini2022vmas} M.~Bettini, R.~Kortvelesy, J.~Blumenkamp, A.~Prorok, ``VMAS: A vectorized multi-agent simulator for collective robot learning,'' Proc. 16th International Symposium on Distributed Autonomous Robotic Systems (DARS), Springer, 2022.
 \bibitem{reis2021} M.~F.~Reis, A.~P.~Aguiar, P.~Tabuada, ``Control barrier function-based quadratic programs introduce undesirable asymptotically stable equilibria,'' \emph{IEEE Control Systems Letters}, vol.~5, no.~2, 2021, doi:10.1109/LCSYS.2020.3004797; arXiv:2003.07819.
+\bibitem{alshiekh2018} M.~Alshiekh, R.~Bloem, R.~Ehlers, B.~K\"onighofer, S.~Niekum, U.~Topcu, ``Safe reinforcement learning via shielding,'' \emph{Proc. AAAI Conference on Artificial Intelligence}, vol.~32, no.~1, 2018, doi:10.1609/aaai.v32i1.11797.
+\bibitem{cheng2019} R.~Cheng, G.~Orosz, R.~M.~Murray, J.~W.~Burdick, ``End-to-end safe reinforcement learning through barrier functions for safety-critical continuous control tasks,'' \emph{Proc. AAAI Conference on Artificial Intelligence}, vol.~33, no.~1, pp.~3387--3395, 2019, doi:10.1609/aaai.v33i01.33013387.
+\bibitem{hsu2024} K.-C.~Hsu, H.~Hu, J.~F.~Fisac, ``The safety filter: A unified view of safety-critical control in autonomous systems,'' \emph{Annual Review of Control, Robotics, and Autonomous Systems}, vol.~7, pp.~47--72, 2024, doi:10.1146/annurev-control-071723-102940.
+\bibitem{grover2023} J.~Grover, C.~Liu, K.~Sycara, ``The before, during, and after of multi-robot deadlock,'' \emph{The International Journal of Robotics Research}; arXiv:2206.01781.
 \bibitem{newcombe1998} R.~G.~Newcombe, ``Improved confidence intervals for the difference between binomial proportions based on paired data,'' \emph{Statistics in Medicine}, vol.~17, pp.~2635--2650, 1998.
 \end{thebibliography}
 \end{document}
